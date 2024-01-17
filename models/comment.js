@@ -8,6 +8,7 @@ const Schema = mongoose.Schema;
 const CommentSchema = new Schema({
     text: { type: String, required: true},
     author: { type: Schema.Types.ObjectId, ref: "User"},
+    chat: { type: Schema.Types.ObjectId, ref: "Chat"},
     // isReply
 
     // messageReplyingTo
