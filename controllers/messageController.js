@@ -51,4 +51,5 @@ exports.react_to_message = asyncHandler( async(req, res, next) => {
 
 exports.attach_image = asyncHandler( async(req, res, next) => {
     // just how the heck does this work
+    // do i need multer and cloudinary
 })
