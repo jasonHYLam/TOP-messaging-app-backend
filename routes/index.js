@@ -12,7 +12,9 @@ router.get('/', function(req, res, next) {
   res.render('index', { title: 'Express' });
 });
 
-router.get('/home/chat:chatid', )
+// hm is this right? multiple URLs... I guess so!
+// will i need to protect all routes...? damn
+router.get('/home/chat:chatid', chatController.get_chat_messages);
 
 
 module.exports = router;
