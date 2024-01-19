@@ -19,6 +19,9 @@ const CommentSchema = new Schema({
 
     // timeStamp
     timeStamp: { type: Date, required: true},
+
+    // reaction
+
 }, opts)
 
 CommentSchema.virtual('timeStampFormatted').get(function() {

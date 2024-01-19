@@ -9,6 +9,8 @@ const UserSchema = new Schema({
     // profile picture...
     // deletedStatus
     // not sure if user should contain array of chats.
+    // friendsList field
+    // isOnline field... maybe... 
 })
 
 module.exports = mongoose.model('User', UserSchema);
