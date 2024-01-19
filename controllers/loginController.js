@@ -4,6 +4,7 @@ const he = require('he');
 
 const User = require('../models/user');
 
+// LoginController?
 
 // validate by trimming and escaping
 exports.signup = [
@@ -29,7 +30,15 @@ exports.login = [
 
     asyncHandler(async(req, res, next) => {
         // hm need to do something with session I think.
+        // perhaps need to do something with PassportJS... my bottom lip trembled slightly as I thought about that.
 
     })
 
 ]
+
+exports.logout = asyncHandler(async(req, res, next) => {
+    // do something with PassportJS and sessions.
+
+})
+
+
