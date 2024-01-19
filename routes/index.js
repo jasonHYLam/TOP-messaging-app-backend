@@ -12,6 +12,7 @@ router.get('/', function(req, res, next) {
   res.render('index', { title: 'Express' });
 });
 
+router.get('/home/chat:chatid', )
 
 
 module.exports = router;
