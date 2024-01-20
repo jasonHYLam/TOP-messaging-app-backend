@@ -43,6 +43,9 @@ router.post('/home/user_profile/:userid', userController.add_user)
 router.get('home/count_online_number', userController.count_online_number)
 router.get('home/count_friends_number', userController.count_friends_number)
 
+// Personal profile related routes.
+router.put('/home/personal_profile/change_description', personalProfileController.change_description)
+router.put('/home/personal_profile/change_image', personalProfileController.change_image)
 
 
 
