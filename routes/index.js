@@ -35,6 +35,15 @@ router.post('/home/chat/:chatid/reply_to_message', messageController.reply_to_me
 router.post('/home/chat/:chatid/react_to_message', messageController.react_to_message)
 router.post('/home/chat/:chatid/attach_image', messageController.attach_image)
 
+// User related routes (viewing profiles, searching and adding users)
+// Searching user. How is this gonna work? Post? Get? Possibly get the userID from button from user
+router.post('/home/user_profile/search', userController.search_user)
+router.get('/home/user_profile/:userid', userController.get_user_profile)
+router.post('/home/user_profile/:userid', userController.add_user)
+router.get('home/count_online_number', userController.count_online_number)
+router.get('home/count_friends_number', userController.count_friends_number)
+
+
 
 
 module.exports = router;
