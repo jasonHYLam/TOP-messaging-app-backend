@@ -14,6 +14,7 @@ router.get('/', function(req, res, next) {
 
 // hm is this right? multiple URLs... I guess so!
 // will i need to protect all routes (except login/signup/logout)...? damn
+// perhaps I could separate these routes into protectedRoutes and nonProtectedRoutes
 
 // Login related routes.
 router.post('/signup', loginController.signup);
@@ -27,7 +28,13 @@ router.get('/home/chat/:chatid', chatController.get_chat_messages);
 router.post('/home/create_new_chat', chatController.create_new_chat);
 
 // Message related routes.
-// router.post('/home/chat/:chatid/create_message', )
+router.post('/home/chat/:chatid/create_message', messageController.create_message)
+router.delete('/home/chat/:chatid/:messageid', messageController.delete_message)
+router.put('/home/chat/:chatid/:messageid', messageController.edit_message)
+router.post('/home/chat/:chatid/reply_to_message', messageController.reply_to_message)
+router.post('/home/chat/:chatid/react_to_message', messageController.react_to_message)
+router.post('/home/chat/:chatid/attach_image', messageController.attach_image)
+
 
 
 module.exports = router;
