@@ -1,4 +1,5 @@
 require('./mongoConfig')
+require('dotenv').config()
 
 const express = require('express');
 const path = require('path');
@@ -23,5 +24,10 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', indexRouter);
 
 // set up cors here
+// not sure if i need credentials true...
+app.use(cors({
+    credentials: true,
+    origin: process.env.FRONTEND_URL,
+}))
 
 module.exports = app;
