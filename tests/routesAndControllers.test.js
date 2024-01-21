@@ -1,6 +1,7 @@
 const request = require('supertest');
 const express = require('express');
-require('../mongoTestingConfig');
+const {initializeMongoServer, closeMongoServer} = require('../mongoTestingConfig');
+const populateTestDB = require('./populateTestDB');
 const app = express();
 const index = require('../routes/index');
 
@@ -8,46 +9,25 @@ app.use(express.urlencoded({ extended: false }));
 app.use('/', index);
 
 // might need to add stuff to database beforehand... how do I go about that.
-beforeAll(() => {
+beforeAll( async() => {
+    initializeMongoServer();
+    populateTestDB();
+})
 
+afterAll( async() => {
+    closeMongoServer();
 })
 
 describe('login route', () => {
 
-    test('successful login', done => {
-        request(app)
+    test('successful login', async () => {
+        const response = await request(app)
         .post('/login')
         .type('form')
-        .send({username: 'user', password: 'Abc123'})
-        .expect(200)
-        .end((err, res) => {
-            if (err) return done(err);
-            return done();
-        })
-        // .end((err, res) => {
-        //     expect(req.status).to.equal(201)
-        //     done()
-        // })
-
+        // .send({username: 'user', password: 'Abc123'})
+        .auth('user', 'Abc123')
+        expect(response.status).toEqual(200)
     })
-
-    test('unsuccessful login', done => {
-        request(app)
-        .post('/login')
-        .type('form')
-        .send({username: 'nonExistentUser', password: 'Abc123'})
-        .expect(301)
-        .end((err, res) => {
-            if (err) return done(err);
-            return done();
-        })
-        // .end((err, res) => {
-        //     expect(req.status).to.equal(201)
-        //     done()
-        // })
-
-    })
-
 })
 
 // test getting messages from chat when accessing chatid

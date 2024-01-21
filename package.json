@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "test": "jest --watch --verbose",
+    "test": "jest --watch --verbose --detectOpenHandles",
     "start": "node ./bin/www",
     "devstart": "nodemon ./bin/www",
     "serverstart": "DEBUG=TOP-messaging-app:* npm run devstart"
