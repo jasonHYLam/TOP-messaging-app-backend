@@ -8,6 +8,9 @@ app.use(express.urlencoded({ extended: false }));
 app.use('/', index);
 
 // might need to add stuff to database beforehand... how do I go about that.
+beforeAll(() => {
+
+})
 
 describe('login route', () => {
 
