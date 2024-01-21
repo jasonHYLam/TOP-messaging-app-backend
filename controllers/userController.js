@@ -1,3 +1,5 @@
+const asyncHandler = require("express-async-handler");
+
 // may need to change name
 // intended to handle adding friends and seeing who is online
 

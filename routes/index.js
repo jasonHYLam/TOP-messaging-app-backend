@@ -7,11 +7,6 @@ const messageController = require('../controllers/messageController');
 const personalProfileController = require('../controllers/personalProfileController');
 const userController = require('../controllers/userController');
 
-/* GET home page. */
-router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Express' });
-});
-
 // hm is this right? multiple URLs... I guess so!
 // will i need to protect all routes (except login/signup/logout)...? damn
 // perhaps I could separate these routes into protectedRoutes and nonProtectedRoutes
