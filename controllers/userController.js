@@ -12,6 +12,7 @@ const User = require('../models/user');
 exports.search_user = [
     body('user').trim().escape(),
 
+    // may need to unescape it?
     asyncHandler( async(req, res, next) => {
         const matchingUsers = await User.find({username: req.body.user}).exec();
         res.json({matchingUsers})
@@ -24,8 +25,9 @@ exports.add_user = []
 
 // 
 exports.get_user_profile = asyncHandler( async(req, res, next) => {
-    
-
+    // This makes use of params to get userid I believe.
+    const matchingUser = await User.findById(req.params).exec();
+    res.json({matchingUser})
 })
 
 // Perhaps I can use this to see how many people are online. But I have no idea how to approach that.
