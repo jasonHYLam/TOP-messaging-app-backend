@@ -25,7 +25,7 @@ async function initializeMongoServer() {
 
 async function closeMongoServer() {
     mongoose.disconnect();
-    // mongoose.connection.close()
+    mongoose.connection.close()
 }
 
 module.exports = {initializeMongoServer, closeMongoServer};

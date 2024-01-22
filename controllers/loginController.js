@@ -1,3 +1,5 @@
+const passport = require('passport');
+
 const asyncHandler = require("express-async-handler");
 const { body } = require('express-validator');
 const he = require('he');
@@ -28,11 +30,13 @@ exports.login = [
 
     // if login credentials are not correct, send message. Check how to handle this correctly when using asyncHandler.
 
-    asyncHandler(async(req, res, next) => {
-        // hm need to do something with session I think.
-        // perhaps need to do something with PassportJS... my bottom lip trembled slightly as I thought about that.
+    passport.authenticate('local')
 
-    })
+
+    // asyncHandler(async(req, res, next) => {
+    //     // hm need to do something with session I think.
+    //     // perhaps need to do something with PassportJS... my bottom lip trembled slightly as I thought about that.
+    // })
 
 ]
 
