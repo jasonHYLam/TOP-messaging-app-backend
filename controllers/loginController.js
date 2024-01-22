@@ -15,6 +15,7 @@ exports.signup = [
     // username, password
     body('username').trim().escape(),
     body('password').trim().escape(),
+
     asyncHandler(async(req, res, next) => {
         // need bcryptjs
         const escapedUsername = he.decode(req.body.username);
@@ -29,29 +30,17 @@ exports.signup = [
                 await newUser.save();
             }
         })
-
-        
-        // create a new User model 
-        // const newUser = new User({})
-        // perhaps set default values
-        // save User model
-
+        // in the login test, may need to account for bcrypt
     })
 ]
 
 exports.login = [
-    // body().trim().escape(),
-    // body().trim().escape(),
+    body('username').trim().escape(),
+    body('password').trim().escape(),
 
     // if login credentials are not correct, send message. Check how to handle this correctly when using asyncHandler.
+    // not sure if need to wrap authenticate with asyncHandler
     passport.authenticate('local')
-
-
-    // asyncHandler(async(req, res, next) => {
-    //     // hm need to do something with session I think.
-    //     // perhaps need to do something with PassportJS... my bottom lip trembled slightly as I thought about that.
-    // })
-
 ]
 
 exports.logout = asyncHandler(async(req, res, next) => {
