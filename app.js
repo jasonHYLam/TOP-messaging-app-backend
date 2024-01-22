@@ -35,7 +35,16 @@ app.use(cors({
     origin: process.env.FRONTEND_URL,
 }))
 
-// app.use(exp)
+app.use(session({
+    secret: process.env.SESSION_SECRET,
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+        httpOnly: process.env.MODE === 'prod',
+        secure: process.env.MODE === 'prod',
+        sameSite: process.env.MODE === 'prod' ? 'none' : 'lax',
+    }
+}))
 
 app.use('/', indexRouter);
 
