@@ -8,7 +8,6 @@ async function initializeMongoServer() {
 
     mongoose.connect(mongoUri);
 
-    mongoose.disconnect();
 
     mongoose.connection.on('error', e => {
         if (e.message.code === 'ETIMEDOUT') {

@@ -29,7 +29,6 @@ exports.login = [
     // body().trim().escape(),
 
     // if login credentials are not correct, send message. Check how to handle this correctly when using asyncHandler.
-
     passport.authenticate('local')
 
 
