@@ -10,6 +10,8 @@ const UserSchema = new Schema({
     // deletedStatus
     // not sure if user should contain array of chats.
     // friendsList field
+    // not sure if this is correct
+    friendsList: [{type: Schema.Types.ObjectId, ref: "User"}],
     // isOnline field... maybe... 
 })
 

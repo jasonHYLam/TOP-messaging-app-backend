@@ -14,6 +14,7 @@ exports.search_user = [
 
     // may need to unescape it?
     asyncHandler( async(req, res, next) => {
+    // I'll probably have to modify this find such that it doesn't include password.
         const matchingUsers = await User.find({username: req.body.user}).exec();
         res.json({matchingUsers})
     })
@@ -21,11 +22,22 @@ exports.search_user = [
 ]
 
 // Post to add them
-exports.add_user = []
+exports.add_user = asyncHandler( async(req, res, next) => {
+    // How does adding a user work...
+    // Get the current logged in user somehow
+    // Get the user to add via their id and params. Add to their friendlist.
+    // I think I have access to req.user...
+    const currentUser = await User.findByIdAndUpdate(
+        req.user.id,
+        // friendsList
+        {})
+
+})
 
 // 
 exports.get_user_profile = asyncHandler( async(req, res, next) => {
     // This makes use of params to get userid I believe.
+    // I'll probably have to modify this find such that it doesn't include password.
     const matchingUser = await User.findById(req.params).exec();
     res.json({matchingUser})
 })
