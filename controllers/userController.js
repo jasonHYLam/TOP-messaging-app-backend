@@ -1,10 +1,23 @@
 const asyncHandler = require("express-async-handler");
 
+const { body } = require('express-validator');
+const he = require('he');
+
+const User = require('../models/user');
+
 // may need to change name
 // intended to handle adding friends and seeing who is online
 
 // I think this is just used to bring up a list of users that match the user username
-exports.search_user = []
+exports.search_user = [
+    body('user').trim().escape(),
+
+    asyncHandler( async(req, res, next) => {
+        const matchingUsers = await User.find({username: req.body.user}).exec();
+        res.json({matchingUsers})
+    })
+    
+]
 
 // Post to add them
 exports.add_user = []
