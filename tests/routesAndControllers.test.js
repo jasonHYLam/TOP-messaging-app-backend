@@ -10,12 +10,15 @@ app.use('/', index);
 
 // might need to add stuff to database beforehand... how do I go about that.
 beforeAll( async() => {
-    initializeMongoServer();
-    populateTestDB();
+    // initializeMongoServer();
+    // populateTestDB();
+    await initializeMongoServer();
+    await populateTestDB();
 })
 
 afterAll( async() => {
-    closeMongoServer();
+    // closeMongoServer();
+    // await closeMongoServer();
 })
 
 describe('login route',() => {
