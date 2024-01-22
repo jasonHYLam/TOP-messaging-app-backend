@@ -32,13 +32,18 @@ describe('login route',() => {
         const response = await request(app)
         .post('/login')
         // .type('form')
-        // .send({username: 'user', password: 'Abc123'})
-        .auth('user', 'Abc123')
+        .send({username: 'user', password: 'Abc123'})
+        // .auth('user', 'Abc123')
         expect(response.status).toEqual(200)
     })
 })
 
 // test getting messages from chat when accessing chatid
+// need to further populate...
+describe('chat route', () => {
+
+
+})
 
 
 
