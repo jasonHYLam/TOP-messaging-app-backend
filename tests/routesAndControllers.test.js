@@ -4,6 +4,11 @@ const {initializeMongoServer, closeMongoServer} = require('../mongoTestingConfig
 const populateTestDB = require('./populateTestDB');
 const app = express();
 const index = require('../routes/index');
+// not sure if passport is needed
+const passport = require('passport');
+require('../passportConfig');
+app.use(passport.initialize())
+app.use(passport.session())
 
 app.use(express.urlencoded({ extended: false }));
 app.use('/', index);
