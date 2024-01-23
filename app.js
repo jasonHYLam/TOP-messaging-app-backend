@@ -1,9 +1,15 @@
 require('./mongoConfig')
 require('dotenv').config()
 
+// no idea if this cloudinaryConfig works. It probably doesn't
+// const initializeCloudinary = require('./cloudinaryConfig')
+// const cloudinary = require('cloudinary').v2;
+// initializeCloudinary(cloudinary);
+
 const passport = require('passport');
 const initializePassport = require('./passportConfig');
 initializePassport(passport);
+
 const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
@@ -11,13 +17,9 @@ const logger = require('morgan');
 const cors = require('cors');
 const session = require('express-session');
 
-
 const indexRouter = require('./routes/index');
 
 const app = express();
-
-// require cors middleware. configure such that it takes frontend URL.
-// may require sessions maybe?
 
 app.use(logger('dev'));
 app.use(express.json());
@@ -27,9 +29,6 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-
-// set up cors here
-// not sure if i need credentials true...
 app.use(cors({
     credentials: true,
     origin: process.env.FRONTEND_URL,

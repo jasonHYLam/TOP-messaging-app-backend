@@ -32,7 +32,7 @@ describe('login route',() => {
     test('successful login', async () => {
         const response = await request(app)
         .post('/login')
-        // .type('form')
+        .type('form')
         .send({username: 'user', password: 'Abc123'})
         // .auth('user', 'Abc123')
         expect(response.status).toEqual(200)
