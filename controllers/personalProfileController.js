@@ -13,9 +13,16 @@ const User = require('../models/user');
 // Regarding changing username, not sure how to deal with that logic.
 
 exports.change_description = [
-    // body(),
-    asyncHandler(async (req, res, next) => {
+    body('description').trim().escape(),
 
+    asyncHandler(async (req, res, next) => {
+        // should get userid from params; like req.params.userid I think
+        // Need to test this.
+        // Do I need to await this?
+        const updatedUser = await User.findByIdAndUpdate(req.params.userid, {
+            description: he.decode(req.body.description)
+        })
+        res.json({updatedUser})
     })
 ] 
 
@@ -28,6 +35,7 @@ exports.change_image = [
         // need to get image URL, can i get it from req.file? or how do I access it through Cloudinary?
 
         res.json(req.file)
+        // modify User document.
 
     })
 ] 

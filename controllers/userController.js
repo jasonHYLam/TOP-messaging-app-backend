@@ -38,7 +38,7 @@ exports.add_user = asyncHandler( async(req, res, next) => {
 exports.get_user_profile = asyncHandler( async(req, res, next) => {
     // This makes use of params to get userid I believe.
     // I'll probably have to modify this find such that it doesn't include password.
-    const matchingUser = await User.findById(req.params).exec();
+    const matchingUser = await User.findById(req.params.userid).exec();
     res.json({matchingUser})
 })
 
