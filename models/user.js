@@ -10,8 +10,7 @@ const UserSchema = new Schema({
     profilePicURL: { type: String, default: ''},
     // deletedStatus
     // not sure if user should contain array of chats.
-    // friendsList field
-    // not sure if this is correct
+    // friendsList field; not sure if this is correct
     friendsList: [{type: Schema.Types.ObjectId, ref: "User"}],
     // isOnline field... maybe... 
 })

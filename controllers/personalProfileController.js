@@ -16,10 +16,11 @@ exports.change_description = [
     body('description').trim().escape(),
 
     asyncHandler(async (req, res, next) => {
-        // should get userid from params; like req.params.userid I think
+        // should get userid from req.user.id
+
         // Need to test this.
         // Do I need to await this?
-        const updatedUser = await User.findByIdAndUpdate(req.params.userid, {
+        const updatedUser = await User.findByIdAndUpdate(req.user.id, {
             description: he.decode(req.body.description)
         })
         res.json({updatedUser})

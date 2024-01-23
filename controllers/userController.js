@@ -36,7 +36,6 @@ exports.add_user = asyncHandler( async(req, res, next) => {
     await currentUser.save();
     userToAdd.friendsList.push(req.user.id)
     await userToAdd.save();
-
 })
 
 // 
