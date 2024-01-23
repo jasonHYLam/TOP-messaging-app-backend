@@ -4,6 +4,7 @@ const { body } = require('express-validator');
 const he = require('he');
 
 const User = require('../models/user');
+const FriendToUser = require('../models/friendToUser')
 
 // may need to change name
 // intended to handle adding friends and seeing who is online
@@ -28,14 +29,24 @@ exports.add_user = asyncHandler( async(req, res, next) => {
     // Get the user to add via their id and params. Add to their friendlist.
     // I think I have access to req.user...
 
-    // How do I add to the array?
     const currentUser = await User.findById(req.user.id)
     const userToAdd = await User.findById(req.params.user.id)
 
-    currentUser.friendsList.push(currentUser.id)
-    await currentUser.save();
-    userToAdd.friendsList.push(req.user.id)
-    await userToAdd.save();
+    const friendAdding = new FriendToUser({
+        user: currentUser,
+        friendUser: userToAdd,
+    })
+
+    const friendToAdd = new FriendToUser({
+        user: userToAdd,
+        friendUser: currentUser,
+    })
+
+    await friendAdding.save();
+    await friendToAdd.save();
+
+    // To access friends, need to call populate on User.
+
 })
 
 // 
