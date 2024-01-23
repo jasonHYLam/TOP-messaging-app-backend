@@ -30,6 +30,7 @@ exports.change_image = [
     // body(),
     asyncHandler(async (req, res, next) => {
 
+        // I have no idea how this works.
         upload.single('profilePic')
 
         // need to get image URL, can i get it from req.file? or how do I access it through Cloudinary?
