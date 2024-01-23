@@ -27,10 +27,15 @@ exports.add_user = asyncHandler( async(req, res, next) => {
     // Get the current logged in user somehow
     // Get the user to add via their id and params. Add to their friendlist.
     // I think I have access to req.user...
-    const currentUser = await User.findByIdAndUpdate(
-        req.user.id,
-        // friendsList
-        {})
+
+    // How do I add to the array?
+    const currentUser = await User.findById(req.user.id)
+    const userToAdd = await User.findById(req.params.user.id)
+
+    currentUser.friendsList.push(currentUser.id)
+    await currentUser.save();
+    userToAdd.friendsList.push(req.user.id)
+    await userToAdd.save();
 
 })
 
