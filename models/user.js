@@ -10,9 +10,13 @@ const UserSchema = new Schema({
     profilePicURL: { type: String, default: ''},
     // deletedStatus
     // not sure if user should contain array of chats.
-    // friendsList field; not sure if this is correct
-    friendsList: [{type: Schema.Types.ObjectId, ref: "User"}],
-    // isOnline field... maybe... 
+})
+
+// make friends virtual
+UserSchema.virtual('friends', {
+    ref: 'FriendToUserSchema',
+    localField: '_id',
+    foreignField: 'user',
 })
 
 module.exports = mongoose.model('User', UserSchema);
