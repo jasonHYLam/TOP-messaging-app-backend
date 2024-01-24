@@ -9,12 +9,18 @@ const UserSchema = new Schema({
     // profile picture...
     profilePicURL: { type: String, default: ''},
     // deletedStatus
-    // not sure if user should contain array of chats.
 })
 
-// make friends virtual
+// Virtual field for obtaining Friend documents associated with User.
 UserSchema.virtual('friends', {
     ref: 'FriendToUserSchema',
+    localField: '_id',
+    foreignField: 'user',
+})
+
+// Virtual field for obtaining Chat documents associated with User. 
+UserSchema.virtual('chats', {
+    ref: 'UserInChatSchema',
     localField: '_id',
     foreignField: 'user',
 })
