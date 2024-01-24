@@ -9,5 +9,11 @@ const ChatSchema = new Schema({
     // lastUpdated field
 })
 
+ChatSchema.virtual('users', {
+    ref: 'UserInChatSchema',
+    localField: '_id',
+    foreignField: 'user',
+})
+
 module.exports = mongoose.model('Chat', ChatSchema);
 
