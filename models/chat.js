@@ -7,6 +7,7 @@ const ChatSchema = new Schema({
     // or should users contain array of chats...
     // 
     // lastUpdated field
+    lastUpdated: { type: Date, default: new Date()}
 })
 
 ChatSchema.virtual('users', {

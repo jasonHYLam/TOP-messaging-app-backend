@@ -66,3 +66,5 @@ exports.count_online_number = asyncHandler( async(req, res, next) => {
 exports.count_friends_number = asyncHandler( async(req, res, next) => {
 
 })
+
+// May need to make a get friends callback
