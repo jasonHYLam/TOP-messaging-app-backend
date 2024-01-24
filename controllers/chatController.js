@@ -7,7 +7,7 @@ const UserInChat = require('../models/userInChat');
 exports.create_new_chat = asyncHandler( async(req, res, next) => {
     // this requires an array of user ids to make a chat with.
     // These may come from req.body maybe?
-    // I think I need to MAKE the userInChat models and attach everything together...
+    // I think I need to create the userInChat models and attach User And Chat to them...
     const newChat = new Chat({})
     await newChat.save()
 
