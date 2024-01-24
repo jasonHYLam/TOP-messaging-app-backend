@@ -24,9 +24,21 @@ exports.create_new_chat = asyncHandler( async(req, res, next) => {
 
     })
 
+    // Might need to call next, or perhaps redirect using sent new Chat id.
+
 })
 
-exports.get_chats = asyncHandler()
+exports.get_all_chats = asyncHandler( async( req, res, next ) => {
+
+    // sort these by lastUpdated field.
+    // Do I need to populate here... maybe? 
+    // Maybe the names of the users
+    // And the latest comment.
+    // Not sure if this is the right syntax 
+    const allChats = await Chat.find({}).populate('userInChat').populate('user')
+
+    res.json({allChats})
+})
 
 exports.get_chat_messages = asyncHandler( async(req, res, next) => {
     // finding all messages that are related to the chat.
