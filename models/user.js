@@ -14,7 +14,7 @@ const UserSchema = new Schema({
 
 // Virtual field for obtaining Friend documents associated with User.
 UserSchema.virtual('friends', {
-    ref: 'FriendToUserSchema',
+    ref: 'FriendToUser',
     localField: '_id',
     foreignField: 'user',
 })
