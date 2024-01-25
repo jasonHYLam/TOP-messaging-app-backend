@@ -18,6 +18,7 @@ const MessageSchema = new Schema({
     imageURL: { type: String },
 
     // isDeleted
+    isDeleted: { type: Boolean, default: false },
 
     // timeStamp
     timeStamp: { type: Date, required: true},
