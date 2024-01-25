@@ -7,5 +7,5 @@ const FriendToUserSchema = new Schema({
     friendUser: { type: Schema.Types.ObjectId, ref: "User"},
 })
 
-module.exports = mongoose.model('FriendToUserSchema', FriendToUserSchema);
+module.exports = mongoose.model('FriendToUser', FriendToUserSchema);
 

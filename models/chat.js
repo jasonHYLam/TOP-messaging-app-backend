@@ -15,7 +15,10 @@ ChatSchema.virtual('users', {
 })
 
 ChatSchema.virtual('chatMessages', {
-    ref: 'Message'
+    ref: 'Message',
+    localField: '_id',
+    foreignField: 'chat',
 })
+
 module.exports = mongoose.model('Chat', ChatSchema);
 
