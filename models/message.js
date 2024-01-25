@@ -22,6 +22,7 @@ const MessageSchema = new Schema({
 
     // reaction
     reactions: { reaction: {
+        reactionType: {type: String},
         imageURL: {type: String},
         number: {type: Number}
     }}
