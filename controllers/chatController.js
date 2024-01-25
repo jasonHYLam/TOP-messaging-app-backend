@@ -44,5 +44,7 @@ exports.get_chat_messages = asyncHandler( async(req, res, next) => {
     // finding all messages that are related to the chat.
     // Hopefully chatid is passed through req.params
     // req.params.chatid
-    const chatWithMessages = Chat.findById(req.params.chatid).populate('')
+    const chatMessages = Chat.findById(req.params.chatid).populate('chatMessages')
+    const chatUsers = Chat.findById(req.params.chatid).populate('users')
+    res.json({chatMessages, chatUsers})
 })
