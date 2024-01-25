@@ -14,6 +14,7 @@ const MessageSchema = new Schema({
     // messageReplyingTo
 
     // image
+    imageURL: { type: String },
 
     // isDeleted
 
