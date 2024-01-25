@@ -9,10 +9,13 @@ const ChatSchema = new Schema({
 }, opts)
 
 ChatSchema.virtual('users', {
-    ref: 'UserInChatSchema',
+    ref: 'UserInChat',
     localField: '_id',
     foreignField: 'user',
 })
 
+ChatSchema.virtual('chatMessages', {
+    ref: 'Message'
+})
 module.exports = mongoose.model('Chat', ChatSchema);
 

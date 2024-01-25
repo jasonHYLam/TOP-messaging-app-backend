@@ -21,7 +21,7 @@ UserSchema.virtual('friends', {
 
 // Virtual field for obtaining Chat documents associated with User. 
 UserSchema.virtual('chats', {
-    ref: 'UserInChatSchema',
+    ref: 'UserInChat',
     localField: '_id',
     foreignField: 'chat',
 })
