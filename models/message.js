@@ -12,6 +12,7 @@ const MessageSchema = new Schema({
     // isReply
 
     // messageReplyingTo
+    messageReplyingTo: { type: Schema.Types.ObjectId, ref: "Message"},
 
     // image
     imageURL: { type: String },
