@@ -21,6 +21,10 @@ const MessageSchema = new Schema({
     timeStamp: { type: Date, required: true},
 
     // reaction
+    reactions: { reaction: {
+        imageURL: {type: String},
+        number: {type: Number}
+    }}
 
 }, opts)
 
