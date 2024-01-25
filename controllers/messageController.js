@@ -3,20 +3,28 @@ const { body } = require('express-validator');
 const he = require('he');
 
 const Message = require('../models/message');
+const User = require('../models/user');
+const Chat = require('../models/chat');
 
 exports.create_message = [
     // validate the text first
-    // body().trim().escape(),
+    body().trim().escape(),
+
 
     asyncHandler( async(req, res, next) => {
 
-        // create Message model
-        // const newMessage = new Message({})
+        const currentUser = await User.findById(req.user._id);
+        const currentChat = await Chat.findById(req.params.chatid);
 
-        // save
-        // newMessage.save() 
-        // I think that is the correct syntax?
-        
+        const newMessage = new Message({
+            text: req.body.text,
+            author: currentUser,
+            chat: currentChat,
+            timeStamp: new Date(),
+
+        })
+
+        await newMessage.save() 
     })
 
 ]
