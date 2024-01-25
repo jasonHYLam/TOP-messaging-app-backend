@@ -22,6 +22,10 @@ exports.create_message = [
             chat: currentChat,
             timeStamp: new Date(),
 
+            // messageReplyingTo: null,
+            // imageURL: null,
+            // isDeleted: false,
+            reactions: {},
         })
 
         await newMessage.save() 

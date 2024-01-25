@@ -12,16 +12,16 @@ const MessageSchema = new Schema({
     // isReply
 
     // messageReplyingTo
-    messageReplyingTo: { type: Schema.Types.ObjectId, ref: "Message"},
+    messageReplyingTo: { type: Schema.Types.ObjectId, ref: "Message", default: null},
 
     // image
-    imageURL: { type: String },
+    imageURL: { type: String, default: null },
 
     // isDeleted
     isDeleted: { type: Boolean, default: false },
 
     // timeStamp
-    timeStamp: { type: Date, required: true},
+    timeStamp: { type: Date, required: true, default: new Date()},
 
     // reaction
     reactions: { reaction: {
