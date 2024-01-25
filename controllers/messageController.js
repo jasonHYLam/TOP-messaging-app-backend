@@ -8,7 +8,7 @@ const Chat = require('../models/chat');
 
 exports.create_message = [
     // validate the text first
-    body().trim().escape(),
+    body('text').trim().escape(),
 
 
     asyncHandler( async(req, res, next) => {
@@ -36,7 +36,6 @@ exports.create_message = [
 exports.delete_message = asyncHandler( async(req, res, next) => {
 
     // delete based on id
-    // Message.findByIdAndDelete()
 })
 
 exports.edit_message = asyncHandler( async(req, res, next) => {
@@ -47,11 +46,32 @@ exports.edit_message = asyncHandler( async(req, res, next) => {
 
 exports.reply_to_message = [
     // validate the text first
+    body('text').trim().escape(),
     // now what...
     // this is basically create message but with extra steps
     // do I need the ID of the message being replied to? possibly. 
     // maybe set a field to true
     // maybe set the message_to_reply field
+    asyncHandler( async(req, res, next) => {
+
+        const currentUser = await User.findById(req.user._id);
+        const currentChat = await Chat.findById(req.params.chatid);
+        const messageReplyingTo = await Message.findById(req.body.messageToReply._id);
+
+        const newMessage = new Message({
+            text: req.body.text,
+            author: currentUser,
+            chat: currentChat,
+            timeStamp: new Date(),
+
+            messageReplyingTo: messageReplyingTo,
+            // imageURL: null,
+            // isDeleted: false,
+            reactions: {},
+        })
+
+        await newMessage.save() 
+    })
 ]
 
 exports.react_to_message = asyncHandler( async(req, res, next) => {
