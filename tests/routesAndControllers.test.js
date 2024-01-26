@@ -24,8 +24,9 @@ beforeAll(async() => {
     await populateTestDB();
 
     console.log('done setting upo')
-    const matchingUser = await User.find({username: 'user'})
-    console.log(matchingUser)
+    // const matchingUser = await User.find({username: 'user'})
+    const matchingUser = await User.find()
+    // console.log(matchingUser)
 })
 
 afterAll( async() => {
@@ -53,6 +54,24 @@ describe('login route',() => {
         .set('Accept', 'application/json')
         .send(data)
         expect(response.status).toEqual(200)
+    })
+
+    test('successful login with req.user set', async() => {
+
+        const data = {username: 'user', password: 'Abc123'};
+        const agent = request.agent(app)
+        // const response = await request(app)
+        agent
+        .post('/login')
+        .type('form')
+        .set('Content-Type', 'application/json')
+        .set('Accept', 'application/json')
+        .send(data)
+        // expect(response.status).toEqual(200)
+        console.log('checking agent object')
+        console.log(agent)
+        expect(agent.user.username).toEqual('user')
+
     })
 })
 
@@ -83,6 +102,9 @@ describe('sign up route', () => {
 
 
 // make new chat
+// this requires at least 2 users. 
+// If there are less than two, how would I plan around that.
+// Also it seems I need the current user, aka i need req.user
 
 
 

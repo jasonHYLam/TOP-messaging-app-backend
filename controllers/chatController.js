@@ -4,6 +4,17 @@ const Chat = require('../models/chat');
 const User = require('../models/user');
 const UserInChat = require('../models/userInChat');
 
+async function createUserInChatFromReqAndSave(newChat, user) {
+    const matchingUser = User.findById(user._id);
+    const newUserInChat = new UserInChat({
+        chat: newChat,
+        user: matchingUser,
+    })
+
+    // The hope is that newUserInChat can be used to obtain the Users from Chat.find().populate()
+    await newUserInChat.save();
+}
+
 exports.create_new_chat = asyncHandler( async(req, res, next) => {
     // this requires an array of user ids to make a chat with.
     // These may come from req.body maybe?
@@ -12,17 +23,8 @@ exports.create_new_chat = asyncHandler( async(req, res, next) => {
     await newChat.save()
 
     // maybe something like:
-    req.body.users.map(async userid => {
-        const matchingUser = User.findById(userid);
-        const newUserInChat = new UserInChat({
-            chat: newChat,
-            user: matchingUser,
-        })
-
-        // The hope is that newUserInChat can be used to obtain the Users from Chat.find().populate()
-        await newUserInChat.save();
-
-    })
+    createUserInChatFromReqAndSave(newChat, req.user);
+    req.body.users.map(async user => createUserInChatFromReqAndSave(newChat, user));
 
     // Might need to call next, or perhaps redirect using sent new Chat id.
 

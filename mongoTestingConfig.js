@@ -3,7 +3,6 @@ const mongoose = require('mongoose');
 const { MongoMemoryServer } = require('mongodb-memory-server');
 
 async function initializeMongoServer() {
-    console.log('This should happen first')
     const mongoServer = await MongoMemoryServer.create();
     const mongoUri = mongoServer.getUri();
 
