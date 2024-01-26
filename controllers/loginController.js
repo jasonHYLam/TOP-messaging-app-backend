@@ -20,18 +20,16 @@ exports.signup = [
         // need bcryptjs
         const escapedUsername = he.decode(req.body.username);
         const escapedPassword = he.decode(req.body.password);
-        bcrypt.hash(escapedPassword, 10, async( err, hashedPass ) => {
-            if (err) throw err;
-            else {
-                const newUser = new User({
-                    username: escapedUsername,
-                    password: hashedPass,
-                })
-                await newUser.save();
-            }
+        
+        const hashedPass = await bcrypt.hash(escapedPassword, 10)
+        const newUser = new User({
+            username: escapedUsername,
+            password: hashedPass
         })
+        await newUser.save();
         // in the login test, may need to account for bcrypt
-        next()
+        // next()
+        res.json({newUser});
     })
 ]
 
@@ -43,6 +41,7 @@ exports.login = [
     // not sure if need to wrap authenticate with asyncHandler
     asyncHandler(async (req, res, next) => {
     passport.authenticate('local')
+    res.send();
     next();
     })
     

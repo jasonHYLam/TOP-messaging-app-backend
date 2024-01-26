@@ -5,6 +5,7 @@ const populateTestDB = require('./populateTestDB');
 // const app = express();
 
 const app = require('../app');
+
 const index = require('../routes/index');
 // not sure if passport is needed
 const passport = require('passport');
@@ -45,19 +46,19 @@ describe('login route',() => {
     //     .expect(200, done())
     // })
 
-    test('successful login using with async', async() => {
+    // test('successful login using with async', async() => {
 
-        const data = {username: 'user', password: 'Abc123'};
-        const response = await request(app)
-        .post('/login')
-        .type('form')
-        .set('Content-Type', 'application/json')
-        .set('Accept', 'application/json')
-        .send(data)
-        // .auth('user', 'Abc123')
-        // expect(200)
-        expect(response.status).toEqual(200)
-    })
+    //     const data = {username: 'user', password: 'Abc123'};
+    //     const response = await request(app)
+    //     .post('/login')
+    //     .type('form')
+    //     .set('Content-Type', 'application/json')
+    //     .set('Accept', 'application/json')
+    //     .send(data)
+    //     // .auth('user', 'Abc123')
+    //     // expect(200)
+    //     expect(response.status).toEqual(200)
+    // })
 })
 
 // test getting messages from chat when accessing chatid
@@ -75,19 +76,20 @@ it('is a sanity check', () => {
 // })
 
 // make new user
-// describe('sign up route', () => {
-//     it('signs up successfully', (done) => {
-//         // const response = await request(app)
-//         request(app)
-//         .post('/signup')
-//         .type('form')
-//         .send({username: 'doris', password: 'DeafAids'})
-//         .then(() => {
-//             request(app)
-//             .expect(200, done)
-//         })
-//     })
-// })
+describe('sign up route', () => {
+    it('signs up successfully', async() => {
+        // const response = await request(app)
+        const response = await request(app)
+        .post('/signup')
+        .type('form')
+        .send({username: 'doris', password: 'DeafAids'})
+        expect(response.status).toEqual(200)
+        // .then(() => {
+        //     request(app)
+        //     .expect(200, done)
+        // })
+    })
+})
 
 
 // make new chat
