@@ -9,7 +9,6 @@ async function initializeMongoServer() {
 
     mongoose.connect(mongoUri);
 
-
     mongoose.connection.on('error', e => {
         if (e.message.code === 'ETIMEDOUT') {
             console.log(e)
@@ -21,6 +20,7 @@ async function initializeMongoServer() {
     mongoose.connection.once('open', () => {
         console.log(`MongoDB successfully connected to ${mongoUri}`)
     })
+
 }
 
 async function closeMongoServer() {

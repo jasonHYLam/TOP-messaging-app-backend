@@ -31,6 +31,7 @@ exports.signup = [
             }
         })
         // in the login test, may need to account for bcrypt
+        next()
     })
 ]
 

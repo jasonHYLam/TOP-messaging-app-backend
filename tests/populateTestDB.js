@@ -7,7 +7,7 @@ async function createUser(username, password) {
         username,
         password
     })
-     newUser.save();
+     await newUser.save();
      console.log(`new User saved: ${newUser.username}`)
 }
 
