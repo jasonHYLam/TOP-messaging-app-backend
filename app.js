@@ -27,10 +27,12 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+
 app.use(cors({
     credentials: true,
     origin: process.env.FRONTEND_URL,
 }))
+
 
 app.use(session({
     secret: process.env.SESSION_SECRET,
@@ -47,5 +49,6 @@ app.use(passport.initialize())
 app.use(passport.session())
 
 app.use('/', indexRouter);
+
 
 module.exports = app;
