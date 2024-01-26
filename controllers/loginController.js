@@ -41,7 +41,11 @@ exports.login = [
 
     // if login credentials are not correct, send message. Check how to handle this correctly when using asyncHandler.
     // not sure if need to wrap authenticate with asyncHandler
+    asyncHandler(async (req, res, next) => {
     passport.authenticate('local')
+    next();
+    })
+    
 ]
 
 exports.logout = asyncHandler(async(req, res, next) => {

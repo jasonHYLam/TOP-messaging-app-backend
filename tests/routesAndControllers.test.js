@@ -2,7 +2,9 @@ const request = require('supertest');
 const express = require('express');
 const {initializeMongoServer, closeMongoServer} = require('../mongoTestingConfig');
 const populateTestDB = require('./populateTestDB');
-const app = express();
+// const app = express();
+
+const app = require('../app');
 const index = require('../routes/index');
 // not sure if passport is needed
 const passport = require('passport');
@@ -24,6 +26,8 @@ beforeAll(async() => {
     await populateTestDB();
     // }
     console.log('done setting upo')
+    const matchingUser = await User.find({username: 'user'})
+    console.log(matchingUser)
 })
 
 afterAll( async() => {
