@@ -42,6 +42,9 @@ exports.login = [
     asyncHandler(async (req, res, next) => {
     passport.authenticate('local')
     res.send();
+    // maybe req.user is assigned on the next request response cycle
+    // const user = req.user
+    // res.json({user})
     next();
     })
     
