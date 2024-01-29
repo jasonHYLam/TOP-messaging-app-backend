@@ -1,3 +1,5 @@
+const bcrypt = require('bcryptjs');
+
 const LocalStrategy = require('passport-local').Strategy;
 
 const User = require('./models/user');
@@ -13,7 +15,9 @@ function initializePassport(passport) {
                     // what happens after this
                     return done(null, false, { message: 'Incorrect username '})
                 }
-                if (user.password !== password) {
+
+                const match = await bcrypt.compare(password, user.password)
+                if (!match) {
                     return done(null, false, { message: 'Incorrect password'})
                 }
 

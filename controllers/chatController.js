@@ -32,6 +32,8 @@ exports.create_new_chat = asyncHandler( async(req, res, next) => {
 
 exports.get_all_chats = asyncHandler( async( req, res, next ) => {
 
+    console.log('checking if req.user exists');
+    console.log(req.user);
     // sort these by lastUpdated field.
     // Do I need to populate here... maybe? 
     // Maybe the names of the users
@@ -39,7 +41,7 @@ exports.get_all_chats = asyncHandler( async( req, res, next ) => {
     // Not sure if this is the right syntax 
     const allChats = await Chat.find({}).populate('userInChat').populate('user')
 
-    res.json({allChats})
+    res.json({user: req.user, allChats})
 })
 
 exports.get_chat_messages = asyncHandler( async(req, res, next) => {
