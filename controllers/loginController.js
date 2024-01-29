@@ -37,17 +37,14 @@ exports.login = [
     body('username').trim().escape(),
     body('password').trim().escape(),
 
-    // if login credentials are not correct, send message. Check how to handle this correctly when using asyncHandler.
-    // not sure if need to wrap authenticate with asyncHandler
-    asyncHandler(async (req, res, next) => {
+    (req, res, next) => {
+        console.log('try check data')
+        console.log(req.body)
+        next()
+    },
+
+    // AsyncHandler not needed when using passport.authenticate. If login fails, then 401 is sent to client.
     passport.authenticate('local')
-    res.send();
-    // maybe req.user is assigned on the next request response cycle
-    // const user = req.user
-    // res.json({user})
-    next();
-    })
-    
 ]
 
 exports.logout = asyncHandler(async(req, res, next) => {

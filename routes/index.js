@@ -13,7 +13,17 @@ const userController = require('../controllers/userController');
 
 // Login related routes.
 router.post('/signup', loginController.signup);
-router.post('/login', loginController.login);
+router.post('/login', loginController.login, 
+
+// async (req, res) => {
+//     console.log('checking stuff')
+//     // console.log(req.session)
+//     console.log(req.user)
+// //     res.json({session: req.session})
+// }
+
+);
+
 router.post('/logout', loginController.logout);
 
 // Chat related routes.

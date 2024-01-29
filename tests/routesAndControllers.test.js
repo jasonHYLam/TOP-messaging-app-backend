@@ -107,24 +107,37 @@ describe('sign up route', () => {
 
 describe('create chat', () => {
 
-        const response = request(app);
-        const agent = response.agent(app);
+        // const response = request(app);
+        const agent = request.agent(app)
+        agent.post('/login', (req, res) => {
+            console.log('not sure')
+            console.log(req.cookie)
+        })
 
-    it('create chat if successful login', async () => {
-        const data = {username: 'user', password: 'Abc123'};
+    it('create chat if successful login', async (req, res) => {
+    //     const data = {username: 'user', password: 'Abc123'};
 
         // const response = request(app);
         // const agent = response.agent(app);
 
-        // agent
+        agent
         // const agent = response.agent(app);
-        // .post('/login')
-        // .type('form')
-        // .set('Content-Type', 'application/json')
-        // .set('Accept', 'application/json')
+        .post('/login')
+        .type('form')
+        .set('Content-Type', 'application/json')
+        .set('Accept', 'application/json')
         // // .send(data)
-        // .auth('user1', 'a')
-        // expect(agent.status).toEqual(200)
+        .auth('user1', 'a')
+
+        console.log('getting agent')
+
+        // console.log(agent.jar)
+        // console.log(agent.jar.getCookie())
+        const cookie = agent.jar.getCookie()
+        console.log(cookie)
+        console.log('checking cookie')
+        // expect(req.user).toEqual('yes')
+        expect(agent.status).toEqual(200)
 
         // agent
     })
