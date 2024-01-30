@@ -11,20 +11,24 @@ function initializePassport(passport) {
         new LocalStrategy( async (username, password, done) => {
             try {
                 const user = await User.findOne({ username: username })
+                console.log('seeking user')
                 if (!user) {
                     // what happens after this
                     return done(null, false, { message: 'Incorrect username '})
                 }
 
                 const match = await bcrypt.compare(password, user.password)
+                console.log('check if match is true')
+                console.log(match)
                 if (!match) {
                     return done(null, false, { message: 'Incorrect password'})
                 }
 
+                console.log('please work')
                 return done(null, user);
             }
-
             catch(err) {
+                console.log('a senior moment perhaps')
                 return done(err)
             }
 
@@ -32,10 +36,14 @@ function initializePassport(passport) {
     )
 
     passport.serializeUser((user, done) => {
+        console.log('serializeUser')
         done(null, user.id);
     })
 
     passport.deserializeUser(async (id, done) => {
+        console.log('deserializeUser')
+        console.log('what is id?')
+        console.log(id)
         try {
             const user = await User.findById(id)
             done(null, user)

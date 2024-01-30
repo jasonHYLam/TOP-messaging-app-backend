@@ -33,18 +33,24 @@ exports.signup = [
     })
 ]
 
-exports.login = [
+exports.login = 
+
+[
     body('username').trim().escape(),
     body('password').trim().escape(),
 
-    (req, res, next) => {
-        console.log('try check data')
-        console.log(req.body)
-        next()
-    },
+//     (req, res, next) => {
+//         console.log('try check data')
+//         console.log(req.body)
+//         next()
+//     },
 
     // AsyncHandler not needed when using passport.authenticate. If login fails, then 401 is sent to client.
     passport.authenticate('local')
+    // asyncHandler(async(req, res, next) => {
+    // passport.authenticate('local')(req, res, next)
+
+    // })
 ]
 
 exports.logout = asyncHandler(async(req, res, next) => {
