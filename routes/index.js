@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 
+const authController = require('../controllers/authController');
 const chatController = require('../controllers/chatController');
 const loginController = require('../controllers/loginController');
 const messageController = require('../controllers/messageController');
@@ -13,23 +14,16 @@ const userController = require('../controllers/userController');
 
 // Login related routes.
 router.post('/signup', loginController.signup);
-router.post('/login', loginController.login, 
-
-// async (req, res) => {
-//     console.log('checking stuff')
-//     // console.log(req.session)
-//     console.log(req.user)
-// //     res.json({session: req.session})
-// }
-
-);
+router.post('/login', loginController.login);
 
 router.post('/logout', loginController.logout);
 
 // Chat related routes.
 // Get specific chat's messages.
-router.get('/home/chat/:chatid', chatController.get_chat_messages);
+// router.get('/home/chat/:chatid', authController.isAuthenticated, chatController.get_chat_messages);
+router.get('/home/chat/:chatid',  chatController.get_chat_messages);
 // Get all chats to display in sidebar.
+// router.get('/home/get_all_chats', authController.isAuthenticated, chatController.get_all_chats);
 router.get('/home/get_all_chats', chatController.get_all_chats);
 // Create new chat. Need to figure out what the route should be called.
 router.post('/home/create_new_chat', chatController.create_new_chat);
