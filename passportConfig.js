@@ -37,6 +37,8 @@ function initializePassport(passport) {
 
     passport.serializeUser((user, done) => {
         console.log('serializeUser')
+        // console.log(user)
+        console.log(user.id)
         done(null, user.id);
     })
 
