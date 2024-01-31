@@ -6,6 +6,10 @@ exports.isAuthenticated = asyncHandler( async( req, res, next ) => {
         req.isAuthenticated()
     )
 
+    if (!req.isAuthenticated()) {
+        return res.status(401).send({});
+    }
+
     next();
 
 })

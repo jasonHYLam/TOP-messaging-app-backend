@@ -23,8 +23,8 @@ router.post('/logout', loginController.logout);
 // router.get('/home/chat/:chatid', authController.isAuthenticated, chatController.get_chat_messages);
 router.get('/home/chat/:chatid',  chatController.get_chat_messages);
 // Get all chats to display in sidebar.
-// router.get('/home/get_all_chats', authController.isAuthenticated, chatController.get_all_chats);
-router.get('/home/get_all_chats', chatController.get_all_chats);
+router.get('/home/get_all_chats', authController.isAuthenticated, chatController.get_all_chats);
+// router.get('/home/get_all_chats', chatController.get_all_chats);
 // Create new chat. Need to figure out what the route should be called.
 router.post('/home/create_new_chat', chatController.create_new_chat);
 
