@@ -20,29 +20,43 @@ exports.search_user = [
 
     // I'll probably have to modify this find such that it doesn't include password.
         const matchingUsers = await User.find({username: req.body.username}).exec();
+        const matchingUsersIds = matchingUsers.map(user => {
+            return user.id
+        })
+        console.log('checking matchingUser ids')
+        console.log(matchingUsersIds)
 
         // const currentUser = await User.findById(req.user)
         const currentUser = await User.findById(req.user.id).populate('friends')
-        console.log('checking currentUserFriends')
+        // console.log('checking currentUserFriends')
         // console.log(currentUser)
-        console.log(currentUser.friends)
+        // console.log(currentUser.friends)
 
-        console.log('checking out friendToUser documents')
-        const allFriendToUsers = await FriendToUser.find().exec();
-        console.log(allFriendToUsers)
+        const friendIds = currentUser.friends.map(friend => {
+            return friend.friendUser
+        })
+        console.log('checking currentuser friend ids')
+        console.log(friendIds)
+
+        // console.log('checking out friendToUser documents')
+        // const allFriendToUsers = await FriendToUser.find().exec();
+        // console.log(allFriendToUsers)
+
+
         
 
-        // const friends = matchingUsers.map(user => {
-        //     if (currentUserFriends)
-        //     return currentUserFriends.map(friend => {
-        //         if (user.id === friend.id) return user
-        //     })
+        // const friends = matchingUsers.filter(searchedUser => {
+        //     for (const friend in currentUser.friends) {
+        //         // if (searchedUser._id === friend.user) return searchedUser
+        //         if (friend.user.equals(searchedUser._id)) return searchedUser
+        //     }
         // })
 
-        // const nonFriends = matchingUsers.map(user => {
-        //     return currentUserFriends.map(friend => {
-        //         if (user.id !== friend.id) return user
-        //     })
+        // const nonFriends = matchingUsers.filter(searchedUser => {
+        //     for (const friend in currentUser.friends) {
+        //         // if (searchedUser._id !== friend.user) return searchedUser
+        //         if (!friend.user.equals(searchedUser._id)) return searchedUser
+        //     }
         // })
 
         // console.log('checking friends')
