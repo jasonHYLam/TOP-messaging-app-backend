@@ -22,11 +22,21 @@ exports.create_new_chat = asyncHandler( async(req, res, next) => {
     const newChat = new Chat({})
     await newChat.save()
 
+    // the below callback does not belong in this callback.
     // maybe something like:
     createUserInChatFromReqAndSave(newChat, req.user);
     req.body.users.map(async user => createUserInChatFromReqAndSave(newChat, user));
 
     // Might need to call next, or perhaps redirect using sent new Chat id.
+
+})
+
+exports.show_friends_for_chat = asyncHandler( async( req, res, next ) => {
+
+
+})
+
+exports.add_user_to_chat = asyncHandler( async( req, res, next ) => {
 
 })
 

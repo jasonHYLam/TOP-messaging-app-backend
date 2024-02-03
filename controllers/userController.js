@@ -11,7 +11,7 @@ const FriendToUser = require('../models/friendToUser')
 
 // I think this is just used to bring up a list of users that match the user username
 exports.search_user = [
-    body('username').trim().escape(),
+    body('searchQuery').trim().escape(),
 
     // may need to unescape it?
     asyncHandler( async(req, res, next) => {
@@ -19,7 +19,7 @@ exports.search_user = [
         // console.log(req.body)
 
     // I'll probably have to modify this find such that it doesn't include password.
-        const matchingUsers = await User.find({username: req.body.username}).exec();
+        const matchingUsers = await User.find({username: req.body.searchQuery}).exec();
         const matchingUsersIds = matchingUsers.map(user => {
             return user.id
         })
