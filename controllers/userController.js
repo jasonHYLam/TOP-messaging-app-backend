@@ -36,45 +36,68 @@ exports.search_user = [
         // console.log('checking currentuser friend ids')
         // console.log(friendIds)
 
-        // console.log('checking out friendToUser documents')
-        // const allFriendToUsers = await FriendToUser.find().exec();
-        // console.log(allFriendToUsers)
-
 
             // for (const friend of currentUser.friends) {
             //     console.log(friend)
             //     // const friendUserId = friend.friendUser.toString();
 
             // }
+        const friendsTest = matchingUsers.map(searchedUser => {
+            return currentUser.friends.some((friend) => {
+                return (searchedUser.equals(friend.friendUser))
+                // return ((friend.friendUser))
+            })
+        })
+
+        // it must be here
+        const nonFriendsTest = matchingUsers.map(searchedUser => {
+            return currentUser.friends.every((friend) => {
+                return (!searchedUser.equals(friend.friendUser))
+                // return ((friend.friendUser))
+            })
+        })
         
+        console.log('checking friendsTest')
+        console.log(friendsTest)
+        console.log('checking non friendsTest')
+        console.log(nonFriendsTest)
+        console.log(' ')
 
             // took me ages to figure this out :/
             // Object.equals() is used for Object equality.
             // Alternatively, compare the stringified Object ids.
         const friends = matchingUsers.filter(searchedUser => {
-            for (const friend of currentUser.friends) {
+            // for (const friend of currentUser.friends) {
+                return currentUser.friends.some((friend) => {
                 // if (searchedUser._id.toString() === friend.friendUser.toString()) return searchedUser
-                if (searchedUser.equals(friend.friendUser)) return searchedUser
-            }
+                // if (searchedUser.equals(friend.friendUser)) return searchedUser
+                // if (searchedUser.equals(friend.friendUser)) return 'a'
+                return (searchedUser.equals(friend.friendUser))
+            })
         })
 
         // it must be here
         const nonFriends = matchingUsers.filter(searchedUser => {
-            if (!currentUser.friends.length) return searchedUser
+            // if (!currentUser.friends.length) return searchedUser
+            if (!currentUser.friends.length) return true
             else {
-                for (const friend of currentUser.friends) {
-                    if (!searchedUser.equals(friend.friendUser)) return searchedUser
-                }
+                // for (const friend of currentUser.friends) {
+                return currentUser.friends.every((friend) => {
+                    // if (!searchedUser.equals(friend.friendUser)) return searchedUser
+                    // if (!searchedUser.equals(friend.friendUser)) return 'c'
+                    return (!searchedUser.equals(friend.friendUser))
+                })
             }
         })
 
-        console.log('checking friends')
-        console.log(friends)
-        console.log('checking non friends')
-        console.log(nonFriends)
-        console.log(' ')
+        // console.log('checking friends')
+        // console.log(friends)
+        // console.log('checking non friends')
+        // console.log(nonFriends)
+        // console.log(' ')
 
         res.json({
+            
             friends,
             nonFriends,
         })
