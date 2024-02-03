@@ -13,24 +13,22 @@ const FriendToUser = require('../models/friendToUser')
 exports.search_user = [
     body('searchQuery').trim().escape(),
 
-    // may need to unescape it?
     asyncHandler( async(req, res, next) => {
-        // console.log('req body')
-        // console.log(req.body)
 
     // I'll probably have to modify this find such that it doesn't include password.
         const matchingUsers = await User.find({username: req.body.searchQuery}).exec();
         const matchingUsersIds = matchingUsers.map(user => {
             return user.id
         })
-        // console.log('checking matchingUser ids')
-        // console.log(matchingUsersIds)
+        console.log('checking matchingUser ids')
+        console.log(matchingUsersIds)
 
         // const currentUser = await User.findById(req.user)
         const currentUser = await User.findById(req.user.id).populate('friends')
-        // console.log('checking currentUserFriends')
+        console.log('checking currentUserFriends')
         // console.log(currentUser)
-        // console.log(currentUser.friends)
+        console.log(currentUser.friends)
+        console.log(' ')
 
         // const friendIds = currentUser.friends.map(friend => {
         //     return friend.friendUser.toString();
@@ -60,9 +58,13 @@ exports.search_user = [
             }
         })
 
+        // it must be here
         const nonFriends = matchingUsers.filter(searchedUser => {
-            for (const friend of currentUser.friends) {
-                if (!searchedUser.equals(friend.friendUser)) return searchedUser
+            if (!currentUser.friends.length) return searchedUser
+            else {
+                for (const friend of currentUser.friends) {
+                    if (!searchedUser.equals(friend.friendUser)) return searchedUser
+                }
             }
         })
 
@@ -70,9 +72,9 @@ exports.search_user = [
         console.log(friends)
         console.log('checking non friends')
         console.log(nonFriends)
+        console.log(' ')
 
         res.json({
-            // matchingUsers
             friends,
             nonFriends,
         })
@@ -95,6 +97,12 @@ exports.add_user = asyncHandler( async(req, res, next) => {
     // console.log(req.params)
     const currentUser = await User.findById(req.user.id)
     const userToAdd = await User.findById(req.params.userid)
+
+    console.log('checking currentUser')
+    console.log(currentUser)
+    console.log('checking userToAdd')
+    console.log(userToAdd)
+    console.log(' ')
 
     const friendAdding = new FriendToUser({
         user: currentUser,
