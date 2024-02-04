@@ -34,8 +34,8 @@ exports.create_new_chat = [
         await newChat.save()
 
         const usersAddedToChat = req.body.usersAddedToChat;
-        console.log('checking users added to chat')
-        console.log(usersAddedToChat)
+        // console.log('checking users added to chat')
+        // console.log(usersAddedToChat)
 
         // // maybe something like:
         async function createUserInChatFromReq(newChat, friendRelation) {
@@ -77,7 +77,7 @@ exports.add_user_to_chat = asyncHandler( async( req, res, next ) => {
 
 })
 
-exports.get_all_chats = asyncHandler( async( req, res, next ) => {
+exports.get_chats_for_user = asyncHandler( async( req, res, next ) => {
 
     console.log('checking if req.user exists');
     console.log(req.user);
