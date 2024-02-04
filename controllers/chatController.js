@@ -17,34 +17,25 @@ async function createUserInChatFromReqAndSave(newChat, user) {
     await newUserInChat.save();
 }
 
+// This involves creating a chat document as well as userInChat documents for each user being added to the chat.
+// This requires an array of friendRelation objects (objects that store the ObjectId of friends to add to a chat).
 exports.create_new_chat = [
     
     body('chatName').trim().escape(),
     
     asyncHandler( async(req, res, next) => {
-        // console.log('checking req body')
-        // console.log(req.body)
 
         // this requires an array of user ids to make a chat with.
-        // These may come from req.body maybe?
         // I think I need to create the userInChat models and attach User And Chat to them...
-        // console.log('checking out he decode req chatName')
-        // console.log(he.decode(req.body.chatName))
-        // console.log(req.chatName)
         const newChat = new Chat({
             name: he.decode(req.body.chatName)
         })
         await newChat.save()
 
         const usersAddedToChat = req.body.usersAddedToChat;
-        // console.log('checking users added to chat')
-        // console.log(usersAddedToChat)
 
-        // // maybe something like:
         async function createUserInChatFromReq(newChat, friendRelation) {
-
             const matchingUser = await User.findById(friendRelation.friendUser.id)
-
             const newUserInChat = new UserInChat({
                 chat: newChat,
                 user: matchingUser,
@@ -88,8 +79,9 @@ exports.get_chats_for_user = asyncHandler( async( req, res, next ) => {
     // Do I need to populate here... maybe? 
     // Maybe the names of the users
     // And the latest comment.
-    // Not sure if this is the right syntax 
-    const allChats = await Chat.find({}).populate('userInChat').populate('user')
+
+    // const allChats = await Chat.find({}).populate('userInChat').populate('user')
+    const allChats = await Chat.find({})
 
     res.json({user: req.user, allChats})
 })
