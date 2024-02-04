@@ -1,4 +1,6 @@
 const asyncHandler = require("express-async-handler");
+const { body } = require('express-validator');
+const he = require('he');
 
 const Chat = require('../models/chat');
 const User = require('../models/user');
@@ -15,21 +17,30 @@ async function createUserInChatFromReqAndSave(newChat, user) {
     await newUserInChat.save();
 }
 
-exports.create_new_chat = asyncHandler( async(req, res, next) => {
-    // this requires an array of user ids to make a chat with.
-    // These may come from req.body maybe?
-    // I think I need to create the userInChat models and attach User And Chat to them...
-    const newChat = new Chat({})
-    await newChat.save()
+exports.create_new_chat = [
+    
+    body('chatName').trim().escape(),
+    
+    asyncHandler( async(req, res, next) => {
+        console.log('checking req body')
+        console.log(req.body)
 
-    // the below callback does not belong in this callback.
-    // maybe something like:
-    createUserInChatFromReqAndSave(newChat, req.user);
-    req.body.users.map(async user => createUserInChatFromReqAndSave(newChat, user));
+        // this requires an array of user ids to make a chat with.
+        // These may come from req.body maybe?
+        // I think I need to create the userInChat models and attach User And Chat to them...
+        const newChat = new Chat({})
+        await newChat.save()
 
-    // Might need to call next, or perhaps redirect using sent new Chat id.
+        // // maybe something like:
+        async function createUserInChatFromReq(chat, user) {
 
-})
+        }
+        // req.body.users.map(async user => createUserInChatFromReqAndSave(newChat, user));
+
+        // // Might need to call next, or perhaps redirect using sent new Chat id.
+
+    })
+]
 
 exports.show_friends_for_chat = asyncHandler( async( req, res, next ) => {
 
