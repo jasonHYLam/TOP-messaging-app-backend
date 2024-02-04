@@ -28,8 +28,11 @@ exports.create_new_chat = [
         // this requires an array of user ids to make a chat with.
         // These may come from req.body maybe?
         // I think I need to create the userInChat models and attach User And Chat to them...
+        // console.log('checking out he decode req chatName')
+        // console.log(he.decode(req.body.chatName))
+        // console.log(req.chatName)
         const newChat = new Chat({
-            name: he.decode(req.chatName)
+            name: he.decode(req.body.chatName)
         })
         await newChat.save()
 
