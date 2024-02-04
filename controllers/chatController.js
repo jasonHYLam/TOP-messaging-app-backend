@@ -22,8 +22,8 @@ exports.create_new_chat = [
     body('chatName').trim().escape(),
     
     asyncHandler( async(req, res, next) => {
-        console.log('checking req body')
-        console.log(req.body)
+        // console.log('checking req body')
+        // console.log(req.body)
 
         // this requires an array of user ids to make a chat with.
         // These may come from req.body maybe?
@@ -31,13 +31,26 @@ exports.create_new_chat = [
         const newChat = new Chat({})
         await newChat.save()
 
+        const usersAddedToChat = req.body.usersAddedToChat;
+        console.log('checking users added to chat')
+        console.log(usersAddedToChat)
+
         // // maybe something like:
-        async function createUserInChatFromReq(chat, user) {
+        async function createUserInChatFromReq(newChat, friendRelation) {
 
+            const matchingUser = await User.findById(friendRelation.friendUser.id)
+
+            const newUserInChat = new UserInChat({
+                chat: newChat,
+                user: matchingUser,
+            })
+
+            await newUserInChat.save();
         }
-        // req.body.users.map(async user => createUserInChatFromReqAndSave(newChat, user));
 
-        // // Might need to call next, or perhaps redirect using sent new Chat id.
+        usersAddedToChat.map(async friendRelation => createUserInChatFromReq(newChat, friendRelation));
+
+        res.json({});
 
     })
 ]
