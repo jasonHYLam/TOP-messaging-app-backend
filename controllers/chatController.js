@@ -33,19 +33,15 @@ exports.create_new_chat = asyncHandler( async(req, res, next) => {
 
 exports.show_friends_for_chat = asyncHandler( async( req, res, next ) => {
 
-    // const currentUser = await User.findById(req.user.id).populate('friends')
     const currentUser = await User
     .findById(req.user.id)
     .populate({
         path: 'friends',
         populate: {path: 'friendUser'}
     })
-    // console.log('checking currentUser')
-    // console.log(currentUser)
-    // const friends = currentUser.friends.populate('friendUser')
     const friends = currentUser.friends
-    console.log('checking friends')
-    console.log(friends)
+    // console.log('checking friends')
+    // console.log(friends)
 
     res.json({friends});
 

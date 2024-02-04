@@ -5,6 +5,7 @@ const Schema = mongoose.Schema;
 
 const ChatSchema = new Schema({
     // lastUpdated field
+    name: { type: String },
     lastUpdated: { type: Date, default: new Date()}
 }, opts)
 
