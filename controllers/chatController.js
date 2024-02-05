@@ -84,7 +84,10 @@ exports.get_chat_messages = asyncHandler( async(req, res, next) => {
     console.log('checking get_chat_messages:')
     // console.log('req params:')
     // console.log(req.params)
-    const chatMessages = await Chat.findById(req.params.chatid).populate('chatMessages')
+    const chat = await Chat.findById(req.params.chatid).populate('chatMessages').sort({'chatMessages': 1})
+    const chatMessages = chat.chatMessages
     console.log('chatMessages:')
     console.log(chatMessages)
+
+    res.json({chatMessages})
 })
