@@ -16,13 +16,13 @@ exports.create_message = [
         const currentUser = await User.findById(req.user._id);
         const currentChat = await Chat.findById(req.params.chatid);
 
-        console.log('checking out:')
-        console.log(req.body.message)
-        console.log(' ')
+        // console.log('checking out:')
+        // console.log(req.body.message)
+        // console.log(' ')
         // console.log(currentUser)
         // console.log(' ')
-        console.log(currentChat)
-        console.log(' ')
+        // console.log(currentChat)
+        // console.log(' ')
 
         const newMessage = new Message({
             text: he.decode(req.body.message),
