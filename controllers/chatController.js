@@ -6,17 +6,6 @@ const Chat = require('../models/chat');
 const User = require('../models/user');
 const UserInChat = require('../models/userInChat');
 
-async function createUserInChatFromReqAndSave(newChat, user) {
-    const matchingUser = User.findById(user._id);
-    const newUserInChat = new UserInChat({
-        chat: newChat,
-        user: matchingUser,
-    })
-
-    // The hope is that newUserInChat can be used to obtain the Users from Chat.find().populate()
-    await newUserInChat.save();
-}
-
 // This involves creating a chat document as well as userInChat documents for each user being added to the chat.
 // This requires an array of friendRelation objects (objects that store the ObjectId of friends to add to a chat).
 exports.create_new_chat = [
@@ -90,7 +79,7 @@ exports.get_chat_messages = asyncHandler( async(req, res, next) => {
     // finding all messages that are related to the chat.
     // Hopefully chatid is passed through req.params
     // req.params.chatid
-    const chatMessages = Chat.findById(req.params.chatid).populate('chatMessages')
-    const chatUsers = Chat.findById(req.params.chatid).populate('users')
-    res.json({chatMessages, chatUsers})
+    // const chatMessages = Chat.findById(req.params.chatid).populate('chatMessages')
+    // const chatUsers = Chat.findById(req.params.chatid).populate('users')
+    // res.json({chatMessages, chatUsers})
 })
