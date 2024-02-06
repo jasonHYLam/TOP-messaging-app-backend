@@ -37,6 +37,8 @@ exports.create_message = [
         })
 
         await newMessage.save() 
+
+        res.json({});
     })
 
 ]
