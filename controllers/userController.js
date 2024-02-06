@@ -25,43 +25,6 @@ exports.search_user = [
 
         // const currentUser = await User.findById(req.user)
         const currentUser = await User.findById(req.user.id).populate('friends')
-        console.log('checking currentUserFriends')
-        // console.log(currentUser)
-        console.log(currentUser.friends)
-        console.log(' ')
-
-        // const friendIds = currentUser.friends.map(friend => {
-        //     return friend.friendUser.toString();
-        // })
-        // console.log('checking currentuser friend ids')
-        // console.log(friendIds)
-
-
-            // for (const friend of currentUser.friends) {
-            //     console.log(friend)
-            //     // const friendUserId = friend.friendUser.toString();
-
-            // }
-        const friendsTest = matchingUsers.map(searchedUser => {
-            return currentUser.friends.some((friend) => {
-                return (searchedUser.equals(friend.friendUser))
-                // return ((friend.friendUser))
-            })
-        })
-
-        // it must be here
-        const nonFriendsTest = matchingUsers.map(searchedUser => {
-            return currentUser.friends.every((friend) => {
-                return (!searchedUser.equals(friend.friendUser))
-                // return ((friend.friendUser))
-            })
-        })
-        
-        // console.log('checking friendsTest')
-        // console.log(friendsTest)
-        // console.log('checking non friendsTest')
-        // console.log(nonFriendsTest)
-        // console.log(' ')
 
             // took me ages to figure this out :/
             // Object.equals() is used for Object equality.
@@ -141,7 +104,10 @@ exports.add_user = asyncHandler( async(req, res, next) => {
 exports.get_user_profile = asyncHandler( async(req, res, next) => {
     // This makes use of params to get userid I believe.
     // I'll probably have to modify this find such that it doesn't include password.
-    const matchingUser = await User.findById(req.params.userid).exec();
+    console.log('checking get_user_profile:')
+    const matchingUser = await User.findById(req.params.userid, 'username description').exec();
+    console.log('matchingUser:')
+    console.log(matchingUser)
     res.json({matchingUser})
 })
 
