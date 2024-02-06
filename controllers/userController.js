@@ -105,10 +105,15 @@ exports.get_user_profile = asyncHandler( async(req, res, next) => {
     // This makes use of params to get userid I believe.
     // I'll probably have to modify this find such that it doesn't include password.
     // console.log('checking get_user_profile:')
+    
     const matchingUser = await User.findById(req.params.userid, 'username description').exec();
+
+    const isCurrentUserProfile = (req.user.id === req.params.userid);
+
+
     // console.log('matchingUser:')
     // console.log(matchingUser)
-    res.json({matchingUser})
+    res.json({matchingUser, isCurrentUserProfile})
 })
 
 // Perhaps I can use this to see how many people are online. But I have no idea how to approach that.
