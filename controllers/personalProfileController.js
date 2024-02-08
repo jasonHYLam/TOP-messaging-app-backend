@@ -30,7 +30,14 @@ exports.change_description = [
 
 exports.change_image = [
 
-    upload.single('profilePic'),
+    // upload.single('profilePic'),
+    asyncHandler(async (req, res, next) => {
+
+        const data = upload.single('profilePic')
+        console.log('checking out multer upload data')
+        console.log(data)
+
+    }),
 
     asyncHandler(async (req, res, next) => {
 

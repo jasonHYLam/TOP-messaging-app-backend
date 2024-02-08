@@ -12,6 +12,7 @@ const UserSchema = new Schema({
     description: { type: String, default: ''},
     // profile picture...
     profilePicURL: { type: String, default: ''},
+    imageID: { type: String, default: ''},
     // deletedStatus
 }, opts)
 
