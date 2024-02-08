@@ -41,6 +41,7 @@ router.post('/home/chat/:chatid/attach_image', messageController.attach_image)
 
 // User related routes (viewing profiles, searching and adding users)
 // Searching user. How is this gonna work? Post? Get? Possibly get the userID from button from user
+// this should probably be changed from post to get
 router.post('/home/user_profile/search', userController.search_user)
 router.get('/home/user_profile/:userid', userController.get_user_profile)
 router.post('/home/user_profile/:userid', userController.add_user)
@@ -50,7 +51,6 @@ router.get('home/count_friends_number', userController.count_friends_number)
 // Personal profile related routes.
 router.put('/home/personal_profile/change_description', personalProfileController.change_description)
 router.put('/home/personal_profile/change_image', personalProfileController.change_image)
-
-
+router.get('home/personal_profile/get_logged_in_user')
 
 module.exports = router;

@@ -40,6 +40,7 @@ exports.change_image = [
         console.log('req.file:')
         console.log(req.file)
 
+        // modify User document.
         await User.findByIdAndUpdate(req.user.id, {
             profilePicURL: req.file.path,
             imageID: req.file.fieldname
@@ -48,7 +49,6 @@ exports.change_image = [
 
         // res.json(req.file)
         res.json({})
-        // modify User document.
 
     })
 ] 
