@@ -13,17 +13,18 @@ const User = require('../models/user');
 // Regarding changing username, not sure how to deal with that logic.
 
 exports.change_description = [
-    body('description').trim().escape(),
+    body('changeToSubmit').trim().escape(),
 
     asyncHandler(async (req, res, next) => {
         // should get userid from req.user.id
+        console.log('checking changeToSubmit')
+        console.log(req.body)
 
-        // Need to test this.
-        // Do I need to await this?
-        const updatedUser = await User.findByIdAndUpdate(req.user.id, {
-            description: he.decode(req.body.description)
+        await User.findByIdAndUpdate(req.user.id, {
+            description: he.decode(req.body.changeToSubmit)
         })
-        res.json({updatedUser})
+
+        res.json({})
     })
 ] 
 

@@ -105,10 +105,16 @@ exports.get_user_profile = asyncHandler( async(req, res, next) => {
     // This makes use of params to get userid I believe.
     // I'll probably have to modify this find such that it doesn't include password.
     // console.log('checking get_user_profile:')
+    // console.log('checking:')
+    // console.log('req user')
+    // console.log(req.user)
     
     const matchingUser = await User.findById(req.params.userid, 'username description').exec();
 
     const isCurrentUserProfile = (req.user.id === req.params.userid);
+    // check if this is true! may need to use equals
+    console.log('checking isCurrentUserProfile')
+    console.log(isCurrentUserProfile)
 
 
     // console.log('matchingUser:')
