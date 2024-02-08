@@ -12,6 +12,11 @@ const User = require('../models/user');
 // Will not bother with changing username and password.
 // Regarding changing username, not sure how to deal with that logic.
 
+exports.get_logged_in_user = asyncHandler(async (req, res, next) => {
+     const loggedInUser = User.findById(req.user.id)
+     res.json({loggedInUser})
+})
+
 exports.change_description = [
     body('changeToSubmit').trim().escape(),
 
