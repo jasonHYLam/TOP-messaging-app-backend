@@ -30,14 +30,7 @@ exports.change_description = [
 
 exports.change_image = [
 
-    // upload.single('profilePic'),
-    asyncHandler(async (req, res, next) => {
-
-        const data = upload.single('profilePic')
-        console.log('checking out multer upload data')
-        console.log(data)
-
-    }),
+    upload.single('profilePic'),
 
     asyncHandler(async (req, res, next) => {
 
@@ -47,9 +40,14 @@ exports.change_image = [
         console.log('req.file:')
         console.log(req.file)
 
+        await User.findByIdAndUpdate(req.user.id, {
+            profilePicURL: req.file.path,
+            imageID: req.file.fieldname
+        })
         // need to get image URL, can i get it from req.file? or how do I access it through Cloudinary?
 
-        res.json(req.file)
+        // res.json(req.file)
+        res.json({})
         // modify User document.
 
     })
