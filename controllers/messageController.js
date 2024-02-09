@@ -50,12 +50,41 @@ exports.create_message_with_image = [
 
     upload.single('image'),
 
+    body('message').trim().escape(),
+
     asyncHandler(async (req, res, next) => {
-        console.log('checking buncha crap')
-        console.log('req file')
-        console.log(req.file)
-        console.log('req body')
-        console.log(req.body)
+        // console.log('checking buncha crap')
+        // console.log('req file')
+        // console.log(req.file)
+        // console.log('req body')
+        // console.log(req.body)
+
+        const currentUser = await User.findById(req.user._id);
+        const currentChat = await Chat.findById(req.params.chatid);
+
+        // console.log('checking out:')
+        // console.log(req.body.message)
+        // console.log(' ')
+        // console.log(currentUser)
+        // console.log(' ')
+        // console.log(currentChat)
+        // console.log(' ')
+
+        const newMessage = new Message({
+            text: he.decode(req.body.message),
+            author: currentUser,
+            chat: currentChat,
+            timeStamp: new Date(),
+
+            // messageReplyingTo: null,
+            imageURL: req.file.path,
+            // isDeleted: false,
+            reactions: {},
+        })
+
+        await newMessage.save();
+
+        res.json({});
     })
     
 ]
