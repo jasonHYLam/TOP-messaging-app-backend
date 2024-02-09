@@ -49,8 +49,8 @@ router.get('home/count_online_number', userController.count_online_number)
 router.get('home/count_friends_number', userController.count_friends_number)
 
 // Personal profile related routes.
+router.get('/home/get_logged_in_user', personalProfileController.get_logged_in_user)
 router.put('/home/personal_profile/change_description', personalProfileController.change_description)
 router.put('/home/personal_profile/change_image', personalProfileController.change_image)
-router.get('home/personal_profile/get_logged_in_user')
 
 module.exports = router;
