@@ -1,6 +1,7 @@
 const asyncHandler = require("express-async-handler");
 const { body } = require('express-validator');
 const he = require('he');
+const { upload } = require('../cloudinaryConfig')
 
 const Message = require('../models/message');
 const User = require('../models/user');
@@ -31,7 +32,7 @@ exports.create_message = [
             timeStamp: new Date(),
 
             // messageReplyingTo: null,
-            // imageURL: null,
+            imageURL: null,
             // isDeleted: false,
             reactions: {},
         })
@@ -43,6 +44,20 @@ exports.create_message = [
         res.json({});
     })
 
+]
+
+exports.create_message_with_image = [
+
+    upload.single('image'),
+
+    asyncHandler(async (req, res, next) => {
+        console.log('checking buncha crap')
+        console.log('req file')
+        console.log(req.file)
+        console.log('req body')
+        console.log(req.body)
+    })
+    
 ]
 
 exports.delete_message = asyncHandler( async(req, res, next) => {
