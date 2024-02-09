@@ -13,7 +13,9 @@ const User = require('../models/user');
 // Regarding changing username, not sure how to deal with that logic.
 
 exports.get_logged_in_user = asyncHandler(async (req, res, next) => {
-     const loggedInUser = User.findById(req.user.id)
+     const loggedInUser = await User.findById(req.user.id, "username profilePicURL")
+    //  console.log('checking loggedINUser')
+    //  console.log(loggedInUser)
      res.json({loggedInUser})
 })
 

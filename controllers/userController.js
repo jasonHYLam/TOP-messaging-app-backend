@@ -109,7 +109,7 @@ exports.get_user_profile = asyncHandler( async(req, res, next) => {
     // console.log('req user')
     // console.log(req.user)
     
-    const matchingUser = await User.findById(req.params.userid, 'username description').exec();
+    const matchingUser = await User.findById(req.params.userid, 'username description profilePicURL').exec();
 
     const isCurrentUserProfile = (req.user.id === req.params.userid);
     // check if this is true! may need to use equals
