@@ -33,6 +33,7 @@ router.get('/home/show_friends_for_chat', chatController.show_friends_for_chat);
 
 // Message related routes.
 router.post('/home/chat/:chatid/create_message', messageController.create_message)
+router.post('/home/chat/:chatid/create_message_with_image', messageController.create_message_with_image)
 router.delete('/home/chat/:chatid/:messageid', messageController.delete_message)
 router.put('/home/chat/:chatid/:messageid', messageController.edit_message)
 router.post('/home/chat/:chatid/reply_to_message', messageController.reply_to_message)
