@@ -89,9 +89,14 @@ exports.get_chat_messages = asyncHandler( async(req, res, next) => {
     .populate({
         path: 'chatMessages',
         populate: [
-            {path: 'author'},
+            {path: 'author',
+            select: 'username profilePicURL'
+        },
             {path: 'messageReplyingTo',
-            populate: {path: 'author'},
+            populate: {
+                path: 'author',
+                select: 'username',
+            },
         },
         ]
 })
