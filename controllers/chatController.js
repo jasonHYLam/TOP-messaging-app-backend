@@ -90,7 +90,9 @@ exports.get_chat_messages = asyncHandler( async(req, res, next) => {
         path: 'chatMessages',
         populate: [
             {path: 'author'},
-            {path: 'messageReplyingTo'},
+            {path: 'messageReplyingTo',
+            populate: {path: 'author'},
+        },
         ]
 })
     .sort({'chatMessages': 1})
