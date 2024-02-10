@@ -17,13 +17,20 @@ exports.create_message = [
         const currentUser = await User.findById(req.user._id);
         const currentChat = await Chat.findById(req.params.chatid);
 
-        // console.log('checking out:')
+        console.log('checking out:')
         // console.log(req.body.message)
+        console.log('req body')
+        console.log(req.body)
         // console.log(' ')
         // console.log(currentUser)
         // console.log(' ')
         // console.log(currentChat)
         // console.log(' ')
+
+        // if (req.body.messageToReplyTo)
+
+        const messageToReplyTo = await Message.findById(req.body.messageToReplyTo.id)
+        console.log(messageToReplyTo)
 
         const newMessage = new Message({
             text: he.decode(req.body.message),
@@ -31,7 +38,7 @@ exports.create_message = [
             chat: currentChat,
             timeStamp: new Date(),
 
-            // messageReplyingTo: null,
+            messageReplyingTo: messageToReplyTo,
             imageURL: null,
             // isDeleted: false,
             reactions: {},

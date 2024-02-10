@@ -88,7 +88,10 @@ exports.get_chat_messages = asyncHandler( async(req, res, next) => {
     .findById(req.params.chatid)
     .populate({
         path: 'chatMessages',
-        populate: {path: 'author'}
+        populate: [
+            {path: 'author'},
+            {path: 'messageReplyingTo'},
+        ]
 })
     .sort({'chatMessages': 1})
     // const chatMessages = chat.chatMessages
