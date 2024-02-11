@@ -1,11 +1,6 @@
 require('./mongoConfig')
 require('dotenv').config()
 
-// no idea if this cloudinaryConfig works. It probably doesn't
-// const initializeCloudinary = require('./cloudinaryConfig')
-// const cloudinary = require('cloudinary').v2;
-// initializeCloudinary(cloudinary);
-
 const passport = require('passport');
 const initializePassport = require('./passportConfig');
 initializePassport(passport);
