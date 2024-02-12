@@ -25,26 +25,52 @@ async function createAllUsers() {
 }
 
 // create friendTouser
-async function createFriendToUser(friendToUser) {
-
-    const newFriendToUser = new FriendToUser(friendToUser);
+async function createFriendToUser(data) {
+    const newFriendToUser = new FriendToUser(data);
     await newFriendToUser.save();
 
 }
 
 async function createAllFriendToUsers() {
-
-
+    friendToUsers.map(data => createFriendToUser(data))
 }
 
 // create Chat
+async function createChat(chat) {
+    const newChat = new Chat(chat);
+    await newChat.save();
+}
+
+async function createAllChats() {
+    chats.map(chat => createChat(chat));
+}
+
 // create UserInChat
+async function createUserInChat(data) {
+    const newUserInChat = new UserInChat(data);
+}
+
+async function createAllUserInChats() {
+    userInChats.map(data => createUserInChat(data))
+}
 
 // create Message
+async function createMessage(data) {
+    const newMessage = new Message(data);
+    newMessage.save();
+}
+
+async function createAllMessages() {
+    messages.map(data => createMessage(data));
+}
 
 
 async function populateTestDB() {
-    await createAllUsers()
+    await createAllUsers();
+    await createAllFriendToUsers();
+    await createAllChats();
+    await createAllUserInChats();
+    await createAllMessages();
 }
 
 module.exports = populateTestDB;

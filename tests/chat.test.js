@@ -41,7 +41,6 @@ beforeAll(async() => {
     await populateTestDB();
 
     console.log('beforeAll hook done')
-    // const matchingUser = await User.find({username: 'user1'})
     const matchingUser = await User.find()
     console.log(matchingUser)
 })
@@ -88,22 +87,40 @@ describe('sign up route', () => {
 })
 
 // fetch chats
-// describe('fetch chats', () => {
-//     it ('logs in then fetches chats', async() => {
+describe('fetch chats', () => {
+    it ('logs in then fetches chats', async() => {
 
-//         const data = {username: 'user1', password: 'a'};
-//         const agent = request.agent(app) 
-//         await agent
-//         .post('/login')
-//         .set('Content-Type', 'application/json')
-//         .withCredentials()
-//         .send(data)
+        const data = {username: 'user1', password: 'a'};
+        const agent = request.agent(app) 
+        // await agent
+        // .post('/login')
+        // .set('Content-Type', 'application/json')
+        // .withCredentials()
+        // .send(data)
 
-//         await agent
-//         .get('/home/get_chats_for_user')
-//         expect(response.body.)
-//     })
-// })
+        // await agent
+        // .get('/home/get_chats_for_user')
+
+        // console.log(agent.status)
+
+
+        agent
+        .post('/login')
+        .set('Content-Type', 'application/json')
+        .withCredentials()
+        .send(data)
+        .then(res => {
+            res
+            .get('/home/get_chats_for_user')
+
+            console.log(
+                (res.status)
+            )
+        })
+
+        // expect(agent.body.chats.length === 4)
+    })
+})
 
 // add new friend
 // describe('adding friends',  () => {
