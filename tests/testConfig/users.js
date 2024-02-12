@@ -1,36 +1,37 @@
-const { ObjectId } = require('mongoose').Types;
+import objectIds from './objectIds';
+
 const users = [
     {
-        _id: ObjectId(`65be5813dad7a9ce85209436`),
+        _id: objectIds.userIDs[0],
         username: 'user1',
-        password: '$2a$10$bP3diImJKSifc/BY1y4zZe14vkCdhCs77YAlaM9JmWGhZzJFdZ3zi',
+        password: 'a',
         description: '',
         profilePicURL: '',
         imageID: '',
     },
 
     {
-        _id: ObjectId(`65be5813dad7a9ce85209436`),
+        _id: objectIds.userIDs[1],
         username: 'user2',
-        password: '$2a$10$bP3diImJKSifc/BY1y4zZe14vkCdhCs77YAlaM9JmWGhZzJFdZ3zi',
+        password: 'a',
         description: '',
         profilePicURL: '',
         imageID: '',
     },
 
     {
-        _id: ObjectId(`65be5813dad7a9ce85209436`),
+        _id: objectIds.userIDs[2],
         username: 'user3',
-        password: '$2a$10$bP3diImJKSifc/BY1y4zZe14vkCdhCs77YAlaM9JmWGhZzJFdZ3zi',
+        password: 'a',
         description: '',
         profilePicURL: '',
         imageID: '',
     },
 
     {
-        _id: ObjectId(`65be5813dad7a9ce85209436`),
+        _id: objectIds.userIDs[3],
         username: 'user4',
-        password: '$2a$10$bP3diImJKSifc/BY1y4zZe14vkCdhCs77YAlaM9JmWGhZzJFdZ3zi',
+        password: 'a',
         description: '',
         profilePicURL: '',
         imageID: '',
