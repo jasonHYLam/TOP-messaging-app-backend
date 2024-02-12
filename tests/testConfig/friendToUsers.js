@@ -26,3 +26,5 @@ const friendToUsers = [
     },
 
 ]
+
+module.exports = friendToUsers
