@@ -1,8 +1,8 @@
-const { ObjectId } = require('mongoose').Types;
+import objectIds from './objectIds';
 
 const chats = [
     {
-        _id: ObjectId(`65c00221c4dffec208392074`),
+        _id: objectIds.chatIDs[0],
         name: "chat1",
         lastUpdated: null,
     }
