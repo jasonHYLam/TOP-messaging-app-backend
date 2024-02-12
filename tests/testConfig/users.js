@@ -1,4 +1,4 @@
-import objectIds from './objectIds';
+const objectIds = require('./objectIds');
 
 const users = [
     {
