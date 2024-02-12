@@ -1,4 +1,4 @@
-const {initializeMongoServer, closeMongoServer} = require('../mongoTestingConfig');
+const {initializeMongoServer, closeMongoServer} = require('../../mongoTestingConfig');
 const populateTestDB = require('./populateTestDB');
 
 beforeAll(async() => {

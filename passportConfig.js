@@ -36,16 +36,16 @@ function initializePassport(passport) {
     )
 
     passport.serializeUser((user, done) => {
-        console.log('serializeUser')
+        // console.log('serializeUser')
         // console.log(user)
-        console.log(user.id)
+        // console.log(user.id)
         done(null, user.id);
     })
 
     passport.deserializeUser(async (id, done) => {
-        console.log('deserializeUser')
-        console.log('what is id?')
-        console.log(id)
+        // console.log('deserializeUser')
+        // console.log('what is id?')
+        // console.log(id)
         try {
             const user = await User.findById(id)
             done(null, user)

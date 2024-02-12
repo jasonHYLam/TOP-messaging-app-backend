@@ -103,23 +103,27 @@ exports.add_user = asyncHandler( async(req, res, next) => {
 // 
 exports.get_user_profile = asyncHandler( async(req, res, next) => {
     // This makes use of params to get userid I believe.
-    // I'll probably have to modify this find such that it doesn't include password.
     // console.log('checking get_user_profile:')
     // console.log('checking:')
     // console.log('req user')
     // console.log(req.user)
+
+    console.log('checking get user profile is called')
+    console.log('checking req params')
+    console.log(req.params)
     
     const matchingUser = await User.findById(req.params.userid, 'username description profilePicURL').exec();
 
-    const isCurrentUserProfile = (req.user.id === req.params.userid);
-    // check if this is true! may need to use equals
-    console.log('checking isCurrentUserProfile')
-    console.log(isCurrentUserProfile)
+    // req.user causes postman to fail
+    // const isCurrentUserProfile = (req.user.id === req.params.userid);
+    // console.log('checking isCurrentUserProfile')
+    // console.log(isCurrentUserProfile)
 
 
     // console.log('matchingUser:')
     // console.log(matchingUser)
-    res.json({matchingUser, isCurrentUserProfile})
+    // res.json({matchingUser, isCurrentUserProfile})
+    res.json(matchingUser)
 })
 
 // Perhaps I can use this to see how many people are online. But I have no idea how to approach that.

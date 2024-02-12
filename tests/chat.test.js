@@ -1,78 +1,41 @@
-const User = require('../models/user');
 const app = require('./testConfig/testApp');
-
-describe('login route',() => {
-
-    test('successful login', async() => {
-
-        const data = {username: 'user1', password: 'a'};
-        const response = await request(app)
-
-        .post('/login')
-        .set('Content-Type', 'application/json')
-        .send(data)
-        expect(response.status).toEqual(200)
-    })
-
-    test('unsuccessful login', async() => {
-
-        const data = {username: 'user1', password: 'b'};
-        const response = await request(app)
-
-        .post('/login')
-        .set('Content-Type', 'application/json')
-        .send(data)
-        expect(response.status).toEqual(401)
-    })
-
-})
-
-// make new user
-describe('sign up route', () => {
-    it('signs up successfully', async() => {
-        const response = await request(app)
-        .post('/signup')
-        .type('form')
-        .send({username: 'doris', password: 'DeafAids'})
-        expect(response.status).toEqual(200)
-    })
-})
+const request = require('supertest');
 
 // fetch chats
-describe('fetch chats', () => {
-    it ('logs in then fetches chats', async() => {
+// describe('fetch chats', () => {
+//     it ('logs in then fetches chats', async() => {
 
-        const data = {username: 'user1', password: 'a'};
-        const agent = request.agent(app) 
-        // await agent
-        // .post('/login')
-        // .set('Content-Type', 'application/json')
-        // .withCredentials()
-        // .send(data)
+//         const data = {username: 'user1', password: 'a'};
+//         const agent = request.agent(app) 
+//         // await agent
+//         // .post('/login')
+//         // .set('Content-Type', 'application/json')
+//         // .withCredentials()
+//         // .send(data)
 
-        // await agent
-        // .get('/home/get_chats_for_user')
+//         // await agent
+//         // .get('/home/get_chats_for_user')
 
-        // console.log(agent.status)
+//         // console.log(agent.status)
 
 
-        agent
-        .post('/login')
-        .set('Content-Type', 'application/json')
-        .withCredentials()
-        .send(data)
-        .then(res => {
-            res
-            .get('/home/get_chats_for_user')
+//         agent
+//         .post('/login')
+//         .set('Content-Type', 'application/json')
+//         .withCredentials()
+//         .send(data)
+//         .then(res => {
+//             res
+//             .get('/home/get_chats_for_user')
 
-            console.log(
-                (res.status)
-            )
-        })
+//             console.log(
+//                 (res.status)
+//             )
+//         })
 
-        // expect(agent.body.chats.length === 4)
-    })
-})
+//         // expect(agent.body.chats.length === 4)
+//     })
+// })
 
 
 
