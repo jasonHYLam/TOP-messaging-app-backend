@@ -8,17 +8,17 @@ const Message = require('../models/message');
 
 const { users } = require('./testConfig/users');
 
-// async function createUser(user) {
+async function createUser(user) {
 
-//     const newUser = new User(user)
-//     const hashedPass = await bcrypt.hash(user.password, 10)
-//     newUser.password = hashedPass
-//     await newUser.save();
-// }
+    const newUser = new User(user)
+    const hashedPass = await bcrypt.hash(user.password, 10)
+    newUser.password = hashedPass
+    await newUser.save();
+}
 
-// async function createAllUsers() {
-//     testUsers.map(user => createUser(user))
-// }
+async function createAllUsers() {
+    testUsers.map(user => createUser(user))
+}
 
 // create friendTouser
 async function createFriendToUser() {
@@ -32,7 +32,7 @@ async function createFriendToUser() {
 
 
 async function populateTestDB() {
-    // await createAllUsers()
+    await createAllUsers()
 }
 
 module.exports = populateTestDB;
