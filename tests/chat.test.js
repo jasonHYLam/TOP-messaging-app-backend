@@ -1,53 +1,5 @@
 const User = require('../models/user');
-
-const request = require('supertest');
-const express = require('express');
-const {initializeMongoServer, closeMongoServer} = require('../mongoTestingConfig');
-const populateTestDB = require('./populateTestDB');
-const session = require('express-session');
-const cookieParser = require('cookie-parser');
-const index = require('../routes/index');
-// not sure if passport is needed
-const passport = require('passport');
-const initializePassport = require('../passportConfig');
-
-initializePassport(passport);
-
-const app = express();
-
-app.use(cookieParser());
-
-app.use(session({
-    secret: process.env.SESSION_SECRET,
-    resave: false,
-    saveUninitialized: false,
-    cookie: {
-        httpOnly: process.env.MODE === 'prod',
-        secure: process.env.MODE === 'prod',
-        sameSite: process.env.MODE === 'prod' ? 'none' : 'lax',
-    }
-}))
-
-// app.use(passport.initialize())
-app.use(passport.session())
-
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
-app.use('/', index);
-
-// might need to add stuff to database beforehand... how do I go about that.
-beforeAll(async() => {
-    await initializeMongoServer();
-    await populateTestDB();
-
-    console.log('beforeAll hook done')
-    const matchingUser = await User.find()
-    console.log(matchingUser)
-})
-
-afterAll( async() => {
-    await closeMongoServer();
-})
+const app = require('./testConfig/testApp');
 
 describe('login route',() => {
 
@@ -121,6 +73,8 @@ describe('fetch chats', () => {
         // expect(agent.body.chats.length === 4)
     })
 })
+
+
 
 // add new friend
 // describe('adding friends',  () => {

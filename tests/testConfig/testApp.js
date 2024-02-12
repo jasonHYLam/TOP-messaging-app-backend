@@ -1,10 +1,8 @@
 const express = require('express');
-
-const express = require('express');
 const session = require('express-session');
-const index = require('../routes/index');
+const index = require('../../routes/index');
 const passport = require('passport');
-const initializePassport = require('../passportConfig');
+const initializePassport = require('../../passportConfig');
 
 initializePassport(passport);
 
