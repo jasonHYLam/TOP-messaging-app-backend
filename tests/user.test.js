@@ -6,9 +6,6 @@ const users = require('./testConfig/users');
 const { initializeMongoServer, closeMongoServer } = require('../mongoTestingConfig');
 const populateTestDB = require('./testConfig/populateTestDB');
 
-console.log('checking app')
-console.log(app)
-
 beforeAll(async() => {
     await initializeMongoServer();
     await populateTestDB();
@@ -63,19 +60,36 @@ describe('sign up route', () => {
 
 // get specific user
 describe('get user', () => {
-    test('userProfile route', () => {
-        return request(app)
+    // test('userProfile route', () => {
+    //     return request.agent(app)
+    //     .get(`/home/user_profile/${users[0]._id.toString()}`)
+    //     .set('Accept', 'application/json')
+    //     .set('Content-Type', 'application/json')
+    //     .expect(200)
+    //     .then( res => {
+    //         expect(res.body).toEqual('something')
+    //     })
+    // })
+
+    test('login then access userProfile', () => {
+        const agent = request.agent(app)
+        return agent
         .post('/login')
+        .send(loginData)
         .set('Accept', 'application/json')
         .set('Content-Type', 'application/json')
-        .send(loginData)
-
         .expect(200)
-        .then( res => {
+        .then(() => {
+            agent
+            .get(`/home/user_profile/${users[0]._id.toString()}`)
+            .set('Accept', 'application/json')
+            .set('Content-Type', 'application/json')
 
-            expect(res.body).toEqual('something')
+            .expect(200)
+            .then( res => {
+                expect(res.body).toEqual('something')
+            })
         })
-
     })
 
 })
