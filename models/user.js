@@ -1,7 +1,7 @@
 const opts = { 
     toJSON: { virtuals: true }, 
     toObject: { virtuals: true }, 
-
+    versionKey: false,
 };
 const mongoose = require('mongoose');
 
@@ -15,7 +15,7 @@ const UserSchema = new Schema({
     profilePicURL: { type: String, default: ''},
     imageID: { type: String, default: ''},
     // deletedStatus
-}, opts, {id: false})
+}, opts )
 
 // Virtual field for obtaining Friend documents associated with User.
 UserSchema.virtual('friends', {
