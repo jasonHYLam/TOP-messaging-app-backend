@@ -20,6 +20,8 @@ const loginData = {
     password: users[0].password,
 }
 
+const userIds = users.map(user => user._id.toString())
+
 // describe('login route',() => {
 
 //     test('successful login', async() => {
@@ -46,7 +48,7 @@ const loginData = {
 
 // })
 
-// make new user
+
 describe('sign up route', () => {
     it('signs up successfully', async() => {
         const response = await request(app)
@@ -62,13 +64,13 @@ describe('sign up route', () => {
 describe('get user', () => {
     test('access userProfile route without logging in results in internal error', () => {
         return request.agent(app)
-        .get(`/home/user_profile/${users[0]._id.toString()}`)
+        .get(`/home/user_profile/${userIds[0]}`)
         .set('Accept', 'application/json')
         .set('Content-Type', 'application/json')
         .expect(500)
     })
 
-    test('login then access userProfile', () => {
+    test('login then access personal profile', () => {
         const agent = request.agent(app)
         return agent
         .post('/login')
@@ -79,7 +81,7 @@ describe('get user', () => {
         .then(() => {
 
             return agent
-            .get(`/home/user_profile/${users[0]._id.toString()}`)
+            .get(`/home/user_profile/${userIds[0]}`)
             .expect(200)
             .then( res => {
                 expect(res.body).toEqual('something')
@@ -87,8 +89,7 @@ describe('get user', () => {
         })
     })
 
-    test('login then access userProfile using async/await', async () => {
-        // const agent = await request.agent(app)
+    test("login then access other user's profile", async () => {
         const agent = request.agent(app)
         const response = await agent
         .post('/login')
@@ -98,7 +99,7 @@ describe('get user', () => {
         expect(response.status).toEqual(200)
 
         const response2 = await agent
-        .get(`/home/user_profile/${users[0]._id.toString()}`)
+        .get(`/home/user_profile/${userIds[1]}`)
         expect(response2.status).toEqual(200)
         expect(response2.body).toEqual('something')
     })
