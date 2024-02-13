@@ -109,7 +109,7 @@ describe('get user', () => {
         })
     })
 
-    test("login then access other user's profile", async () => {
+    test("login then access other user's profile, returning their data and friends list.", async () => {
         const agent = request.agent(app)
         const response = await agent
         .post('/login')
@@ -128,28 +128,13 @@ describe('get user', () => {
                 username: users[1].username,
                 description: users[1].description,
                 profilePicURL: users[1].profilePicURL,
+                friends: [],
             },
             isCurrentUserProfile: false,
         }
         )
     })
 
-    test("User's friends list has the correct friends", async () => {
-        const agent = request.agent(app)
-        const loginResponse = await agent
-        .post('/login')
-        .send(loginData)
-        expect(loginResponse.status).toEqual(200)
-
-        const response2 = await agent
-        .get('/home/get_friends')
-        expect(response2.status).toEqual(200)
-        expect(response2.body).toEqual({
-            friendsList: [
-                users[1]
-            ]
-        })
-    })
 
     test("After adding a friend, they should be in the user's friend list", async () => {
         const agent = request.agent(app)
@@ -163,11 +148,11 @@ describe('get user', () => {
         expect(response2.status).toEqual(200)
         
         const response3 = await agent
-        .get('/home/get_friends')
-        expect(response2.status).toEqual(200)
-        expect(response2.body).toEqual({
+        .get(`/home/user_profile/${userIds[0]}`)
+        expect(response3.status).toEqual(200)
+        expect(response3.body).toEqual({
             friendsList: [
-                users[1],
+                users[],
                 users[2],
             ]
         })
