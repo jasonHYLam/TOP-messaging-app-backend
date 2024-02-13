@@ -137,3 +137,19 @@ exports.count_friends_number = asyncHandler( async(req, res, next) => {
 })
 
 // May need to make a get friends callback
+exports.get_friends_list = asyncHandler(async( req, res, next ) => {
+
+    const { userid } = req.params();
+
+    const currentUser = await User
+    .findById(userid)
+    .populate({
+        path: 'friends',
+        populate: {path: 'friendUser'}
+    })
+    const friends = currentUser.friends
+    // console.log('checking friends')
+    // console.log(friends)
+
+    res.json({friends});
+})
