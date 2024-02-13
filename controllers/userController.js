@@ -115,15 +115,15 @@ exports.get_user_profile = asyncHandler( async(req, res, next) => {
     const matchingUser = await User.findById(req.params.userid, 'username description profilePicURL').exec();
 
     // req.user causes postman to fail
-    // const isCurrentUserProfile = (req.user.id === req.params.userid);
+    const isCurrentUserProfile = (req.user.id === req.params.userid);
     // console.log('checking isCurrentUserProfile')
     // console.log(isCurrentUserProfile)
 
 
     // console.log('matchingUser:')
     // console.log(matchingUser)
-    // res.json({matchingUser, isCurrentUserProfile})
-    res.json(matchingUser)
+    res.json({matchingUser, isCurrentUserProfile})
+    // res.json({matchingUser})
 })
 
 // Perhaps I can use this to see how many people are online. But I have no idea how to approach that.

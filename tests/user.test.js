@@ -60,16 +60,13 @@ describe('sign up route', () => {
 
 // get specific user
 describe('get user', () => {
-    // test('userProfile route', () => {
-    //     return request.agent(app)
-    //     .get(`/home/user_profile/${users[0]._id.toString()}`)
-    //     .set('Accept', 'application/json')
-    //     .set('Content-Type', 'application/json')
-    //     .expect(200)
-    //     .then( res => {
-    //         expect(res.body).toEqual('something')
-    //     })
-    // })
+    test('access userProfile route without logging in results in internal error', () => {
+        return request.agent(app)
+        .get(`/home/user_profile/${users[0]._id.toString()}`)
+        .set('Accept', 'application/json')
+        .set('Content-Type', 'application/json')
+        .expect(500)
+    })
 
     test('login then access userProfile', () => {
         const agent = request.agent(app)
@@ -80,16 +77,30 @@ describe('get user', () => {
         .set('Content-Type', 'application/json')
         .expect(200)
         .then(() => {
-            agent
-            .get(`/home/user_profile/${users[0]._id.toString()}`)
-            .set('Accept', 'application/json')
-            .set('Content-Type', 'application/json')
 
+            return agent
+            .get(`/home/user_profile/${users[0]._id.toString()}`)
             .expect(200)
             .then( res => {
                 expect(res.body).toEqual('something')
             })
         })
+    })
+
+    test('login then access userProfile using async/await', async () => {
+        // const agent = await request.agent(app)
+        const agent = request.agent(app)
+        const response = await agent
+        .post('/login')
+        .send(loginData)
+        .set('Accept', 'application/json')
+        .set('Content-Type', 'application/json')
+        expect(response.status).toEqual(200)
+
+        const response2 = await agent
+        .get(`/home/user_profile/${users[0]._id.toString()}`)
+        expect(response2.status).toEqual(200)
+        expect(response2.body).toEqual('something')
     })
 
 })
