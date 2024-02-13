@@ -108,9 +108,9 @@ exports.get_user_profile = asyncHandler( async(req, res, next) => {
     // console.log('req user')
     // console.log(req.user)
 
-    console.log('checking get user profile is called')
-    console.log('checking req params')
-    console.log(req.params)
+    // console.log('checking get user profile is called')
+    // console.log('checking req params')
+    // console.log(req.params)
     
     const matchingUser = await User.findById(req.params.userid, 'username description profilePicURL').exec();
 
