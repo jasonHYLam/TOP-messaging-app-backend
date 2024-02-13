@@ -113,10 +113,13 @@ exports.get_user_profile = asyncHandler( async(req, res, next) => {
     // console.log(req.params)
     
     const matchingUser = await User
-    .findById(req.params.userid, 'username description profilePicURL')
+    .findById(req.params.userid, 'username description profilePicURL -id')
     .populate({
         path: 'friends',
-        populate: {path: 'friendUser'}
+        populate: {
+            path: 'friendUser',
+            select: 'username profilePicURL'
+        }
     })
     .exec();
 

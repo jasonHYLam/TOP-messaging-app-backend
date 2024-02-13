@@ -135,7 +135,6 @@ describe('get user', () => {
         )
     })
 
-
     test("After adding a friend, they should be in the user's friend list", async () => {
         const agent = request.agent(app)
         const loginResponse = await agent
@@ -150,9 +149,8 @@ describe('get user', () => {
         const response3 = await agent
         .get(`/home/user_profile/${userIds[0]}`)
         expect(response3.status).toEqual(200)
-        expect(response3.body).toEqual({
-            friendsList: [
-                users[],
+        expect(response3.body.matchingUser.friends).toEqual({
+            friends: [
                 users[2],
             ]
         })
