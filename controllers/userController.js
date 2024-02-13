@@ -112,7 +112,13 @@ exports.get_user_profile = asyncHandler( async(req, res, next) => {
     // console.log('checking req params')
     // console.log(req.params)
     
-    const matchingUser = await User.findById(req.params.userid, 'username description profilePicURL').exec();
+    const matchingUser = await User
+    .findById(req.params.userid, 'username description profilePicURL')
+    .populate({
+        path: 'friends',
+        populate: {path: 'friendUser'}
+    })
+    .exec();
 
     // req.user causes postman to fail
     const isCurrentUserProfile = (req.user.id === req.params.userid);
@@ -134,22 +140,4 @@ exports.count_online_number = asyncHandler( async(req, res, next) => {
 
 exports.count_friends_number = asyncHandler( async(req, res, next) => {
 
-})
-
-// May need to make a get friends callback
-exports.get_friends_list = asyncHandler(async( req, res, next ) => {
-
-    const { userid } = req.params();
-
-    const currentUser = await User
-    .findById(userid)
-    .populate({
-        path: 'friends',
-        populate: {path: 'friendUser'}
-    })
-    const friends = currentUser.friends
-    // console.log('checking friends')
-    // console.log(friends)
-
-    res.json({friends});
 })
