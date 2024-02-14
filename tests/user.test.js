@@ -149,6 +149,7 @@ describe('get user', () => {
 
     test("After adding a friend, they should be in the user's friend list", async () => {
         const agent = request.agent(app)
+
         const loginResponse = await agent
         .post('/login')
         .send(loginData)
@@ -163,6 +164,7 @@ describe('get user', () => {
                 userDataForFrontend[2],
             ]
         })
+
         const addFriendResponse = await agent
         .post(`/home/user_profile/${userIds[3]}`)
         expect(addFriendResponse.status).toEqual(200)
@@ -177,7 +179,20 @@ describe('get user', () => {
                 userDataForFrontend[3],
             ]
         })
+    })
 
+    test("Send 400 if user tries to add friend that is already on their friend list.", async () => {
+
+        const agent = request.agent(app)
+
+        const loginResponse = await agent
+        .post('/login')
+        .send(loginData)
+        expect(loginResponse.status).toEqual(200)
+
+        const addFriendResponse = await agent
+        .post(`/home/user_profile/${userIds[2]}`)
+        expect(addFriendResponse.status).toEqual(401)
     })
 
 })

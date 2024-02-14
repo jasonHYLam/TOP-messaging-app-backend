@@ -82,6 +82,24 @@ exports.add_user = asyncHandler( async(req, res, next) => {
     console.log(userToAdd)
     console.log(' ')
 
+    const currentUserWithFriends = await User
+    .findById(req.user.id)
+    .populate({path: 'friends'})
+    .exec();
+    console.log('checking currentUserWithFriends')
+    console.log(currentUserWithFriends.friends)
+
+    function checkUserIsAlreadyAdded(friendsList, userId) {
+        console.log('checking if user is already added')
+        console.log(
+        friendsList.map(friendToUser => friendToUser.friendUser.toString() === userId)
+        )
+        // return friendsList.some(friendToUser => friendToUser.friendUser.toString() === userId)
+    }
+    checkUserIsAlreadyAdded(currentUserWithFriends.friends, req.params.userid)
+    // if (checkUserIsAlreadyAdded()) console.log('seems user is already added')
+    // if () return res.status(404).end();
+
     const friendAdding = new FriendToUser({
         user: currentUser,
         friendUser: userToAdd,
@@ -151,12 +169,8 @@ exports.get_friends_list = asyncHandler( async( req, res, next ) => {
 
     const friends = currentUserWithFriends.friends
     .map(friendToUser => friendToUser.friendUser)
-    console.log('checking')
-    console.log(friends)
-
-    // console.log('checking friends')
+    // console.log('checking')
     // console.log(friends)
-
 
     res.json({friends})
 
