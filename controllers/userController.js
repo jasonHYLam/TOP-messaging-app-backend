@@ -137,3 +137,16 @@ exports.count_online_number = asyncHandler( async(req, res, next) => {
 exports.count_friends_number = asyncHandler( async(req, res, next) => {
 
 })
+
+exports.get_friends_list = asyncHandler( async( req, res, next ) => {
+    const currentUserWithFriends = User.findById(req.user.id).populate('friends').exec()
+
+    const friends = currentUserWithFriends.friends
+
+    console.log('checking friends')
+    console.log(friends)
+
+    res.json({friends})
+
+
+})
