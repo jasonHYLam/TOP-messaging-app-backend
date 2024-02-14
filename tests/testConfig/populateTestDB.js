@@ -18,8 +18,8 @@ async function createUser(user) {
     const hashedPass = await bcrypt.hash(user.password, 10);
     newUser.password = hashedPass;
 
-    console.log('checking newUser')
-    console.log(newUser)
+    // console.log('checking newUser')
+    // console.log(newUser)
     await newUser.save();
 }
 

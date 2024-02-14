@@ -19,9 +19,6 @@ const userDataForFrontend = users.map((user) => {
     }
 })
 
-console.log('checking userDataForFrontend')
-console.log(userDataForFrontend)
-
 beforeAll(async() => {
     await initializeMongoServer();
     await populateTestDB();
@@ -234,8 +231,8 @@ describe("Friend's list", () => {
         })
 
         const deleteFriendResponse = await agent
-        .delete(`/home/user_profile/${userIds[3]}`)
-        .expect(deleteFriendResponse.status).toEqual(200)
+        .delete(`/home/user_profile/${userIds[2]}`)
+        expect(deleteFriendResponse.status).toEqual(200)
 
         const checkFriendsResponse2 = await agent
         .get(`/home/get_friends_list`)
@@ -243,7 +240,6 @@ describe("Friend's list", () => {
         expect(checkFriendsResponse2.body).toEqual({
             friends: [
                 userDataForFrontend[1],
-                userDataForFrontend[2],
             ]
         })
     })

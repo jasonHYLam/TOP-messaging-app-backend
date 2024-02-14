@@ -1,3 +1,5 @@
+const { ObjectId } = require('mongoose').Types;
+
 const asyncHandler = require("express-async-handler");
 
 const { body } = require('express-validator');
@@ -165,18 +167,17 @@ exports.get_friends_list = asyncHandler( async( req, res, next ) => {
 
 exports.remove_friend = asyncHandler( async( req, res, next ) => {
 
-    const friendToUsersToDelete =  await Promise.all([
-        FriendToUser.find({
+    await Promise.all([
+        FriendToUser.deleteOne({
             user: req.user.id,
             friendUser: req.params.userid
         }),
 
-        FriendToUser.find({
+        FriendToUser.deleteOne({
             user: req.params.userid,
             friendUser: req.user.id,
         }),
     ])
 
-    console.log('checking friendsToUsersToDelete')
-    console.log(friendToUsersToDelete)
+    res.json({})
 })
