@@ -170,9 +170,7 @@ exports.remove_friend = asyncHandler( async( req, res, next ) => {
     if (req.params.userid === req.user.id) return res.status(400).end()
 
     function checkIfUserIsNotInFriendsList(friendsList, userId) {
-        console.log(
-            friendsList.map(friendToUser => friendToUser.friendUser.toString() === userId)
-        )
+        return friendsList.every(friendToUser => friendToUser.friendUser.toString() !== userId)
     }
 
 
@@ -180,7 +178,9 @@ exports.remove_friend = asyncHandler( async( req, res, next ) => {
     console.log('checking currentUserWithFriends')
     console.log(currentUserWithFriends)
 
-    checkIfUserIsNotInFriendsList(currentUserWithFriends.friends, req.params.userid)
+    if (checkIfUserIsNotInFriendsList(currentUserWithFriends.friends, req.params.userid)) {
+        return res.status(400).end()
+    }
 
 
     await Promise.all([
