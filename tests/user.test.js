@@ -243,4 +243,19 @@ describe("Friend's list", () => {
             ]
         })
     })
+
+
+    it("prevents removing a user from the friend list if they are not a friend.", async () => {
+
+        const agent = request.agent(app);
+
+        const loginResponse = await agent
+        .post("/login")
+        .send(loginData)
+        expect(loginResponse.status).toEqual(200)
+
+        const deleteFriendResponse = await agent
+        .delete(`/home/user_profile/${userIds[3]}`)
+        expect(deleteFriendResponse.status).toEqual(400)
+    })
 })

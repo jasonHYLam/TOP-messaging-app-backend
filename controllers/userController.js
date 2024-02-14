@@ -167,6 +167,22 @@ exports.get_friends_list = asyncHandler( async( req, res, next ) => {
 
 exports.remove_friend = asyncHandler( async( req, res, next ) => {
 
+    if (req.params.userid === req.user.id) return res.status(400).end()
+
+    function checkIfUserIsNotInFriendsList(friendsList, userId) {
+        console.log(
+            friendsList.map(friendToUser => friendToUser.friendUser.toString() === userId)
+        )
+    }
+
+
+    const currentUserWithFriends = await User.findById(req.user.id).populate('friends').exec();
+    console.log('checking currentUserWithFriends')
+    console.log(currentUserWithFriends)
+
+    checkIfUserIsNotInFriendsList(currentUserWithFriends.friends, req.params.userid)
+
+
     await Promise.all([
         FriendToUser.deleteOne({
             user: req.user.id,
