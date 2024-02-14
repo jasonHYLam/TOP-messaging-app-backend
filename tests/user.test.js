@@ -10,6 +10,17 @@ const populateTestDB = require('./testConfig/populateTestDB');
 const loginData = {username: users[0].username, password: users[0].password}
 
 const userIds = users.map(user => user._id.toString())
+const userDataForFrontend = users.map((user) => {
+    return {
+        username: user.username,
+        _id: user._id.toString(),
+        id: user._id.toString(),
+        profilePicURL: user.profilePicURL,
+    }
+})
+
+console.log('checking userDataForFrontend')
+console.log(userDataForFrontend)
 
 beforeAll(async() => {
     await initializeMongoServer();
@@ -143,17 +154,27 @@ describe('get user', () => {
         .send(loginData)
         expect(loginResponse.status).toEqual(200)
 
+        const checkFriendsResponse1 = await agent
+        .get(`/home/get_friends_list`)
+        expect(checkFriendsResponse1.status).toEqual(200)
+        expect(checkFriendsResponse1.body).toEqual({
+            friends: [
+                userDataForFrontend[1],
+                userDataForFrontend[2],
+            ]
+        })
         const addFriendResponse = await agent
-        .post(`/home/user_profile/${userIds[2]}`)
+        .post(`/home/user_profile/${userIds[3]}`)
         expect(addFriendResponse.status).toEqual(200)
         
-        const checkFriendsResponse = await agent
+        const checkFriendsResponse2 = await agent
         .get(`/home/get_friends_list`)
-        expect(checkFriendsResponse.status).toEqual(200)
-        expect(checkFriendsResponse.body).toEqual({
+        expect(checkFriendsResponse2.status).toEqual(200)
+        expect(checkFriendsResponse2.body).toEqual({
             friends: [
-                friendToUsers[1],
-                friendToUsers[2],
+                userDataForFrontend[1],
+                userDataForFrontend[2],
+                userDataForFrontend[3],
             ]
         })
 
