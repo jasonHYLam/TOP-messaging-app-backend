@@ -181,7 +181,7 @@ describe('get user', () => {
         })
     })
 
-    test("Send 400 if user tries to add friend that is already on their friend list.", async () => {
+    it("Prevents the user from adding a friend that is already on their friend list.", async () => {
 
         const agent = request.agent(app)
 
@@ -192,6 +192,20 @@ describe('get user', () => {
 
         const addFriendResponse = await agent
         .post(`/home/user_profile/${userIds[2]}`)
+        expect(addFriendResponse.status).toEqual(400)
+    })
+
+    it("Prevents the user from adding themself as a friend.", async () => {
+
+        const agent = request.agent(app)
+
+        const loginResponse = await agent
+        .post('/login')
+        .send(loginData)
+        expect(loginResponse.status).toEqual(200)
+
+        const addFriendResponse = await agent
+        .post(`/home/user_profile/${userIds[0]}`)
         expect(addFriendResponse.status).toEqual(400)
     })
 
