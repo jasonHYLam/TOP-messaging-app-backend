@@ -139,12 +139,24 @@ exports.count_friends_number = asyncHandler( async(req, res, next) => {
 })
 
 exports.get_friends_list = asyncHandler( async( req, res, next ) => {
-    const currentUserWithFriends = User.findById(req.user.id).populate('friends').exec()
+    const currentUserWithFriends = await User
+    .findById(req.user.id)
+    .populate({
+        path: 'friends',
+        populate: {
+            path: 'friendUser',
+            select: 'username profilePicURL'
+        }
+    }).exec()
 
     const friends = currentUserWithFriends.friends
-
-    console.log('checking friends')
+    .map(friendToUser => friendToUser.friendUser)
+    console.log('checking')
     console.log(friends)
+
+    // console.log('checking friends')
+    // console.log(friends)
+
 
     res.json({friends})
 

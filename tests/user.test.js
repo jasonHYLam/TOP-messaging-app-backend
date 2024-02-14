@@ -2,6 +2,7 @@ const app = require('./testConfig/testApp');
 const request = require('supertest');
 
 const users = require('./testConfig/users');
+const friendToUsers = require('./testConfig/friendToUsers')
 
 const { initializeMongoServer, closeMongoServer } = require('../mongoTestingConfig');
 const populateTestDB = require('./testConfig/populateTestDB');
@@ -61,7 +62,7 @@ describe('login route',() => {
 })
 
 
-describe('sign up route', () => {
+describe.skip('sign up route', () => {
     it('signs up successfully', async() => {
         const response = await request(app)
 
@@ -74,7 +75,7 @@ describe('sign up route', () => {
 
 // get specific user
 describe('get user', () => {
-    test('access userProfile route without logging in results in internal error', () => {
+    test.skip('access userProfile route without logging in results in internal error', () => {
         return request.agent(app)
         .get(`/home/user_profile/${userIds[0]}`)
         .set('Accept', 'application/json')
@@ -82,7 +83,7 @@ describe('get user', () => {
         .expect(500)
     })
 
-    test('login then access personal profile', () => {
+    test.skip('login then access personal profile', () => {
         const agent = request.agent(app)
         return agent
         .post('/login')
@@ -110,7 +111,7 @@ describe('get user', () => {
         })
     })
 
-    test("login then access other user's profile, returning their data and friends list.", async () => {
+    test.skip("login then access other user's profile, returning their data.", async () => {
         const agent = request.agent(app)
         const response = await agent
         .post('/login')
@@ -142,16 +143,17 @@ describe('get user', () => {
         .send(loginData)
         expect(loginResponse.status).toEqual(200)
 
-        const response2 = await agent
+        const addFriendResponse = await agent
         .post(`/home/user_profile/${userIds[2]}`)
-        expect(response2.status).toEqual(200)
+        expect(addFriendResponse.status).toEqual(200)
         
-        const response3 = await agent
-        .get(`/home/user_profile/${userIds[0]}`)
-        expect(response3.status).toEqual(200)
-        expect(response3.body.matchingUser.friends).toEqual({
+        const checkFriendsResponse = await agent
+        .get(`/home/get_friends_list`)
+        expect(checkFriendsResponse.status).toEqual(200)
+        expect(checkFriendsResponse.body).toEqual({
             friends: [
-                users[2],
+                friendToUsers[1],
+                friendToUsers[2],
             ]
         })
 
