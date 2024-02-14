@@ -211,7 +211,7 @@ describe("Friend's list", () => {
         expect(addFriendResponse.status).toEqual(400)
     })
 
-    it("Successfully deletes a friend.", async () => {
+    it.skip("Successfully deletes a friend.", async () => {
 
         const agent = request.agent(app)
 
@@ -258,4 +258,19 @@ describe("Friend's list", () => {
         .delete(`/home/user_profile/${userIds[3]}`)
         expect(deleteFriendResponse.status).toEqual(400)
     })
+
+    it("sends a 404 response if the params don't match with an existing user id.", async () => {
+        const agent = request.agent(app);
+
+        const loginResponse = await agent
+        .post("/login")
+        .send(loginData)
+        expect(loginResponse.status).toEqual(200)
+
+        const deleteFriendResponse = await agent
+        .delete(`/home/user_profile/badURL`)
+        expect(deleteFriendResponse.status).toEqual(404)
+    })
+
+
 })

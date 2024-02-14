@@ -167,33 +167,37 @@ exports.get_friends_list = asyncHandler( async( req, res, next ) => {
 
 exports.remove_friend = asyncHandler( async( req, res, next ) => {
 
-    if (req.params.userid === req.user.id) return res.status(400).end()
+    const currentUserWithFriends = await User.findById(req.user.id).populate('friends').exec();
 
     function checkIfUserIsNotInFriendsList(friendsList, userId) {
         return friendsList.every(friendToUser => friendToUser.friendUser.toString() !== userId)
     }
 
 
-    const currentUserWithFriends = await User.findById(req.user.id).populate('friends').exec();
-    console.log('checking currentUserWithFriends')
-    console.log(currentUserWithFriends)
-
-    if (checkIfUserIsNotInFriendsList(currentUserWithFriends.friends, req.params.userid)) {
+    if (req.params.userid === req.user.id) {
         return res.status(400).end()
     }
 
+    else if (checkIfUserIsNotInFriendsList(currentUserWithFriends.friends, req.params.userid)) {
+        return res.status(400).end()
+    }
 
-    await Promise.all([
-        FriendToUser.deleteOne({
-            user: req.user.id,
-            friendUser: req.params.userid
-        }),
+    else {
 
-        FriendToUser.deleteOne({
-            user: req.params.userid,
-            friendUser: req.user.id,
-        }),
-    ])
+        await Promise.all([
+            FriendToUser.deleteOne({
+                user: req.user.id,
+                friendUser: req.params.userid
+            }),
 
-    res.json({})
+            FriendToUser.deleteOne({
+                user: req.params.userid,
+                friendUser: req.user.id,
+            }),
+        ])
+
+        res.json({})
+    }
+
+
 })
