@@ -161,5 +161,22 @@ exports.get_friends_list = asyncHandler( async( req, res, next ) => {
 
     res.json({friends})
 
+})
 
+exports.remove_friend = asyncHandler( async( req, res, next ) => {
+
+    const friendToUsersToDelete =  await Promise.all([
+        FriendToUser.find({
+            user: req.user.id,
+            friendUser: req.params.userid
+        }),
+
+        FriendToUser.find({
+            user: req.params.userid,
+            friendUser: req.user.id,
+        }),
+    ])
+
+    console.log('checking friendsToUsersToDelete')
+    console.log(friendToUsersToDelete)
 })
