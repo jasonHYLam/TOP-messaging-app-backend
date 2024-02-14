@@ -49,6 +49,7 @@ router.post('/home/user_profile/:userid', userController.add_user)
 router.get('/home/count_online_number', userController.count_online_number)
 router.get('/home/count_friends_number', userController.count_friends_number)
 router.get('/home/get_friends_list', userController.get_friends_list)
+router.delete('/home/user_profile/:userid', userController.remove_friend)
 
 // Personal profile related routes.
 router.get('/home/get_logged_in_user', personalProfileController.get_logged_in_user)
