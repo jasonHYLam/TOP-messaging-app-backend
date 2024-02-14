@@ -114,13 +114,6 @@ exports.get_user_profile = asyncHandler( async(req, res, next) => {
     
     const matchingUser = await User
     .findById(req.params.userid, 'username description profilePicURL ')
-    .populate({
-        path: 'friends',
-        populate: {
-            path: 'friendUser',
-            select: 'username profilePicURL '
-        }
-    })
     .exec();
 
     // req.user causes postman to fail

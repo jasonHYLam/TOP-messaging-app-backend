@@ -1,7 +1,10 @@
 const mongoose = require('mongoose');
 const { DateTime } = require('luxon');
 
-const opts = { toJSON: { virtuals: true }}
+const opts = { 
+    toJSON: { virtuals: true },
+    versionKey: false,
+}
 
 const Schema = mongoose.Schema;
 
