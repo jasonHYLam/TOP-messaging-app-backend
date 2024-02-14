@@ -99,6 +99,7 @@ describe('get user', () => {
                 expect(res.body).toEqual({
                     matchingUser: {
                         _id:userIds[0],
+                        id:userIds[0],
                         username: users[0].username,
                         description: users[0].description,
                         profilePicURL: users[0].profilePicURL,
@@ -124,10 +125,10 @@ describe('get user', () => {
         expect(response2.body).toEqual({
             matchingUser: {
                 _id: userIds[1],
+                id: userIds[1],
                 username: users[1].username,
                 description: users[1].description,
                 profilePicURL: users[1].profilePicURL,
-                friends: [],
             },
             isCurrentUserProfile: false,
         }
