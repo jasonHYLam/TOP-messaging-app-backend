@@ -192,7 +192,7 @@ describe('get user', () => {
 
         const addFriendResponse = await agent
         .post(`/home/user_profile/${userIds[2]}`)
-        expect(addFriendResponse.status).toEqual(401)
+        expect(addFriendResponse.status).toEqual(400)
     })
 
 })

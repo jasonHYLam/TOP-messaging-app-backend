@@ -67,55 +67,42 @@ exports.add_user = asyncHandler( async(req, res, next) => {
     // Get the user to add via their id and params. Add to their friendlist.
     // I think I have access to req.user...
 
-    console.log('i hope this works first time')
-
-    // console.log('checking req user')
-    // console.log(req.user)
-    // console.log('checking reqparams')
-    // console.log(req.params)
     const currentUser = await User.findById(req.user.id)
     const userToAdd = await User.findById(req.params.userid)
-
-    console.log('checking currentUser')
-    console.log(currentUser)
-    console.log('checking userToAdd')
-    console.log(userToAdd)
-    console.log(' ')
 
     const currentUserWithFriends = await User
     .findById(req.user.id)
     .populate({path: 'friends'})
     .exec();
-    console.log('checking currentUserWithFriends')
-    console.log(currentUserWithFriends.friends)
 
     function checkUserIsAlreadyAdded(friendsList, userId) {
-        console.log('checking if user is already added')
-        console.log(
-        friendsList.map(friendToUser => friendToUser.friendUser.toString() === userId)
-        )
-        // return friendsList.some(friendToUser => friendToUser.friendUser.toString() === userId)
+        return friendsList.some(friendToUser => friendToUser.friendUser.toString() === userId)
     }
-    checkUserIsAlreadyAdded(currentUserWithFriends.friends, req.params.userid)
-    // if (checkUserIsAlreadyAdded()) console.log('seems user is already added')
-    // if () return res.status(404).end();
 
-    const friendAdding = new FriendToUser({
-        user: currentUser,
-        friendUser: userToAdd,
-    })
+    if (checkUserIsAlreadyAdded(currentUserWithFriends.friends, req.params.userid)) {
+        return res.status(400).end();
+    }
+    else if (req.user.id === req.params.userid) {
+        return res.status(400).end();
+    }
+    else {
 
-    const friendToAdd = new FriendToUser({
-        user: userToAdd,
-        friendUser: currentUser,
-    })
+        const friendAdding = new FriendToUser({
+            user: currentUser,
+            friendUser: userToAdd,
+        })
 
-    await friendAdding.save();
-    await friendToAdd.save();
+        const friendToAdd = new FriendToUser({
+            user: userToAdd,
+            friendUser: currentUser,
+        })
 
-    // To access friends, need to call populate on User.
-    res.json({genericMessage: "it's... "});
+        await friendAdding.save();
+        await friendToAdd.save();
 
+        // To access friends, need to call populate on User.
+        res.json({genericMessage: "it's... "});
+        }
 })
 
 // 
