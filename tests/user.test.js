@@ -147,6 +147,11 @@ describe('get user', () => {
         )
     })
 
+})
+
+
+describe("Friend's list", () => {
+
     test("After adding a friend, they should be in the user's friend list", async () => {
         const agent = request.agent(app)
 
@@ -208,6 +213,4 @@ describe('get user', () => {
         .post(`/home/user_profile/${userIds[0]}`)
         expect(addFriendResponse.status).toEqual(400)
     })
-
 })
-
