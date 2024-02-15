@@ -250,7 +250,7 @@ describe("Friend's list", () => {
         const checkFriendsResponse2 = await agent
         .get(`/home/get_friends_list`)
         expect(checkFriendsResponse2.status).toEqual(200)
-        expect(checkFriendsResponse2.body).toEqual({
+        expect(checkFriendsResponse2.body).toIncludeSameMembers({
             friends: [
                 userDataForFrontend[1],
             ]
