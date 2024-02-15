@@ -1,6 +1,7 @@
 const app = require('./testConfig/testApp');
 const request = require('supertest');
 
+
 const users = require('./testConfig/users');
 const friendToUsers = require('./testConfig/friendToUsers')
 
@@ -311,5 +312,26 @@ describe("Change user property", () => {
         .get(`/home/user_profile/${userIds[0]}`)
         expect(userProfileResponse2.status).toEqual(200)
         expect(userProfileResponse2.body.matchingUser.description).toEqual(newDescription.changeToSubmit)
+    })
+
+    test("User changes profilePicURL", async () => {
+
+        const agent = request.agent(app);
+        const pathToImage = "tests/testConfig/testImages/abra.jpeg"
+
+        const loginResponse = await agent
+        .post("/login")
+        .send(loginData)
+        expect(loginResponse.status).toEqual(200)
+
+        const changeDescriptionResponse = await agent
+        .put(`/home/personal_profile/change_image`)
+        .attach('profilePic', pathToImage)
+        expect(changeDescriptionResponse.status).toEqual(200)
+
+        const userProfileResponse2 = await agent
+        .get(`/home/user_profile/${userIds[0]}`)
+        expect(userProfileResponse2.status).toEqual(200)
+        expect(userProfileResponse2.body.matchingUser.profilePicURL).toEqual("")
     })
 })
