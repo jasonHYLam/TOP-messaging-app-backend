@@ -29,22 +29,6 @@ afterAll( async() => {
     await closeMongoServer();
 })
 
-
-
-
-
-
-describe('sign up route', () => {
-    it('signs up successfully', async() => {
-        const response = await request(app)
-
-        .post('/signup')
-        .type('form')
-        .send({username: 'doris', password: 'DeafAids'})
-        expect(response.status).toEqual(200)
-    })
-})
-
 // get specific user
 describe('get user', () => {
     test('access userProfile route without logging in results in internal error', () => {

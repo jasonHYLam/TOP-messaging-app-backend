@@ -53,3 +53,14 @@ describe('login route',() => {
         expect(response.status).toEqual(401)
     })
 })
+
+describe('sign up route', () => {
+    it('signs up successfully', async() => {
+        const response = await request(app)
+
+        .post('/signup')
+        .type('form')
+        .send({username: 'doris', password: 'DeafAids'})
+        expect(response.status).toEqual(200)
+    })
+})
