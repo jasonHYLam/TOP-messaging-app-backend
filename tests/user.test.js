@@ -162,7 +162,7 @@ describe('get user', () => {
 
 describe("Friend's list", () => {
 
-    test.skip("After adding a friend, they should be in the user's friend list", async () => {
+    test("After adding a friend, they should be in the user's friend list", async () => {
         const agent = request.agent(app)
 
         const loginResponse = await agent
@@ -196,7 +196,7 @@ describe("Friend's list", () => {
         })
     })
 
-    it.skip("Prevents the user from adding a friend that is already on their friend list.", async () => {
+    it("Prevents the user from adding a friend that is already on their friend list.", async () => {
 
         const agent = request.agent(app)
 
@@ -210,7 +210,7 @@ describe("Friend's list", () => {
         expect(addFriendResponse.status).toEqual(400)
     })
 
-    it.skip("Prevents the user from adding themself as a friend.", async () => {
+    it("Prevents the user from adding themselves as a friend.", async () => {
 
         const agent = request.agent(app)
 
@@ -224,7 +224,7 @@ describe("Friend's list", () => {
         expect(addFriendResponse.status).toEqual(400)
     })
 
-    it.skip("Successfully deletes a friend.", async () => {
+    it("Successfully deletes a friend.", async () => {
 
         const agent = request.agent(app)
 
