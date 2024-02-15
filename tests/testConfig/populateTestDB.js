@@ -69,11 +69,13 @@ async function createAllMessages() {
 
 
 async function populateTestDB() {
-    await createAllUsers();
-    await createAllFriendToUsers();
-    await createAllChats();
-    await createAllUserInChats();
-    await createAllMessages();
+    await Promise.all([
+        createAllUsers(),
+        createAllFriendToUsers(),
+        createAllChats(),
+        createAllUserInChats(),
+        createAllMessages(),
+    ])
 }
 
 module.exports = populateTestDB;

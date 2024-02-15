@@ -6,9 +6,9 @@ async function initializeMongoServer() {
     const mongoServer = await MongoMemoryServer.create();
     const mongoUri = mongoServer.getUri();
 
-    mongoose.connect(mongoUri);
+    await mongoose.connect(mongoUri);
 
-    mongoose.connection.on('error', e => {
+    await mongoose.connection.on('error', e => {
         if (e.message.code === 'ETIMEDOUT') {
             console.log(e)
             mongoose.connect(mongoUri);
@@ -16,19 +16,19 @@ async function initializeMongoServer() {
         console.log(e)
     })
 
-    mongoose.connection.once('open', () => {
+    await mongoose.connection.once('open', () => {
         console.log(`MongoDB successfully connected to ${mongoUri}`)
     })
 
 }
 
 async function closeMongoServer() {
-    mongoose.disconnect();
+    await mongoose.disconnect();
     mongoose.connection.close()
 }
 
 async function dropDatabase() {
-    mongoose.connection.dropDatabase()
+    await mongoose.connection.dropDatabase()
 }
 
 module.exports = {initializeMongoServer, closeMongoServer, dropDatabase};

@@ -1,11 +1,10 @@
 const app = require('./testConfig/testApp');
 const request = require('supertest');
 
-
 const users = require('./testConfig/users');
 const friendToUsers = require('./testConfig/friendToUsers')
 
-const { initializeMongoServer, closeMongoServer } = require('../mongoTestingConfig');
+const { initializeMongoServer, closeMongoServer, dropDatabase } = require('../mongoTestingConfig');
 const populateTestDB = require('./testConfig/populateTestDB');
 
 const loginData = {username: users[0].username, password: users[0].password}
@@ -22,11 +21,19 @@ const userDataForFrontend = users.map((user) => {
 
 beforeAll(async() => {
     await initializeMongoServer();
-    await populateTestDB();
+    // await populateTestDB();
 })
 
 afterAll( async() => {
     await closeMongoServer();
+})
+
+beforeEach(async () => {
+    await populateTestDB();
+})
+
+afterEach(async() => {
+    await dropDatabase();
 })
 
 // get specific user
@@ -40,6 +47,7 @@ describe('get user', () => {
     })
 
     test('login then access personal profile', () => {
+
         const agent = request.agent(app)
         return agent
         .post('/login')

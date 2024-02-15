@@ -1,18 +1,27 @@
 const app = require('./testConfig/testApp');
 const request = require('supertest');
 
-const { initializeMongoServer, closeMongoServer } = require('../mongoTestingConfig');
+const { initializeMongoServer, closeMongoServer, dropDatabase } = require('../mongoTestingConfig');
 const populateTestDB = require('./testConfig/populateTestDB');
 
 const chats = require('./testConfig/chats');
 
 beforeAll(async() => {
     await initializeMongoServer();
-    await populateTestDB();
+    // await populateTestDB();
 })
 
 afterAll( async() => {
     await closeMongoServer();
+})
+
+
+beforeEach(async () => {
+    await populateTestDB();
+})
+
+afterEach(async() => {
+    await dropDatabase();
 })
 // fetch chats
 describe('fetch chats', () => {
