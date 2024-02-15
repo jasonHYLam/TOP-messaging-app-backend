@@ -250,7 +250,7 @@ describe("Friend's list", () => {
         const checkFriendsResponse2 = await agent
         .get(`/home/get_friends_list`)
         expect(checkFriendsResponse2.status).toEqual(200)
-        expect(checkFriendsResponse2.body).toIncludeSameMembers({
+        expect(checkFriendsResponse2.body).toEqual({
             friends: [
                 userDataForFrontend[1],
             ]
@@ -268,11 +268,11 @@ describe("Friend's list", () => {
         expect(loginResponse.status).toEqual(200)
 
         const deleteFriendResponse = await agent
-        .delete(`/home/user_profile/${userIds[3]}`)
+        .delete(`/home/user_profile/${userIds[4]}`)
         expect(deleteFriendResponse.status).toEqual(400)
     })
 
-    it("sends a 404 response if the params don't match with an existing user id.", async () => {
+    it("sends a 400 response if the params don't match with an existing user id.", async () => {
         const agent = request.agent(app);
 
         const loginResponse = await agent

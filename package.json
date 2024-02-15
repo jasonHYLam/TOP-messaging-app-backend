@@ -2,9 +2,6 @@
   "name": "top-messaging-app",
   "version": "0.0.0",
   "private": true,
-  "jest": {
-    "setUpFilesAfterEnv": ["./tests/testConfig/testSetup.js"]
-  },
   "scripts": {
     "test": "jest --watch --verbose --detectOpenHandles",
     "start": "node ./bin/www",

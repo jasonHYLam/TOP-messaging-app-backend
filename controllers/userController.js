@@ -91,6 +91,10 @@ exports.add_user = asyncHandler( async(req, res, next) => {
         return friendsList.some(friendToUser => friendToUser.friendUser.toString() === userId)
     }
 
+    if (checkIfParamsAreInvalid(req.params.userid)) {
+        return res.status(404).end()
+    } 
+
     if (checkUserIsAlreadyAdded(currentUserWithFriends.friends, req.params.userid)) {
         return res.status(400).end();
     }
@@ -119,16 +123,7 @@ exports.add_user = asyncHandler( async(req, res, next) => {
 
 // 
 exports.get_user_profile = asyncHandler( async(req, res, next) => {
-    // This makes use of params to get userid I believe.
-    // console.log('checking get_user_profile:')
-    // console.log('checking:')
-    // console.log('req user')
-    // console.log(req.user)
 
-    // console.log('checking get user profile is called')
-    // console.log('checking req params')
-    // console.log(req.params)
-    
     if (checkIfParamsAreInvalid(req.params.userid)) {
         return res.status(404).end()
     } 
@@ -183,13 +178,16 @@ exports.remove_friend = asyncHandler( async( req, res, next ) => {
     }
 
     console.log('checking the call of checkIfParamsAreInvalid:')
+    console.log(`req.params.userid:${req.params.userid}`)
     console.log(checkIfParamsAreInvalid(req.params.userid))
 
     if (checkIfParamsAreInvalid(req.params.userid)) {
+        console.log('a')
         return res.status(404).end()
     } 
 
     else if (req.params.userid === req.user.id) {
+        console.log('b')
         return res.status(400).end()
     }
 
@@ -199,6 +197,20 @@ exports.remove_friend = asyncHandler( async( req, res, next ) => {
     }
 
     else {
+        console.log('d')
+
+        const user1 = await FriendToUser.find({
+            user: req.user.id,
+            friendUser: req.params.userid
+        })
+        const user2 = await FriendToUser.find({
+            user: req.user.id,
+            friendUser: req.params.userid
+        })
+
+        console.log('checking users to delete:')
+        console.log(user1)
+        console.log(user2)
 
         await Promise.all([
             FriendToUser.deleteOne({

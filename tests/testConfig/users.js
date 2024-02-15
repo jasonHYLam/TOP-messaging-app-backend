@@ -37,6 +37,15 @@ const users = [
         imageID: '',
     },
 
+    {
+        _id: objectIds.userIDs[4],
+        username: 'user5',
+        password: 'a',
+        description: '',
+        profilePicURL: '',
+        imageID: '',
+    },
+
 ]
 
 module.exports = users
