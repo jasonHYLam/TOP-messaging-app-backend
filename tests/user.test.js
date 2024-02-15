@@ -70,7 +70,7 @@ describe('login route',() => {
 })
 
 
-describe.skip('sign up route', () => {
+describe('sign up route', () => {
     it('signs up successfully', async() => {
         const response = await request(app)
 
@@ -83,7 +83,7 @@ describe.skip('sign up route', () => {
 
 // get specific user
 describe('get user', () => {
-    test.skip('access userProfile route without logging in results in internal error', () => {
+    test('access userProfile route without logging in results in internal error', () => {
         return request.agent(app)
         .get(`/home/user_profile/${userIds[0]}`)
         .set('Accept', 'application/json')
@@ -91,7 +91,7 @@ describe('get user', () => {
         .expect(500)
     })
 
-    test.skip('login then access personal profile', () => {
+    test('login then access personal profile', () => {
         const agent = request.agent(app)
         return agent
         .post('/login')
@@ -119,7 +119,7 @@ describe('get user', () => {
         })
     })
 
-    test.skip("login then access other user's profile, returning their data.", async () => {
+    test("login then access other user's profile, returning their data.", async () => {
         const agent = request.agent(app)
         const response = await agent
         .post('/login')
@@ -142,6 +142,19 @@ describe('get user', () => {
             isCurrentUserProfile: false,
         }
         )
+    })
+
+    test("Trying to access user_profile with invalid user id results in a 404 error.", async () => {
+        const agent = request.agent(app)
+
+        const loginResponse = await agent
+        .post('/login')
+        .send(loginData)
+        expect(loginResponse.status).toEqual(200)
+
+        const userProfileResponse = await agent
+        .get(`/home/user_profile/badUserID`)
+        expect(userProfileResponse.status).toEqual(404)
     })
 
 })

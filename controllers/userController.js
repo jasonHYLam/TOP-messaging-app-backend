@@ -1,4 +1,5 @@
 const { ObjectId } = require('mongoose').Types;
+const mongoose = require('mongoose');
 
 const asyncHandler = require("express-async-handler");
 
@@ -10,6 +11,15 @@ const FriendToUser = require('../models/friendToUser')
 
 // may need to change name
 // intended to handle adding friends and seeing who is online
+
+function checkIfParamsAreInvalid(userid) {
+
+    // console.log('checking checkIfParamsCorrespondsToUser call: ')
+    // console.log(`userid: ${userid}`)
+    // console.log(!mongoose.isValidObjectId(userid))
+    const isValid = mongoose.isValidObjectId(userid)
+    return !isValid
+}
 
 // I think this is just used to bring up a list of users that match the user username
 exports.search_user = [
@@ -119,20 +129,19 @@ exports.get_user_profile = asyncHandler( async(req, res, next) => {
     // console.log('checking req params')
     // console.log(req.params)
     
-    const matchingUser = await User
-    .findById(req.params.userid, 'username description profilePicURL ')
-    .exec();
+    if (checkIfParamsAreInvalid(req.params.userid)) {
+        return res.status(404).end()
+    } 
 
-    // req.user causes postman to fail
-    const isCurrentUserProfile = (req.user.id === req.params.userid);
-    // console.log('checking isCurrentUserProfile')
-    // console.log(isCurrentUserProfile)
+    else {
 
+        const matchingUser = await User
+        .findById(req.params.userid, 'username description profilePicURL ')
+        .exec();
 
-    // console.log('matchingUser:')
-    // console.log(matchingUser)
-    res.json({matchingUser, isCurrentUserProfile})
-    // res.json({matchingUser})
+        const isCurrentUserProfile = (req.user.id === req.params.userid);
+        res.json({matchingUser, isCurrentUserProfile})
+    }
 })
 
 // Perhaps I can use this to see how many people are online. But I have no idea how to approach that.
@@ -173,12 +182,19 @@ exports.remove_friend = asyncHandler( async( req, res, next ) => {
         return friendsList.every(friendToUser => friendToUser.friendUser.toString() !== userId)
     }
 
+    console.log('checking the call of checkIfParamsAreInvalid:')
+    console.log(checkIfParamsAreInvalid(req.params.userid))
 
-    if (req.params.userid === req.user.id) {
+    if (checkIfParamsAreInvalid(req.params.userid)) {
+        return res.status(404).end()
+    } 
+
+    else if (req.params.userid === req.user.id) {
         return res.status(400).end()
     }
 
     else if (checkIfUserIsNotInFriendsList(currentUserWithFriends.friends, req.params.userid)) {
+        console.log('or is this happening')
         return res.status(400).end()
     }
 
