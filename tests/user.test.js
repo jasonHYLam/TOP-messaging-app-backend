@@ -284,6 +284,32 @@ describe("Friend's list", () => {
         .delete(`/home/user_profile/badURL`)
         expect(deleteFriendResponse.status).toEqual(404)
     })
+})
 
+describe("Change user property", () => {
+    test("User changes description", async () => {
 
+        const agent = request.agent(app);
+        const newDescription = {changeToSubmit: "Hi, my name's Merlyn..."}
+
+        const loginResponse = await agent
+        .post("/login")
+        .send(loginData)
+        expect(loginResponse.status).toEqual(200)
+
+        const userProfileResponse1 = await agent
+        .get(`/home/user_profile/${userIds[0]}`)
+        expect(userProfileResponse1.status).toEqual(200)
+        expect(userProfileResponse1.body.matchingUser.description).toEqual(users[0].description)
+
+        const changeDescriptionResponse = await agent
+        .put(`/home/personal_profile/change_description`)
+        .send(newDescription)
+        expect(changeDescriptionResponse.status).toEqual(200)
+
+        const userProfileResponse2 = await agent
+        .get(`/home/user_profile/${userIds[0]}`)
+        expect(userProfileResponse2.status).toEqual(200)
+        expect(userProfileResponse2.body.matchingUser.description).toEqual(newDescription.changeToSubmit)
+    })
 })
