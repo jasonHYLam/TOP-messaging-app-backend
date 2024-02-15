@@ -14,6 +14,7 @@ function initializePassport(passport) {
                 // console.log('seeking user')
                 if (!user) {
                     // what happens after this
+                    console.log('checking username... ')
                     return done(null, false, { message: 'Incorrect username '})
                 }
 
@@ -21,6 +22,10 @@ function initializePassport(passport) {
                 // console.log('check if match is true')
                 // console.log(match)
                 if (!match) {
+                    console.log('no match ?!?!?!?')
+                    console.log('checking username and password!!!')
+                    console.log(username)
+                    console.log(password)
                     return done(null, false, { message: 'Incorrect password'})
                 }
 

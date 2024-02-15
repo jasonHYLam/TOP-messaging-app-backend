@@ -27,4 +27,8 @@ async function closeMongoServer() {
     mongoose.connection.close()
 }
 
-module.exports = {initializeMongoServer, closeMongoServer};
+async function dropDatabase() {
+    mongoose.connection.dropDatabase()
+}
+
+module.exports = {initializeMongoServer, closeMongoServer, dropDatabase};

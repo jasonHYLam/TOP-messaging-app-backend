@@ -1,48 +1,49 @@
 const app = require('./testConfig/testApp');
 const request = require('supertest');
 
+const { initializeMongoServer, closeMongoServer } = require('../mongoTestingConfig');
+const populateTestDB = require('./testConfig/populateTestDB');
+
+const chats = require('./testConfig/chats');
+
+beforeAll(async() => {
+    await initializeMongoServer();
+    await populateTestDB();
+})
+
+afterAll( async() => {
+    await closeMongoServer();
+})
 // fetch chats
-// describe('fetch chats', () => {
-//     it ('logs in then fetches chats', async() => {
+describe('fetch chats', () => {
+    it ('logs in then fetches chats', async() => {
 
-//         const data = {username: 'user1', password: 'a'};
-//         const agent = request.agent(app) 
-//         // await agent
-//         // .post('/login')
-//         // .set('Content-Type', 'application/json')
-//         // .withCredentials()
-//         // .send(data)
+        const data = {username: 'user1', password: 'a'};
+        const agent = request.agent(app) 
 
-//         // await agent
-//         // .get('/home/get_chats_for_user')
+        const loginResponse = await agent
+        .post('/login')
+        .set('Accept', 'application/json')
+        .set('Content-Type', 'application/json')
+        .send(data)
+        expect(loginResponse.status).toEqual(200)
 
-//         // console.log(agent.status)
+        const getChatsResponse = await agent
+        .get('/home/get_chats_for_user')
+        expect(getChatsResponse.status).toEqual(200)
+        expect(getChatsResponse.body).toEqual([
+            chats[0]
+        ])
 
 
-//         agent
-//         .post('/login')
-//         .set('Content-Type', 'application/json')
-//         .withCredentials()
-//         .send(data)
-//         .then(res => {
-//             res
-//             .get('/home/get_chats_for_user')
-
-//             console.log(
-//                 (res.status)
-//             )
-//         })
-
-//         // expect(agent.body.chats.length === 4)
-//     })
-// })
+        // console.log(agent.status)
 
 
 
-// add new friend
-// describe('adding friends',  () => {
-//     it('logs in then adds a friend', () => {})
-// })
+        // expect(agent.body.chats.length === 4)
+    })
+})
+
 
 // make new chat
 // this requires at least 2 users. 
