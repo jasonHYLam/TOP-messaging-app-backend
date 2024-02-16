@@ -5,6 +5,7 @@ const { initializeMongoServer, closeMongoServer, dropDatabase } = require('../mo
 const populateTestDB = require('./testConfig/populateTestDB');
 
 const chats = require('./testConfig/chats');
+const chatIds = chats.map(chat => chat._id.toString());
 
 beforeAll(async() => {
     await initializeMongoServer();
@@ -25,7 +26,28 @@ afterEach(async() => {
 })
 // fetch chats
 describe('fetch chats', () => {
+
+    it ('ensures login is okay for test suite', async () => {
+
+        const data = {username: 'user1', password: 'a'};
+        const agent = request.agent(app) 
+
+        try {
+        const loginResponse = await agent
+        .post('/login')
+        .set('Accept', 'application/json')
+        .set('Content-Type', 'application/json')
+        .send(data)
+        expect(loginResponse.status).toEqual(200)
+        }
+        catch(err) {
+            console.log(err)
+        }
+    })
+
     it ('logs in then fetches chats', async() => {
+
+        console.log('checking database...')
 
         const data = {username: 'user1', password: 'a'};
         const agent = request.agent(app) 
@@ -40,9 +62,16 @@ describe('fetch chats', () => {
         const getChatsResponse = await agent
         .get('/home/get_chats_for_user')
         expect(getChatsResponse.status).toEqual(200)
-        expect(getChatsResponse.body).toEqual([
-            chats[0]
-        ])
+        expect(getChatsResponse.body).toEqual({
+            allChats: [
+                {
+                    _id: chatIds[0],
+                    id: chatIds[0],
+                    lastUpdated: null,
+                    name: "chat1",
+                }
+            ]
+        })
 
 
         // console.log(agent.status)

@@ -69,10 +69,12 @@ exports.get_chats_for_user = asyncHandler( async( req, res, next ) => {
     // Maybe the names of the users
     // And the latest comment.
 
-    const allChats = await Chat.find({}).populate('userInChat').populate('user')
-
-    // this needs to be updated
+    // const allChats = await Chat.find({}).populate('userInChat').populate('user')
     // const allChats = await Chat.find({})
+
+    const userInChatsQuery = await UserInChat.find({user: req.user.id}).populate('chat').populate('user')
+    console.log('checking userInChatsQuery')
+    console.log(userInChatsQuery)
 
     // res.json({user: req.user, allChats})
     res.json({allChats})

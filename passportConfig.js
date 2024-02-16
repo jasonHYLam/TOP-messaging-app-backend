@@ -15,6 +15,7 @@ function initializePassport(passport) {
                 if (!user) {
                     // what happens after this
                     console.log('checking username... ')
+                    console.log(username)
                     return done(null, false, { message: 'Incorrect username '})
                 }
 
