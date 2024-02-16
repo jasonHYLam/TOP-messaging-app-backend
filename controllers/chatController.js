@@ -21,6 +21,9 @@ exports.create_new_chat = [
         })
         await newChat.save()
 
+
+        // shouldn't they just be 
+        // i'm guessing that usersAddedToChat are friendToUser documents
         const usersAddedToChat = req.body.usersAddedToChat;
 
         async function createUserInChatFromReq(newChat, friendRelation) {
@@ -40,7 +43,8 @@ exports.create_new_chat = [
     })
 ]
 
-exports.show_friends_for_chat = asyncHandler( async( req, res, next ) => {
+exports.show_friends_for_initial_chat_creation = asyncHandler( async( req, res, next ) => {
+
 
     const currentUser = await User
     .findById(req.user.id)
@@ -69,23 +73,12 @@ exports.get_chats_for_user = asyncHandler( async( req, res, next ) => {
     // Maybe the names of the users
     // And the latest comment.
 
-    // const allChats = await Chat.find({}).populate('userInChat').populate('user')
-    // const allChats = await Chat.find({})
-
     const userInChatsQuery = await UserInChat.find({user: req.user.id})
     .populate('chat')
-    // .populate('user')
     .exec();
 
-    // const allChats = userInChatsQuery.chat
     const allChats = userInChatsQuery.map(userInChat => userInChat.chat)
 
-    // const userInChatsQuery = await UserInChat.find().exec();
-    // console.log('checking userInChatsQuery')
-    // console.log(userInChatsQuery)
-    console.log('checking allChats')
-    console.log(allChats)
-    // res.json({user: req.user, allChats})
     res.json({allChats})
 })
 

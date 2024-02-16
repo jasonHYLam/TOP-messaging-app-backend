@@ -28,7 +28,7 @@ router.get('/home/get_chats_for_user', authController.isAuthenticated, chatContr
 // router.get('/home/get_all_chats', chatController.get_all_chats);
 // Create new chat. Need to figure out what the route should be called.
 router.post('/home/create_new_chat', chatController.create_new_chat);
-router.get('/home/show_friends_for_chat', chatController.show_friends_for_chat);
+router.get('/home/show_friends_for_initial_chat_creation', chatController.show_friends_for_initial_chat_creation);
 
 
 // Message related routes.
