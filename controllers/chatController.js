@@ -14,8 +14,13 @@ exports.create_new_chat = [
     
     asyncHandler( async(req, res, next) => {
 
+        // From the frontend (and test), request sends an array variable called addToChatUserIds.
+        // This is an array of userIds
+        // This will be used to find matchingUser and add user to chat
+
         // this requires an array of user ids to make a chat with.
         // I think I need to create the userInChat models and attach User And Chat to them...
+
         const newChat = new Chat({
             name: he.decode(req.body.chatName)
         })
@@ -24,10 +29,10 @@ exports.create_new_chat = [
 
         // shouldn't they just be 
         // i'm guessing that usersAddedToChat are friendToUser documents
-        const usersAddedToChat = req.body.usersAddedToChat;
+        const addToChatUserIds = req.body.addToChatUserIds;
 
-        async function createUserInChatFromReq(newChat, friendRelation) {
-            const matchingUser = await User.findById(friendRelation.friendUser.id)
+        async function createUserInChatFromReq(newChat, userid) {
+            const matchingUser = await User.findById(userid).exec()
             const newUserInChat = new UserInChat({
                 chat: newChat,
                 user: matchingUser,
@@ -36,7 +41,7 @@ exports.create_new_chat = [
             await newUserInChat.save();
         }
 
-        usersAddedToChat.map(async friendRelation => createUserInChatFromReq(newChat, friendRelation));
+        addToChatUserIds.map(async userid => createUserInChatFromReq(newChat, userid));
 
         res.json({});
 
