@@ -21,30 +21,33 @@ exports.create_new_chat = [
         // this requires an array of user ids to make a chat with.
         // I think I need to create the userInChat models and attach User And Chat to them...
 
-        const newChat = new Chat({
-            name: he.decode(req.body.chatName)
-        })
-        await newChat.save()
-
-
-        // shouldn't they just be 
-        // i'm guessing that usersAddedToChat are friendToUser documents
-        const addToChatUserIds = req.body.addToChatUserIds;
-
-        async function createUserInChatFromReq(newChat, userid) {
-            const matchingUser = await User.findById(userid).exec()
-            const newUserInChat = new UserInChat({
-                chat: newChat,
-                user: matchingUser,
-            })
-
-            await newUserInChat.save();
+        if (!req.body.addToChatUserIds) {
+            return res.status(404).end();
         }
+        else if (req.body.addToChatUserIds.length === 0) {
+            return res.status(404).end();
+        }
+        else {
 
-        addToChatUserIds.map(async userid => createUserInChatFromReq(newChat, userid));
+            const newChat = new Chat({
+                name: he.decode(req.body.chatName)
+            })
+            await newChat.save()
 
-        res.json({});
+            const addToChatUserIds = req.body.addToChatUserIds;
 
+            async function createUserInChatFromReq(newChat, userid) {
+                const matchingUser = await User.findById(userid).exec()
+                const newUserInChat = new UserInChat({
+                    chat: newChat,
+                    user: matchingUser,
+                })
+                await newUserInChat.save();
+            }
+
+            addToChatUserIds.map(async userid => createUserInChatFromReq(newChat, userid));
+            res.json({});
+        }
     })
 ]
 
