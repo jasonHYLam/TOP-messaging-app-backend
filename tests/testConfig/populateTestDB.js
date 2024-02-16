@@ -51,6 +51,7 @@ async function createAllChats() {
 // create UserInChat
 async function createUserInChat(data) {
     const newUserInChat = new UserInChat(data);
+    await newUserInChat.save();
 }
 
 async function createAllUserInChats() {

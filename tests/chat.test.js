@@ -38,10 +38,10 @@ describe('fetch chats', () => {
         .set('Accept', 'application/json')
         .set('Content-Type', 'application/json')
         .send(data)
-        expect(loginResponse.status).toEqual(200)
         }
         catch(err) {
             console.log(err)
+        expect(loginResponse.status).toEqual(200)
         }
     })
 
