@@ -72,18 +72,19 @@ exports.get_chats_for_user = asyncHandler( async( req, res, next ) => {
     // const allChats = await Chat.find({}).populate('userInChat').populate('user')
     // const allChats = await Chat.find({})
 
-    // const userInChatsQuery = await UserInChat.find({user: req.user.id})
-
-    const userQuery = await User.find().exec()
-    console.log('checking userQuery')
-    console.log(userQuery)
-
-    const userInChatsQuery = await UserInChat.find().exec();
-    // .populate('chat')
+    const userInChatsQuery = await UserInChat.find({user: req.user.id})
+    .populate('chat')
     // .populate('user')
-    console.log('checking userInChatsQuery')
-    console.log(userInChatsQuery)
+    .exec();
 
+    // const allChats = userInChatsQuery.chat
+    const allChats = userInChatsQuery.map(userInChat => userInChat.chat)
+
+    // const userInChatsQuery = await UserInChat.find().exec();
+    // console.log('checking userInChatsQuery')
+    // console.log(userInChatsQuery)
+    console.log('checking allChats')
+    console.log(allChats)
     // res.json({user: req.user, allChats})
     res.json({allChats})
 })
