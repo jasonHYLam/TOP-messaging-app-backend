@@ -7,6 +7,9 @@ const populateTestDB = require('./testConfig/populateTestDB');
 const chats = require('./testConfig/chats');
 const chatIds = chats.map(chat => chat._id.toString());
 
+const users = require('./testConfig/users');
+const userIds = users.map(user => user._id.toString());
+
 beforeAll(async() => {
     await initializeMongoServer();
     // await populateTestDB();
@@ -25,6 +28,8 @@ afterEach(async() => {
     await dropDatabase();
 })
 
+const loginData = {username: 'user1', password: 'a'};
+
 describe("chat tests", () => {
 
     // fetch chats
@@ -32,7 +37,6 @@ describe("chat tests", () => {
 
         it ('ensures login is okay for test suite', async () => {
 
-            const data = {username: 'user1', password: 'a'};
             const agent = request.agent(app) 
 
             try {
@@ -40,7 +44,7 @@ describe("chat tests", () => {
             .post('/login')
             .set('Accept', 'application/json')
             .set('Content-Type', 'application/json')
-            .send(data)
+            .send(loginData)
             expect(loginResponse.status).toEqual(200)
             }
             catch(err) {
@@ -52,14 +56,13 @@ describe("chat tests", () => {
 
             console.log('checking database...')
 
-            const data = {username: 'user1', password: 'a'};
             const agent = request.agent(app) 
 
             const loginResponse = await agent
             .post('/login')
             .set('Accept', 'application/json')
             .set('Content-Type', 'application/json')
-            .send(data)
+            .send(loginData)
             expect(loginResponse.status).toEqual(200)
 
             const getChatsResponse = await agent
@@ -86,44 +89,57 @@ describe("chat tests", () => {
     // If there are less than two, how would I plan around that.
     // Also it seems I need the current user, aka i need req.user
 
-    // describe('create chat', () => {
+    describe('create chat', () => {
 
-    //         // const response = request(app);
-    //         const agent = request.agent(app)
-    //         agent.post('/login', (req, res) => {
-    //             console.log('not sure')
-    //             console.log(req.cookie)
-    //         })
+        test("after creating a chat, the number of a user's chat increases.", async () => {
 
-    //     it('create chat if successful login', async (req, res) => {
-    //     //     const data = {username: 'user', password: 'Abc123'};
+            const agent = request.agent(app);
 
-    //         // const response = request(app);
-    //         // const agent = response.agent(app);
+            const dataToSend = {
+                chatName: "Wild rock and rollers",
+                addToChatUserIds: [
+                    userIds[0],
+                    userIds[1],
+                ]
+            }
 
-    //         agent
-    //         // const agent = response.agent(app);
-    //         .post('/login')
-    //         .type('form')
-    //         .set('Content-Type', 'application/json')
-    //         .set('Accept', 'application/json')
-    //         // // .send(data)
-    //         .auth('user1', 'a')
+            const loginResponse = await agent
+            .post('/login')
+            .send(loginData)
+            expect(loginResponse.status).toEqual(200)
 
-    //         console.log('getting agent')
+            const fetchChatsResponse1 = await agent
+            .get(`/home/get_chats_for_user`)
+            expect(fetchChatsResponse1.status).toEqual(200)
+            expect(fetchChatsResponse1.body.allChats.length).toEqual(1)
 
-    //         // console.log(agent.jar)
-    //         // console.log(agent.jar.getCookie())
-    //         const cookie = agent.jar.getCookie()
-    //         console.log(cookie)
-    //         console.log('checking cookie')
-    //         // expect(req.user).toEqual('yes')
-    //         expect(agent.status).toEqual(200)
+            const createChatResponse = await agent
+            .post('/home/create_new_chat')
+            .send(dataToSend)
+            expect(createChatResponse.status).toEqual(200)
 
-    //         // agent
-    //     })
+            const fetchChatsResponse2 = await agent
+            .get(`/home/get_chats_for_user`)
+            expect(fetchChatsResponse2.status).toEqual(200)
+            expect(fetchChatsResponse2.body.allChats.length).toEqual(2)
+        })
 
-    // })
+        test("Attempting to create a chat without any friends added results in a 404 error.", async () => {
+
+            const agent = request.agent(app);
+
+            const loginResponse = await agent
+            .post('/login')
+            .send(loginData)
+            expect(loginResponse.status).toEqual(200)
+
+            const createChatResponse = await agent
+            .post('/home/create_new_chat')
+            expect(createChatResponse.status).toEqual(404)
+        })
+
+
+    })
 
 
 })
