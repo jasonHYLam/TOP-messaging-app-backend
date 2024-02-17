@@ -68,6 +68,10 @@ exports.show_friends_for_initial_chat_creation = asyncHandler( async( req, res, 
 
 })
 
+exports.show_friends_in_chat = asyncHandler(async (req, res, next) => {
+
+})
+
 exports.add_user_to_chat = asyncHandler( async( req, res, next ) => {
 
 })
