@@ -70,7 +70,12 @@ exports.show_friends_for_initial_chat_creation = asyncHandler( async( req, res, 
 
 exports.show_friends_in_chat = asyncHandler(async (req, res, next) => {
   // right. for a given chat, get users
-  const userInChatQuery = await UserInChat.find({chat: req.params.chatid}).populate('user')
+  const userInChatQuery = await UserInChat.
+  find({chat: req.params.chatid}).
+  populate({
+    path: 'user',
+    select: 'username profilePicURL',
+  })
   const allUsers = userInChatQuery.map(userInChat => userInChat.user)
 
   console.log('checking allusers')

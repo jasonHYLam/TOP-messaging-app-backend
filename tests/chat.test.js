@@ -27,7 +27,6 @@ const messageIDs = messages.map((message) => message._id.toString());
 
 beforeAll(async () => {
   await initializeMongoServer();
-  // await populateTestDB();
 });
 
 afterAll(async () => {
@@ -45,7 +44,6 @@ afterEach(async () => {
 const loginData = { username: "user1", password: "a" };
 
 describe("chat tests", () => {
-  // fetch chats
   describe("fetch chats", () => {
     it("ensures login is okay for test suite", async () => {
       const agent = request.agent(app);
@@ -130,7 +128,9 @@ describe("chat tests", () => {
       expect(createChatResponse.status).toEqual(404);
     });
 
-    test("Get a chat's messages (along with messages' authors)", async () => {
+    test("Get a chat's messages", async () => {
+      // Test should include timeStamp and timeStampFormatted, however formatting issues makes this hard to test.
+      // Thus test was simplified to check just text property of messages.
       const agent = request.agent(app);
 
       const loginResponse = await agent.post("/login").send(loginData);
@@ -140,8 +140,6 @@ describe("chat tests", () => {
 
       const chatMessages = fetchChatResponse.body.chat.chatMessages.map(message => message.text)
       expect(fetchChatResponse.status).toEqual(200);
-      // Test should include timeStamp and timeStampFormatted, however formatting issues makes this hard to test.
-      // Thus test was simplified to check just text property of messages.
       expect(chatMessages).toEqual([
         "message1",
         "message2",
@@ -150,7 +148,26 @@ describe("chat tests", () => {
     });
 
     test("Add a friend to a chat,", async () => {
+      const agent = request.agent(app);
 
+      const loginResponse = await agent.post("/login").send(loginData);
+      expect(loginResponse.status).toEqual(200);
+
+      const checkChatFriendsResponse1 = await agent.get(`/home/chat/${chatIds[0]}/show_friends_in_chat`)
+      expect(checkChatFriendsResponse1.status).toEqual(200);
+      expect(checkChatFriendsResponse1.body).toEqual({
+        allUsers: [
+          userDataForFrontend[0],
+          userDataForFrontend[1],
+          userDataForFrontend[2],
+        ]
+      })
+
+      const addFriendResponse = await agent.post(`/home/chat/${chatIds[0]}/add_user/${userIds[3]}`)
+      expect(addFriendResponse.status).toEqual(200);
+
+      const checkChatResponse2 = await agent.get(`/home/chat/${chatIds[0]}`)
+      expect(checkChatResponse2.status).toEqual(200);
     })
   });
 });
