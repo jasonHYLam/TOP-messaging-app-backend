@@ -141,6 +141,7 @@ describe("chat tests", () => {
       const chatMessages = fetchChatResponse.body.chat.chatMessages.map(message => message.text)
       expect(fetchChatResponse.status).toEqual(200);
       // Test should include timeStamp and timeStampFormatted, however formatting issues makes this hard to test.
+      // Thus test was simplified to check just text property of messages.
       expect(chatMessages).toEqual([
         "message1",
         "message2",

@@ -29,7 +29,7 @@ router.get('/home/get_chats_for_user', authController.isAuthenticated, chatContr
 // Create new chat. Need to figure out what the route should be called.
 router.post('/home/create_new_chat', chatController.create_new_chat);
 router.get('/home/show_friends_for_initial_chat_creation', chatController.show_friends_for_initial_chat_creation);
-
+router.post('/home/chat/:chatid/add_user/:userid', chatController.add_user_to_chat)
 
 // Message related routes.
 router.post('/home/chat/:chatid/create_message', messageController.create_message)

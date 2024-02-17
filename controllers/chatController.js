@@ -115,10 +115,6 @@ exports.get_chat_messages = asyncHandler( async(req, res, next) => {
         },
         ]
 })
-    .sort({'chatMessages': 1})
-    // const chatMessages = chat.chatMessages
-    // console.log('chatMessages:')
-    // console.log(chatMessages)
 
     res.json({chat})
 })
