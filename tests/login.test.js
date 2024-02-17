@@ -1,80 +1,81 @@
-const app = require('./testConfig/testApp');
-const request = require('supertest');
-const { initializeMongoServer, closeMongoServer, dropDatabase } = require('../mongoTestingConfig');
-const populateTestDB = require('./testConfig/populateTestDB');
+const app = require("./testConfig/testApp");
+const request = require("supertest");
+const {
+  initializeMongoServer,
+  closeMongoServer,
+  dropDatabase,
+} = require("../mongoTestingConfig");
+const populateTestDB = require("./testConfig/populateTestDB");
 
-const User = require("../models/user")
+const User = require("../models/user");
 
-const users = require('./testConfig/users');
-const loginData = {username: users[0].username, password: users[0].password}
+const users = require("./testConfig/users");
+const loginData = { username: users[0].username, password: users[0].password };
 
-beforeAll(async() => {
-    await initializeMongoServer();
-    // await populateTestDB();
-})
+beforeAll(async () => {
+  await initializeMongoServer();
+  // await populateTestDB();
+});
 
-afterAll( async() => {
-    await closeMongoServer();
-})
+afterAll(async () => {
+  await closeMongoServer();
+});
 
 beforeEach(async () => {
-    await populateTestDB();
-})
+  await populateTestDB();
+});
 
-afterEach(async() => {
-    await dropDatabase();
-})
+afterEach(async () => {
+  await dropDatabase();
+});
 
 describe.skip("login tests", () => {
+  describe("login route", () => {
+    test("successful login with valid credentials", async () => {
+      console.log("right whats all this then");
+      const loginData = {
+        username: users[0].username,
+        password: users[0].password,
+      };
+      const data = { username: "user1", password: "a" };
 
-    describe('login route',() => {
+      const response = await request(app)
+        .post("/login")
+        .set("Accept", "application/json")
+        .set("Content-Type", "application/json")
+        .send(data);
 
-        test('successful login with valid credentials', async() => {
+      expect(response.status).toEqual(200);
+    });
 
-            console.log('right whats all this then')
-            const loginData = {username: users[0].username, password: users[0].password}
-            const data = {username: 'user1', password: 'a'}
+    test("unsuccessful login with invalid username", async () => {
+      const data = { username: "user9", password: "a" };
 
-            const response = await request(app)
-            .post('/login')
-            .set('Accept', 'application/json')
-            .set('Content-Type', 'application/json')
-            .send(data)
+      const response = await request(app)
+        .post("/login")
+        .set("Accept", "application/json")
+        .set("Content-Type", "application/json")
+        .send(data);
+      expect(response.status).toEqual(401);
+    });
 
-            expect(response.status).toEqual(200)
-        })
+    test("unsuccessful login with invalid password", async () => {
+      const data = { username: "user1", password: "b" };
+      const response = await request(app)
+        .post("/login")
+        .set("Content-Type", "application/json")
+        .send(data);
+      expect(response.status).toEqual(401);
+    });
+  });
 
-        test('unsuccessful login with invalid username', async() => {
-
-            const data = {username: 'user9', password: 'a'};
-
-            const response = await request(app)
-            .post('/login')
-            .set('Accept', 'application/json')
-            .set('Content-Type', 'application/json')
-            .send(data)
-            expect(response.status).toEqual(401)
-        })
-
-        test('unsuccessful login with invalid password', async() => {
-
-            const data = {username: 'user1', password: 'b'};
-            const response = await request(app)
-            .post('/login')
-            .set('Content-Type', 'application/json')
-            .send(data)
-            expect(response.status).toEqual(401)
-        })
-    })
-
-    describe('sign up route', () => {
-        it('signs up successfully', async() => {
-            const response = await request(app)
-
-            .post('/signup')
-            .type('form')
-            .send({username: 'doris', password: 'DeafAids'})
-            expect(response.status).toEqual(200)
-        })
-    })
-})
+  describe("sign up route", () => {
+    it("signs up successfully", async () => {
+      const response = await request(app)
+        .post("/signup")
+        .type("form")
+        .send({ username: "doris", password: "DeafAids" });
+      expect(response.status).toEqual(200);
+    });
+  });
+});
