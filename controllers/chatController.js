@@ -6,15 +6,18 @@ const Chat = require('../models/chat');
 const User = require('../models/user');
 const UserInChat = require('../models/userInChat');
 
-async function createUserInChatFromReq(chatid, userid) {
-  const chat = await Chat.findById(chatid).exec();
-  const matchingUser = await User.findById(userid).exec();
-  const newUserInChat = new UserInChat({
-      chat: chat,
-      user: matchingUser,
-  })
-  await newUserInChat.save();
-}
+const { createUserInChatFromReq } = require("../helpers/chatUtils");
+
+// async function createUserInChatFromReq(chatid, userid) {
+//   const chat = await Chat.findById(chatid).exec();
+//   const matchingUser = await User.findById(userid).exec();
+//   const newUserInChat = new UserInChat({
+//       chat: chat,
+//       user: matchingUser,
+//   })
+//   await newUserInChat.save();
+// }
+
 // This involves creating a chat document as well as userInChat documents for each user being added to the chat.
 // This requires an array of friendRelation objects (objects that store the ObjectId of friends to add to a chat).
 exports.create_new_chat = [
