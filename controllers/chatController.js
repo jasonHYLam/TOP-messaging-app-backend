@@ -104,29 +104,26 @@ exports.get_chats_for_user = asyncHandler( async( req, res, next ) => {
 
 exports.get_chat_messages = asyncHandler( async(req, res, next) => {
     // finding all messages that are related to the chat.
-    // Hopefully chatid is passed through req.params
-    // req.params.chatid
-    // const chatUsers = Chat.findById(req.params.chatid).populate('users')
-    // res.json({chatMessages, chatUsers})
-    console.log('checking get_chat_messages:')
-    // console.log('req params:')
-    // console.log(req.params)
-    const chat = await Chat
-    .findById(req.params.chatid)
-    .populate({
-        path: 'chatMessages',
-        populate: [
-            {path: 'author',
-            select: 'username profilePicURL'
-        },
-            {path: 'messageReplyingTo',
-            populate: {
-                path: 'author',
-                select: 'username',
-            },
-        },
-        ]
-})
+    const chat = await Chat.findById(req.params.chatid)
+    if (!chat) return res.status(400).send();
+    else {
+      const chat = await Chat
+      .findById(req.params.chatid)
+      .populate({
+          path: 'chatMessages',
+          populate: [
+              {path: 'author',
+              select: 'username profilePicURL'
+          },
+              {path: 'messageReplyingTo',
+              populate: {
+                  path: 'author',
+                  select: 'username',
+              },
+          },
+          ]
+      })
+      res.json({chat})
+    }
 
-    res.json({chat})
 })

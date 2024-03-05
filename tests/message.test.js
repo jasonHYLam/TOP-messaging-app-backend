@@ -41,10 +41,10 @@ describe("message tests", () => {
   describe("get messages", () => {
     it("gets all messages for a chat", async () => {
 
-    const agent = request.agent(app);
-    const loginResponse = await agent
-    .post("/login")
-    .send(loginData)
+    // const agent = request.agent(app);
+    // const loginResponse = await agent
+    // .post("/login")
+    // .send(loginData)
 
       const getMessagesResponse = await agent
       .get(`/home/chat/${chatIds[0]}`)
@@ -57,6 +57,12 @@ describe("message tests", () => {
         messages[1].text,
         messages[2].text,
       ])
+    })
+
+    it("doesn't get messages if chat doesn't exist", async() => {
+      const getMessagesResponse = await agent
+      .get(`/home/chat/${fakeid}`)
+      expect(getMessagesResponse.status).toEqual(400);
     })
 
   })
