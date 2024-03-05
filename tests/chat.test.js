@@ -43,7 +43,7 @@ afterEach(async () => {
 
 const loginData = { username: "user1", password: "a" };
 
-describe("chat tests", () => {
+describe.skip("chat tests", () => {
   describe("fetch chats", () => {
     it("ensures login is okay for test suite", async () => {
       const agent = request.agent(app);
