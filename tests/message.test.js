@@ -5,6 +5,7 @@ const {initializeMongoServer, closeMongoServer, dropDatabase} = require("../mong
 const populateTestDB = require("./testConfig/populateTestDB");
 
 const messages = require("./testConfig/messages");
+const chats = require("./testConfig/chats");
 
 beforeAll(async () => {
   await initializeMongoServer();
