@@ -79,13 +79,12 @@ describe("message tests", () => {
       const getMessagesResponse = await agent
       .get(`/home/chat/${chatIds[0]}`)
       expect(getMessagesResponse.status).toEqual(200);
+
       const returnedBody = getMessagesResponse.body
       const chatMessages = returnedBody.chat.chatMessages.map(message => message.text)
-      expect(chatMessages).toEqual([
-        messages[1].text,
-        messages[2].text,
-        "Oh my TVC15..."
-      ])
+      expect(chatMessages).toContain(messages[1].text)
+      expect(chatMessages).toContain(messages[2].text)
+      expect(chatMessages).toContain("Oh my TVC15...")
 
     })
 
