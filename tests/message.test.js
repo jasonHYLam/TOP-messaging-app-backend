@@ -92,6 +92,14 @@ describe("message tests", () => {
       expect(editMessageResponse.status).toEqual(400)
     })
 
+    it("does not update message if chat does not exist", async () => {
+      const messageText = {text: "Oh my TVC15..."}
+      const editMessageResponse = await agent
+      .put(`/home/chat/${fakeid}/${messageIds[0]}`)
+      .send(messageText)
+      expect(editMessageResponse.status).toEqual(400)
+    })
+
   })
 
   describe.skip("create message", () => {
