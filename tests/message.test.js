@@ -85,7 +85,7 @@ describe("message tests", () => {
       expect(chatMessages).toContain(messages[1].text)
       expect(chatMessages).toContain(messages[2].text)
       expect(chatMessages).toContain("Oh my TVC15...")
-
+      expect(chatMessages).not.toContain(messages[0].text)
     })
 
     it("does not update message after unsuccessful edit", async () => {
