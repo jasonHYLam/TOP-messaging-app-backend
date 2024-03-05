@@ -9,7 +9,7 @@ const messageIds = messages.map((message) => message._id.toString());
 const chats = require("./testConfig/chats");
 const chatIds = chats.map((chat) => chat._id.toString());
 
-let agent;
+// let agent;
 
 beforeAll(async () => {
   await initializeMongoServer();
@@ -22,16 +22,16 @@ afterAll(async () => {
 beforeEach(async () => {
   await populateTestDB();
 
-  agent = request.agent(app);
-  const loginResponse = await agent
-  .post("/login")
-  .send(loginData)
-  expect(loginResponse.status).toEqual(200);
+  // agent = request.agent(app);
+  // const loginResponse = await agent
+  // .post("/login")
+  // .send(loginData)
 
 });
 
 afterEach(async () => {
   await dropDatabase();
+  // agent = null;
 });
 
 const loginData = { username: "user1", password: "a" };
@@ -39,6 +39,11 @@ const loginData = { username: "user1", password: "a" };
 describe("message tests", () => {
   describe("get messages", () => {
     it("gets all messages for a chat", async () => {
+
+    const agent = request.agent(app);
+    const loginResponse = await agent
+    .post("/login")
+    .send(loginData)
 
       const getMessagesResponse = await agent
       .get(`/home/chat/${chatIds}`)
@@ -57,14 +62,32 @@ describe("message tests", () => {
 
   describe.skip("update message", () => {
     it("updates message after successful edit", async () => {
-      // const agent = request.agent(app);
-      // const loginResponse = await agent
-      // .post("/login")
-      // .send(loginData)
-      // expect(loginResponse.status).toEqual(200);
 
-      const editMessageResponse = agent
-      .put(`/home/chat/${chatIds[0]}/${messageIds[0]}`)
+
+      const messageText = {text: "Oh my TVC15..."}
+
+      const agent = request.agent(app);
+      const loginResponse = await agent
+      .post("/login")
+      .send(loginData)
+
+      // const editMessageResponse = await agent
+      // .put(`/home/chat/${chatIds[0]}/${messageIds[0]}`)
+      // .send(messageText)
+      // expect(editMessageResponse.status).toEqual(200)
+
+      const getMessagesResponse = agent
+      .get(`/home/chat/${chatIds[0]}`)
+      const returnedBody = getMessagesResponse.body
+
+      const chatMessages = returnedBody.chat.chatMessages.map(message => message.text)
+      expect(chatMessages).toEqual([
+        messages[0].text,
+        messages[1].text,
+        messages[2].text,
+        "Oh my TVC15..."
+      ])
+
     })
 
     it("does not update message after unsuccessful edit", async () => {

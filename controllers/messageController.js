@@ -7,6 +7,11 @@ const Message = require('../models/message');
 const User = require('../models/user');
 const Chat = require('../models/chat');
 
+exports.validate_text = (req, res, next) => {
+  body('text').trim().escape();
+  next();
+}
+
 exports.create_message = [
     // validate the text first
     body('message').trim().escape(),
@@ -16,18 +21,6 @@ exports.create_message = [
 
         const currentUser = await User.findById(req.user._id);
         const currentChat = await Chat.findById(req.params.chatid);
-
-        console.log('checking out:')
-        // console.log(req.body.message)
-        console.log('req body')
-        console.log(req.body)
-        // console.log(' ')
-        // console.log(currentUser)
-        // console.log(' ')
-        // console.log(currentChat)
-        // console.log(' ')
-
-        // if (req.body.messageToReplyTo)
 
         const messageToReplyTo = await Message.findById(req.body.messageToReplyTo.id)
         console.log(messageToReplyTo)
@@ -101,11 +94,31 @@ exports.delete_message = asyncHandler( async(req, res, next) => {
     // delete based on id
 })
 
-exports.edit_message = asyncHandler( async(req, res, next) => {
+// exports.edit_message = [
 
-    // edit based on id
-    // Message.findByIdAndUpdate()
+//   body('message').trim().escape(),
+
+//   console.log('is this being called'),
+//   asyncHandler( async(req, res, next) => {
+//       // edit based on id based on req.param
+//       const currentChat = await Chat.findById(req.params.chatid)
+//       const messageToEdit = await Message.findById(req.params.messageid)
+
+//       console.log('checking messageToEdit.chat')
+//       console.log(messageToEdit.chat)
+//       // if (messageToEdit.chat)
+
+//       messageToEdit.text = he.decode(req.body.message)
+//       await messageToEdit.save();
+
+//       res.json({});
+//   })
+// ]
+
+exports.edit_message = asyncHandler( async( req, res, next ) => {
+  console.log('hey')
 })
+
 
 exports.reply_to_message = [
     // validate the text first
