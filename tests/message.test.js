@@ -9,6 +9,7 @@ const messageIds = messages.map((message) => message._id.toString());
 const chats = require("./testConfig/chats");
 const chatIds = chats.map((chat) => chat._id.toString());
 
+const fakeid = '65c0f5dcf0e1ac63c1209390';
 let agent;
 
 beforeAll(async () => {
@@ -66,11 +67,6 @@ describe("message tests", () => {
 
       const messageText = {text: "Oh my TVC15..."}
 
-      // const agent = request.agent(app);
-      // const loginResponse = await agent
-      // .post("/login")
-      // .send(loginData)
-
       const editMessageResponse = await agent
       .put(`/home/chat/${chatIds[0]}/${messageIds[0]}`)
       .send(messageText)
@@ -88,7 +84,12 @@ describe("message tests", () => {
       expect(chatMessages).not.toContain(messages[0].text)
     })
 
-    it("does not update message after unsuccessful edit", async () => {
+    it("does not update message if message does not exist", async () => {
+      const messageText = {text: "Oh my TVC15..."}
+      const editMessageResponse = await agent
+      .put(`/home/chat/${chatIds[0]}/${fakeid}`)
+      .send(messageText)
+      expect(editMessageResponse.status).toEqual(400)
     })
 
   })

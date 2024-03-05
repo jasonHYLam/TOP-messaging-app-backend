@@ -100,7 +100,9 @@ exports.edit_message = asyncHandler( async(req, res, next) => {
   const currentChat = await Chat.findById(req.params.chatid)
   const messageToEdit = await Message.findById(req.params.messageid)
 
-  // if (messageToEdit.chat)
+  console.log(messageToEdit)
+
+  if (!messageToEdit || !currentChat ) return res.status(400).send();
 
   messageToEdit.text = he.decode(req.body.text)
   await messageToEdit.save();
