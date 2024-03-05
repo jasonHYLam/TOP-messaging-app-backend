@@ -94,29 +94,18 @@ exports.delete_message = asyncHandler( async(req, res, next) => {
     // delete based on id
 })
 
-// exports.edit_message = [
+exports.edit_message = asyncHandler( async(req, res, next) => {
+  // edit based on id based on req.param
 
-//   body('message').trim().escape(),
+  const currentChat = await Chat.findById(req.params.chatid)
+  const messageToEdit = await Message.findById(req.params.messageid)
 
-//   console.log('is this being called'),
-//   asyncHandler( async(req, res, next) => {
-//       // edit based on id based on req.param
-//       const currentChat = await Chat.findById(req.params.chatid)
-//       const messageToEdit = await Message.findById(req.params.messageid)
+  // if (messageToEdit.chat)
 
-//       console.log('checking messageToEdit.chat')
-//       console.log(messageToEdit.chat)
-//       // if (messageToEdit.chat)
+  messageToEdit.text = he.decode(req.body.text)
+  await messageToEdit.save();
 
-//       messageToEdit.text = he.decode(req.body.message)
-//       await messageToEdit.save();
-
-//       res.json({});
-//   })
-// ]
-
-exports.edit_message = asyncHandler( async( req, res, next ) => {
-  console.log('hey')
+  res.json({});
 })
 
 
