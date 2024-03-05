@@ -138,13 +138,11 @@ describe("chat tests", () => {
 
       const fetchChatResponse = await agent.get(`/home/chat/${chatIds[0]}`);
 
-      const chatMessages = fetchChatResponse.body.chat.chatMessages.map(message => message.text)
+      const chatMessages = fetchChatResponse.body.chat.chatMessages.map(
+        (message) => message.text,
+      );
       expect(fetchChatResponse.status).toEqual(200);
-      expect(chatMessages).toEqual([
-        "message1",
-        "message2",
-        "message3",
-      ]);
+      expect(chatMessages).toEqual(["message1", "message2", "message3"]);
     });
 
     test("Add a friend to a chat,", async () => {
@@ -153,21 +151,29 @@ describe("chat tests", () => {
       const loginResponse = await agent.post("/login").send(loginData);
       expect(loginResponse.status).toEqual(200);
 
-      const checkChatFriendsResponse1 = await agent.get(`/home/chat/${chatIds[0]}/show_friends_in_chat`)
+      const checkChatFriendsResponse1 = await agent.get(
+        `/home/chat/${chatIds[0]}/show_friends_in_chat`,
+      );
       expect(checkChatFriendsResponse1.status).toEqual(200);
       expect(checkChatFriendsResponse1.body).toEqual({
         allUsers: [
           userDataForFrontend[0],
           userDataForFrontend[1],
           userDataForFrontend[2],
-        ]
-      })
+        ],
+      });
 
-      const addFriendResponse = await agent.post(`/home/chat/${chatIds[0]}/add_user/${userIds[3]}`)
+      const addFriendResponse = await agent.post(
+        `/home/chat/${chatIds[0]}/add_user/${userIds[3]}`,
+      );
       expect(addFriendResponse.status).toEqual(200);
 
-      const checkChatResponse2 = await agent.get(`/home/chat/${chatIds[0]}`)
+      const checkChatResponse2 = await agent.get(`/home/chat/${chatIds[0]}`);
       expect(checkChatResponse2.status).toEqual(200);
-    })
+    });
+
+    test("Change name of chat", async () => {});
+
+    test("Chats are sorted by latest message", async () => {});
   });
 });
