@@ -114,7 +114,7 @@ describe("message tests", () => {
     it("creates new message without image if successful validation", async () => {
       const messageText = {message: "Oh my TVC15..."}
       const createMessageResponse = await agent
-      .post(`/home/chat/${chatIds[0]}/create_message`)
+      .post(`/home/chat/${chatIds[0]}/create_message/`)
       .send(messageText)
       expect(createMessageResponse.status).toEqual(200)
 
@@ -134,38 +134,51 @@ describe("message tests", () => {
     })
 
     it("creates new message with image if successful validation", async () => {
-      const messageText = {message: "Oh my TVC15..."}
       const pathToImage = "tests/testConfig/testImages/abra.jpeg";
 
       const createMessageResponse = await agent
       .post(`/home/chat/${chatIds[0]}/create_message_with_image`)
       .field('message', "Oh my TVC15...")
       .attach("image", pathToImage)
-      // .field('message', JSON.stringify(messageText))
       expect(createMessageResponse.status).toEqual(200);
 
     })
 
+    // this results in error message simply saying "Aborted"
     it("does not create new message with image if unsuccessful validation", async () => {
+
+      const pathToImage = "tests/testConfig/testImages/abra.jpef";
+
+      const createMessageResponse = await agent
+      .post(`/home/chat/${chatIds[0]}/create_message_with_image`)
+      .field('message', "Oh my TVC15...")
+      .attach("image", pathToImage)
+      expect(createMessageResponse.status).toEqual(400);
     })
 
     it("creates new reply without image if successful validation", async () => {
+
+      const messageText = {message: "Oh my TVC15..."}
+      const createMessageResponse = await agent
+      .post(`/home/chat/${chatIds[0]}/create_message/${messageIds[0]}`)
+      .send(messageText)
+      expect(createMessageResponse.status).toEqual(200)
+
     })
 
     it("does not create new reply without image if unsuccessful validation", async () => {
     })
 
-    it("creates new reply with image if successful validation", async () => {
-    })
+    // it("creates new reply with image if successful validation", async () => {
+    // })
 
-    it("does not create new reply with image if unsuccessful validation", async () => {
-    })
+    // it("does not create new reply with image if unsuccessful validation", async () => {
+    // })
 
   })
 
   describe.skip("delete message", () => {
     it("successfully deletes message", async () => {
-
     })
 
   })

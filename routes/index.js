@@ -33,15 +33,15 @@ router.post('/home/chat/:chatid/add_user/:userid', chatController.add_user_to_ch
 router.get('/home/chat/:chatid/show_friends_in_chat', chatController.show_friends_in_chat);
 
 // Message related routes.
-router.post('/home/chat/:chatid/create_message', messageController.validate_text, messageController.create_message)
+router.post('/home/chat/:chatid/create_message/:messageid?', messageController.validate_text, messageController.create_message)
 // router.post('/home/chat/:chatid/create_message_with_image', messageController.attach_image, messageController.validate_text, messageController.create_message_with_image)
 // router.post('/home/chat/:chatid/create_message_with_image', messageController.attach_image, messageController.create_message_with_image)
 router.post('/home/chat/:chatid/create_message_with_image', messageController.create_message_with_image)
 router.delete('/home/chat/:chatid/:messageid', messageController.delete_message)
 router.put('/home/chat/:chatid/:messageid', messageController.edit_message)
-router.post('/home/chat/:chatid/reply_to_message', messageController.reply_to_message)
-router.post('/home/chat/:chatid/react_to_message', messageController.react_to_message)
-router.post('/home/chat/:chatid/attach_image', messageController.attach_image)
+// router.post('/home/chat/:chatid/reply_to_message/:messageid', messageController.reply_to_message)
+// router.post('/home/chat/:chatid/react_to_message', messageController.react_to_message)
+// router.post('/home/chat/:chatid/attach_image', messageController.attach_image)
 
 // User related routes (viewing profiles, searching and adding users)
 // Searching user. How is this gonna work? Post? Get? Possibly get the userID from button from user

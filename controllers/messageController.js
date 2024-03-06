@@ -12,18 +12,26 @@ exports.validate_text = (req, res, next) => {
   next();
 }
 
+exports.validate_fields = asyncHandler(async ( req, res, next ) => {
+  console.log('checking req body and req file')
+  console.log(req.body)
+  console.log(req.file)
+})
+
 exports.create_message = 
 
     asyncHandler( async(req, res, next) => {
 
+      console.log('checking req params')
+      console.log(req.params)
         const currentUser = await User.findById(req.user._id);
 
         const currentChat = await Chat.findById(req.params.chatid);
         if (!currentChat) return res.status(400).end();
 
         let messageToReplyTo = null;
-        if(req.body.messageToReplyTo) {
-          messageToReplyTo = await Message.findById(req.body.messageToReplyTo.id)
+        if(req.params.messageid) {
+          messageToReplyTo = await Message.findById(req.params.messageid)
         }
 
         const newMessage = new Message({
@@ -52,14 +60,10 @@ exports.create_message_with_image =
 [
 
     upload.single('image'),
+
     body('message').trim().escape(),
 
     asyncHandler(async (req, res, next) => {
-
-      console.log('checking req body')
-      console.log(req.body)
-        console.log('req file')
-        console.log(req.file)
 
         if(!req.file) return res.status(400).end();
 
