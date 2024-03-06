@@ -33,6 +33,7 @@ exports.create_message =
         if(req.params.messageid) {
           messageToReplyTo = await Message.findById(req.params.messageid)
         }
+        // console.log('does this happen')
 
         const newMessage = new Message({
             text: he.decode(req.body.message),
@@ -45,8 +46,9 @@ exports.create_message =
             // isDeleted: false,
             reactions: {},
         })
-        console.log('checking out newMessage')
-        console.log(newMessage)
+        // console.log('guessing this doesnt happen')
+        // console.log('checking out newMessage')
+        // console.log(newMessage)
 
         await newMessage.save() 
         // pretty sure this is fine

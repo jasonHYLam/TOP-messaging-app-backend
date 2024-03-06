@@ -164,9 +164,17 @@ describe("message tests", () => {
       .send(messageText)
       expect(createMessageResponse.status).toEqual(200)
 
+      const getMessagesResponse = await agent
+      .get(`/home/chat/${chatIds[0]}`)
+      const responseBody = getMessagesResponse.body
+      const lastMessage = responseBody.chat.chatMessages[3]
+      expect(lastMessage.messageReplyingTo).not.toBeNull();
+
+
     })
 
     it("does not create new reply without image if unsuccessful validation", async () => {
+
     })
 
     // it("creates new reply with image if successful validation", async () => {
