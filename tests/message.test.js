@@ -10,6 +10,8 @@ const chats = require("./testConfig/chats");
 const chatIds = chats.map((chat) => chat._id.toString());
 
 const fakeid = '65c0f5dcf0e1ac63c1209390';
+const pathToImage = "./testConfig/testImages/abra.jpeg"
+
 let agent;
 
 beforeAll(async () => {
@@ -136,9 +138,10 @@ describe("message tests", () => {
       const pathToImage = "tests/testConfig/testImages/abra.jpeg";
 
       const createMessageResponse = await agent
-      .post(`/home/chat/:chatid/create_message_with_image`)
+      .post(`/home/chat/${chatIds[0]}/create_message_with_image`)
       .field('message', "Oh my TVC15...")
-      // .attach()
+      .attach("image", pathToImage)
+      // .field('message', JSON.stringify(messageText))
       expect(createMessageResponse.status).toEqual(200);
 
     })

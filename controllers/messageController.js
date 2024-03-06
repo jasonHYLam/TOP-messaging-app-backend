@@ -49,31 +49,22 @@ exports.create_message =
 
 exports.create_message_with_image = 
 
-// [
+[
 
-    // upload.single('image'),
-
-    // body('message').trim().escape(),
+    upload.single('image'),
+    body('message').trim().escape(),
 
     asyncHandler(async (req, res, next) => {
-        // console.log('checking buncha crap')
-        // console.log('req file')
-        // console.log(req.file)
-        // console.log('req body')
-        // console.log(req.body)
+
+      console.log('checking req body')
+      console.log(req.body)
+        console.log('req file')
+        console.log(req.file)
 
         if(!req.file) return res.status(400).end();
 
         const currentUser = await User.findById(req.user._id);
         const currentChat = await Chat.findById(req.params.chatid);
-
-        // console.log('checking out:')
-        // console.log(req.body.message)
-        // console.log(' ')
-        // console.log(currentUser)
-        // console.log(' ')
-        // console.log(currentChat)
-        // console.log(' ')
 
         const newMessage = new Message({
             text: he.decode(req.body.message),
@@ -92,7 +83,7 @@ exports.create_message_with_image =
         res.json({});
     })
     
-// ]
+]
 
 exports.delete_message = asyncHandler( async(req, res, next) => {
 
