@@ -108,8 +108,16 @@ describe("message tests", () => {
 
   })
 
-  describe.skip("create message", () => {
+  describe("create message", () => {
     it("creates new message without image if successful validation", async () => {
+      const messageText = {message: "Oh my TVC15..."}
+      const createMessageResponse = await agent
+      .post(`/home/chat/${chatIds[0]}/create_message`)
+      .send(messageText)
+      expect(createMessageResponse.status).toEqual(200)
+      expect(createMessageResponse.body).toEqual({
+        text: "Oh my TVC15..."
+      })
     })
 
     it("does not create new message without image if unsuccessful validation", async () => {

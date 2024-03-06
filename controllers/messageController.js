@@ -12,17 +12,21 @@ exports.validate_text = (req, res, next) => {
   next();
 }
 
-exports.create_message = [
-    // validate the text first
-    body('message').trim().escape(),
-
+exports.create_message = 
 
     asyncHandler( async(req, res, next) => {
 
         const currentUser = await User.findById(req.user._id);
         const currentChat = await Chat.findById(req.params.chatid);
 
-        const messageToReplyTo = await Message.findById(req.body.messageToReplyTo.id)
+        let messageToReplyTo = null;
+        if(req.body.messageToReplyTo) messageToReplyTo = req.body.messageToReplyTo.id;
+
+        console.log('check req body')
+        console.log(req.body)
+
+        // const messageToReplyTo = await Message.findById(req.body.messageToReplyTo.id)
+        console.log('is this workin?')
         console.log(messageToReplyTo)
 
         const newMessage = new Message({
@@ -36,6 +40,8 @@ exports.create_message = [
             // isDeleted: false,
             reactions: {},
         })
+        console.log('checking out newMessage')
+        console.log(newMessage)
 
         await newMessage.save() 
         // pretty sure this is fine
@@ -43,8 +49,6 @@ exports.create_message = [
         // not sure if this is needed
         res.json({});
     })
-
-]
 
 exports.create_message_with_image = [
 
