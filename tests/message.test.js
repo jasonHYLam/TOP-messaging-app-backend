@@ -124,9 +124,23 @@ describe("message tests", () => {
     })
 
     it("does not create new message without image if unsuccessful validation", async () => {
+      const messageText = {message: "Oh my TVC15..."}
+      const createMessageResponse = await agent
+      .post(`/home/chat/${fakeid}/create_message`)
+      .send(messageText)
+      expect(createMessageResponse.status).toEqual(400)
     })
 
     it("creates new message with image if successful validation", async () => {
+      const messageText = {message: "Oh my TVC15..."}
+      const pathToImage = "tests/testConfig/testImages/abra.jpeg";
+
+      const createMessageResponse = await agent
+      .post(`/home/chat/:chatid/create_message_with_image`)
+      .field('message', "Oh my TVC15...")
+      // .attach()
+      expect(createMessageResponse.status).toEqual(200);
+
     })
 
     it("does not create new message with image if unsuccessful validation", async () => {

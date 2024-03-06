@@ -47,11 +47,13 @@ exports.create_message =
         res.json({});
     })
 
-exports.create_message_with_image = [
+exports.create_message_with_image = 
 
-    upload.single('image'),
+// [
 
-    body('message').trim().escape(),
+    // upload.single('image'),
+
+    // body('message').trim().escape(),
 
     asyncHandler(async (req, res, next) => {
         // console.log('checking buncha crap')
@@ -59,6 +61,8 @@ exports.create_message_with_image = [
         // console.log(req.file)
         // console.log('req body')
         // console.log(req.body)
+
+        if(!req.file) return res.status(400).end();
 
         const currentUser = await User.findById(req.user._id);
         const currentChat = await Chat.findById(req.params.chatid);
@@ -88,7 +92,7 @@ exports.create_message_with_image = [
         res.json({});
     })
     
-]
+// ]
 
 exports.delete_message = asyncHandler( async(req, res, next) => {
 
@@ -112,9 +116,10 @@ exports.edit_message = asyncHandler( async(req, res, next) => {
 })
 
 
-exports.reply_to_message = [
+exports.reply_to_message = 
+// [
     // validate the text first
-    body('text').trim().escape(),
+    // body('text').trim().escape(),
     // now what...
     // this is basically create message but with extra steps
     // do I need the ID of the message being replied to? possibly. 
@@ -142,7 +147,7 @@ exports.reply_to_message = [
 
         // might need to call next() or res.json()
     })
-]
+// ]
 
 exports.react_to_message = asyncHandler( async(req, res, next) => {
     // may need the ID of the message to react to.
@@ -154,4 +159,6 @@ exports.react_to_message = asyncHandler( async(req, res, next) => {
 exports.attach_image = asyncHandler( async(req, res, next) => {
     // just how the heck does this work
     // do i need multer and cloudinary
+    upload.single('image');
+    next();
 })
