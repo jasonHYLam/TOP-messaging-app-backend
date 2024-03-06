@@ -115,9 +115,12 @@ describe("message tests", () => {
       .post(`/home/chat/${chatIds[0]}/create_message`)
       .send(messageText)
       expect(createMessageResponse.status).toEqual(200)
-      expect(createMessageResponse.body).toEqual({
-        text: "Oh my TVC15..."
-      })
+
+      const getMessageResponse = await agent
+      .get(`/home/chat/${chatIds[0]}`)
+      const responseBody = getMessageResponse.body
+      const chatMessages = responseBody.chat.chatMessages.map((message) => message.text)
+      expect(chatMessages).toContain("Oh my TVC15...")
     })
 
     it("does not create new message without image if unsuccessful validation", async () => {

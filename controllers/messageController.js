@@ -17,17 +17,14 @@ exports.create_message =
     asyncHandler( async(req, res, next) => {
 
         const currentUser = await User.findById(req.user._id);
+
         const currentChat = await Chat.findById(req.params.chatid);
+        if (!currentChat) return res.status(400).end();
 
         let messageToReplyTo = null;
-        if(req.body.messageToReplyTo) messageToReplyTo = req.body.messageToReplyTo.id;
-
-        console.log('check req body')
-        console.log(req.body)
-
-        // const messageToReplyTo = await Message.findById(req.body.messageToReplyTo.id)
-        console.log('is this workin?')
-        console.log(messageToReplyTo)
+        if(req.body.messageToReplyTo) {
+          messageToReplyTo = await Message.findById(req.body.messageToReplyTo.id)
+        }
 
         const newMessage = new Message({
             text: he.decode(req.body.message),
