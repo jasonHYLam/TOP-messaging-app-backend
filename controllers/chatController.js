@@ -94,7 +94,9 @@ exports.get_chats_for_user = asyncHandler( async( req, res, next ) => {
     // And the latest comment.
 
     const userInChatsQuery = await UserInChat.find({user: req.user.id})
-    .populate('chat')
+    .populate('chat', {
+      sort: {'last_updated': -1}
+    })
     // is it possible to sort by lastUpdated...?
     .exec();
 
@@ -115,6 +117,7 @@ exports.get_chat_messages = asyncHandler( async(req, res, next) => {
       .findById(req.params.chatid)
       .populate({
           path: 'chatMessages',
+          
           populate: [
               {path: 'author',
               select: 'username profilePicURL'
