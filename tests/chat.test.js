@@ -26,6 +26,7 @@ const messages = require("./testConfig/messages");
 const messageIDs = messages.map((message) => message._id.toString());
 
 let agent; 
+const loginData = { username: "user1", password: "a" };
 
 beforeAll(async () => {
   await initializeMongoServer();
@@ -49,7 +50,6 @@ afterEach(async () => {
   await dropDatabase();
 });
 
-const loginData = { username: "user1", password: "a" };
 
 describe("chat tests", () => {
   describe("fetch chats", () => {
@@ -84,14 +84,10 @@ describe("chat tests", () => {
     });
   });
 
-  // make new chat
-  // this requires at least 2 users.
-  // If there are less than two, how would I plan around that.
-  // Also it seems I need the current user, aka i need req.user
 
   describe("create chat", () => {
     test("after creating a chat, the number of a user's chat increases.", async () => {
-      const agent = request.agent(app);
+      // const agent = request.agent(app);
 
       const dataToSend = {
         chatName: "Wild rock and rollers",
