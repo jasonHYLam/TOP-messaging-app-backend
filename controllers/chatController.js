@@ -102,8 +102,8 @@ exports.get_chats_for_user = asyncHandler( async( req, res, next ) => {
 
     const allChats = userInChatsQuery.map(userInChat => userInChat.chat)
 
-    console.log('checking allChats')
-    console.log(allChats)
+    // console.log('checking allChats')
+    // console.log(allChats)
 
     res.json({allChats})
 })

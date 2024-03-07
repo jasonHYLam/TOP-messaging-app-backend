@@ -16,7 +16,7 @@ const userController = require('../controllers/userController');
 router.post('/signup', loginController.signup);
 router.post('/login', loginController.login);
 
-router.post('/logout', loginController.logout);
+router.get('/logout', loginController.logout);
 
 // Chat related routes.
 // Get specific chat's messages.

@@ -10,7 +10,7 @@ const populateTestDB = require("./testConfig/populateTestDB");
 const User = require("../models/user");
 
 const users = require("./testConfig/users");
-const loginData = { username: users[0].username, password: users[0].password };
+const validLoginData = { username: "user1", password: "a" };
 
 beforeAll(async () => {
   await initializeMongoServer();
@@ -29,21 +29,13 @@ afterEach(async () => {
   await dropDatabase();
 });
 
-describe.skip("login tests", () => {
+describe("login tests", () => {
   describe("login route", () => {
     test("successful login with valid credentials", async () => {
-      console.log("right whats all this then");
-      const loginData = {
-        username: users[0].username,
-        password: users[0].password,
-      };
-      const data = { username: "user1", password: "a" };
 
       const response = await request(app)
         .post("/login")
-        .set("Accept", "application/json")
-        .set("Content-Type", "application/json")
-        .send(data);
+        .send(validLoginData);
 
       expect(response.status).toEqual(200);
     });
@@ -53,8 +45,6 @@ describe.skip("login tests", () => {
 
       const response = await request(app)
         .post("/login")
-        .set("Accept", "application/json")
-        .set("Content-Type", "application/json")
         .send(data);
       expect(response.status).toEqual(401);
     });
@@ -63,7 +53,6 @@ describe.skip("login tests", () => {
       const data = { username: "user1", password: "b" };
       const response = await request(app)
         .post("/login")
-        .set("Content-Type", "application/json")
         .send(data);
       expect(response.status).toEqual(401);
     });
@@ -78,4 +67,18 @@ describe.skip("login tests", () => {
       expect(response.status).toEqual(200);
     });
   });
+
+  describe("logout route", () => {
+    it("logs out successfully", async () => {
+      const agent = request.agent(app);
+      const loginResponse = await agent
+      .post("/login")
+      .send(validLoginData)
+      expect(loginResponse.status).toEqual(200)
+
+      const logoutResponse = await agent
+      .get("/logout")
+      expect(logoutResponse.status).toEqual(200)
+    })
+  })
 });
