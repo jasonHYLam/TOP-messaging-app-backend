@@ -140,5 +140,5 @@ exports.change_chat_name = [
 
     currentChat.name = chatName;
     await currentChat.save();
-  });
+  })
 ]

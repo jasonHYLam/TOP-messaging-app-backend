@@ -31,6 +31,7 @@ router.post('/home/create_new_chat', chatController.create_new_chat);
 router.get('/home/show_friends_for_initial_chat_creation', chatController.show_friends_for_initial_chat_creation);
 router.post('/home/chat/:chatid/add_user/:userid', chatController.add_user_to_chat);
 router.get('/home/chat/:chatid/show_friends_in_chat', chatController.show_friends_in_chat);
+router.post('/home/chat/:chatid/change_chat_name', chatController.change_chat_name);
 
 // Message related routes.
 router.post('/home/chat/:chatid/create_message/:messageid?', messageController.validate_text, messageController.create_message)
