@@ -155,13 +155,6 @@ describe("chat tests", () => {
     });
 
     test("Change name of chat", async () => {
-      // not sure if i've created the controller callback for this
-      // if not, then it goes like this
-      // validate body
-      // take req body, 
-      // find chat from id
-      // change name property.
-      // save
       const dataToSubmit = {chat_name: 'Sorcerers from the hole'}
       const changeChatNameResponse = await agent
       .post(`/home/chat/${chatIds[0]}/change_chat_name`)
