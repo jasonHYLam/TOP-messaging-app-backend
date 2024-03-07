@@ -77,7 +77,7 @@ describe("login tests", () => {
       expect(loginResponse.status).toEqual(200)
 
       const logoutResponse = await agent
-      .get("/logout")
+      .delete("/logout")
       expect(logoutResponse.status).toEqual(200)
     })
   })
