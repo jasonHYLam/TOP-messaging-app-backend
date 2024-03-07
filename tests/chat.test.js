@@ -172,8 +172,31 @@ describe.skip("chat tests", () => {
       expect(checkChatResponse2.status).toEqual(200);
     });
 
-    test("Change name of chat", async () => {});
+    test("Change name of chat", async () => {
+      // not sure if i've created the controller callback for this
+      // if not, then it goes like this
+      // validate body
+      // take req body, 
+      // find chat from id
+      // change name property.
+      // save
+      const dataToSubmit = {chat_name: 'Sorcerers from the hole'}
+      const changeChatNameResponse = await agent
+      .post(`/home/chat/${chatIds[0]}/change_chat_name`)
+      .send(dataToSubmit)
+      expect(changeChatNameResponse.status).toEqual(200);
 
-    test("Chats are sorted by latest message", async () => {});
+      const getChatResponse = await agent
+      .get(`/home/chat/${chatIds[0]}`)
+      const responseBody = getChatResponse.body
+      const chatName = responseBody.chat.name
+      expect(chatName).toEqual('Sorcerers from the hole');
+    });
+
+    // this doesn't seem worth testing
+    test("Chats are sorted by latest message", async () => {
+      // sort by latest message...?
+      // or sort by last updated...?
+    });
   });
 });
