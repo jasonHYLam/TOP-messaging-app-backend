@@ -11,5 +11,20 @@ exports.isAuthenticated = asyncHandler( async( req, res, next ) => {
     } else {
         next();
     }
-
 })
+
+exports.preventIfLoggedIn = asyncHandler(async ( req, res, next ) => {
+  if (req.isAuthenticated()) {
+        return res.status(401).send({});
+  } else {
+    next();
+  }
+});
+
+exports.preventIfLoggedOut = asyncHandler(async ( req, res, next ) => {
+  if (!req.isAuthenticated()) {
+        return res.status(401).send({});
+  } else {
+    next();
+  }
+});

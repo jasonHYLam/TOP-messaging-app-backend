@@ -53,7 +53,7 @@ exports.logout = asyncHandler(async(req, res, next) => {
     // I hope this works. Calling passport.authenticate apparently creates req.logout
     req.logout(function(err) {
       if (err) return next(err)
-      res.redirect('/login')
+      res.end()
     });
 
 })

@@ -13,9 +13,9 @@ const userController = require('../controllers/userController');
 // perhaps I could separate these routes into protectedRoutes and nonProtectedRoutes
 
 // Login related routes.
-router.post('/signup', loginController.signup);
-router.post('/login', loginController.login);
-router.delete('/logout', loginController.logout);
+router.post('/signup', authController.preventIfLoggedIn, loginController.signup);
+router.post('/login', authController.preventIfLoggedIn, loginController.login);
+router.delete('/logout', authController.preventIfLoggedOut, loginController.logout);
 
 // Chat related routes.
 // Get specific chat's messages.

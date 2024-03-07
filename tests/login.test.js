@@ -56,6 +56,10 @@ describe("login tests", () => {
         .send(data);
       expect(response.status).toEqual(401);
     });
+
+    it("prevents access to login if already logged in", async() => {
+
+    })
   });
 
   describe("sign up route", () => {
@@ -66,6 +70,8 @@ describe("login tests", () => {
         .send({ username: "doris", password: "DeafAids" });
       expect(response.status).toEqual(200);
     });
+
+    // test to prevent access to sign up if already logged in
   });
 
   describe("logout route", () => {
@@ -80,5 +86,7 @@ describe("login tests", () => {
       .delete("/logout")
       expect(logoutResponse.status).toEqual(200)
     })
+
+    // test to prevent access to logout if not logged in
   })
 });
