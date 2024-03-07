@@ -37,7 +37,7 @@ router.post('/home/chat/:chatid/change_chat_name', chatController.change_chat_na
 router.post('/home/chat/:chatid/create_message/:messageid?', messageController.validate_text, messageController.create_message)
 // router.post('/home/chat/:chatid/create_message_with_image', messageController.attach_image, messageController.validate_text, messageController.create_message_with_image)
 // router.post('/home/chat/:chatid/create_message_with_image', messageController.attach_image, messageController.create_message_with_image)
-router.post('/home/chat/:chatid/create_message_with_image', messageController.create_message_with_image)
+router.post('/home/chat/:chatid/create_message_with_image/:messageid?', messageController.create_message_with_image)
 router.delete('/home/chat/:chatid/:messageid', messageController.delete_message)
 router.put('/home/chat/:chatid/:messageid', messageController.edit_message)
 // router.post('/home/chat/:chatid/reply_to_message/:messageid', messageController.reply_to_message)
