@@ -87,7 +87,6 @@ describe("chat tests", () => {
 
   describe("create chat", () => {
     test("after creating a chat, the number of a user's chat increases.", async () => {
-      // const agent = request.agent(app);
 
       const dataToSend = {
         chatName: "Wild rock and rollers",

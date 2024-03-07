@@ -7,9 +7,10 @@ const Message = require('../models/message');
 const User = require('../models/user');
 const Chat = require('../models/chat');
 
-function update_chat_last_updated_property(chat) {
+async function update_chat_last_updated_property(chat) {
   // i guess this takes the chat, takes the last_updated property, and sets it to new Date
-
+  chat.lastUpdated = new Date();
+  await chat.save();
 }
 exports.validate_text = (req, res, next) => {
   body('text').trim().escape();
