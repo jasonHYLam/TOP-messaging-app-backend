@@ -56,6 +56,8 @@ exports.create_message =
 
         await newMessage.save() 
 
+        await update_chat_last_updated_property(currentChat);
+
         res.json({});
     })
 
@@ -75,7 +77,16 @@ exports.create_message_with_image =
         const currentChat = await Chat.findById(req.params.chatid);
 
         // change the route, and add check for reply
+
+        let messageToReplyTo = null;
+        if(req.params.messageid) {
+          // add check if Message exists. create variable for found message.
+          // if it doesn't exist, then send 400 status
+          messageToReplyTo = await Message.findById(req.params.messageid)
+        }
         // check that messageid for reply exists. if it doesn't then return 400 status
+        if(!currentChat) return res.status(400).end();
+        await update_chat_last_updated_property(currentChat);
 
         const newMessage = new Message({
             text: he.decode(req.body.message),
@@ -84,7 +95,7 @@ exports.create_message_with_image =
             timeStamp: new Date(),
 
             // change this from null to variable.
-            // messageReplyingTo: null,
+            messageReplyingTo: messageToReplyTo,
             imageURL: req.file.path,
             // isDeleted: false,
             reactions: {},
