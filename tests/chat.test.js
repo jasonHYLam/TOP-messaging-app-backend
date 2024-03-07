@@ -25,7 +25,7 @@ const userDataForFrontend = users.map((user) => {
 const messages = require("./testConfig/messages");
 const messageIDs = messages.map((message) => message._id.toString());
 
-let agent; 
+let agent;
 const loginData = { username: "user1", password: "a" };
 
 beforeAll(async () => {
@@ -40,16 +40,12 @@ beforeEach(async () => {
   await populateTestDB();
 
   agent = request.agent(app);
-  const loginResponse = await agent
-  .post("/login")
-  .send(loginData)
-
+  const loginResponse = await agent.post("/login").send(loginData);
 });
 
 afterEach(async () => {
   await dropDatabase();
 });
-
 
 describe.skip("chat tests", () => {
   describe("fetch chats", () => {
@@ -84,10 +80,8 @@ describe.skip("chat tests", () => {
     });
   });
 
-
   describe("create chat", () => {
     test("after creating a chat, the number of a user's chat increases.", async () => {
-
       const dataToSend = {
         chatName: "Wild rock and rollers",
         addToChatUserIds: [userIds[0], userIds[1]],
@@ -108,7 +102,6 @@ describe.skip("chat tests", () => {
     });
 
     test("Attempting to create a chat without any friends added results in a 404 error.", async () => {
-
       const createChatResponse = await agent.post("/home/create_new_chat");
       expect(createChatResponse.status).toEqual(404);
     });
@@ -127,7 +120,6 @@ describe.skip("chat tests", () => {
     });
 
     test("Add a friend to a chat,", async () => {
-
       const checkChatFriendsResponse1 = await agent.get(
         `/home/chat/${chatIds[0]}/show_friends_in_chat`,
       );
@@ -150,17 +142,16 @@ describe.skip("chat tests", () => {
     });
 
     test("Change name of chat", async () => {
-      const dataToSubmit = {chat_name: 'Sorcerers from the hole'}
+      const dataToSubmit = { chat_name: "Sorcerers from the hole" };
       const changeChatNameResponse = await agent
-      .post(`/home/chat/${chatIds[0]}/change_chat_name`)
-      .send(dataToSubmit)
+        .post(`/home/chat/${chatIds[0]}/change_chat_name`)
+        .send(dataToSubmit);
       expect(changeChatNameResponse.status).toEqual(200);
 
-      const getChatResponse = await agent
-      .get(`/home/chat/${chatIds[0]}`)
-      const responseBody = getChatResponse.body
-      const chatName = responseBody.chat.name
-      expect(chatName).toEqual('Sorcerers from the hole');
+      const getChatResponse = await agent.get(`/home/chat/${chatIds[0]}`);
+      const responseBody = getChatResponse.body;
+      const chatName = responseBody.chat.name;
+      expect(chatName).toEqual("Sorcerers from the hole");
     });
 
     // this doesn't seem worth testing
