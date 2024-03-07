@@ -7,6 +7,10 @@ const Message = require('../models/message');
 const User = require('../models/user');
 const Chat = require('../models/chat');
 
+function update_chat_last_updated_property(chat) {
+  // i guess this takes the chat, takes the last_updated property, and sets it to new Date
+
+}
 exports.validate_text = (req, res, next) => {
   body('text').trim().escape();
   next();
@@ -31,6 +35,8 @@ exports.create_message =
 
         let messageToReplyTo = null;
         if(req.params.messageid) {
+          // add check if Message exists. create variable for found message.
+          // if it doesn't exist, then send 400 status
           messageToReplyTo = await Message.findById(req.params.messageid)
         }
         // console.log('does this happen')
@@ -46,14 +52,9 @@ exports.create_message =
             // isDeleted: false,
             reactions: {},
         })
-        // console.log('guessing this doesnt happen')
-        // console.log('checking out newMessage')
-        // console.log(newMessage)
 
         await newMessage.save() 
-        // pretty sure this is fine
 
-        // not sure if this is needed
         res.json({});
     })
 
@@ -72,12 +73,16 @@ exports.create_message_with_image =
         const currentUser = await User.findById(req.user._id);
         const currentChat = await Chat.findById(req.params.chatid);
 
+        // change the route, and add check for reply
+        // check that messageid for reply exists. if it doesn't then return 400 status
+
         const newMessage = new Message({
             text: he.decode(req.body.message),
             author: currentUser,
             chat: currentChat,
             timeStamp: new Date(),
 
+            // change this from null to variable.
             // messageReplyingTo: null,
             imageURL: req.file.path,
             // isDeleted: false,

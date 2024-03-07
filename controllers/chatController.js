@@ -95,6 +95,7 @@ exports.get_chats_for_user = asyncHandler( async( req, res, next ) => {
 
     const userInChatsQuery = await UserInChat.find({user: req.user.id})
     .populate('chat')
+    // is it possible to sort by lastUpdated...?
     .exec();
 
     const allChats = userInChatsQuery.map(userInChat => userInChat.chat)
@@ -127,3 +128,17 @@ exports.get_chat_messages = asyncHandler( async(req, res, next) => {
     }
 
 })
+
+exports.change_chat_name = [
+  body('chat_name').trim().escape(),
+
+  asyncHandler(async( req, res, next ) => {
+
+    const chatName = he.decode(req.body.chat_name);
+    const currentChat = await Chat.findById(req.params.chatid);
+    if (!currentChat) return res.status(400).end();
+
+    currentChat.name = chatName;
+    await currentChat.save();
+  });
+]
