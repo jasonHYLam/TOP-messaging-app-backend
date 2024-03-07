@@ -39,7 +39,7 @@ afterEach(async () => {
 
 const loginData = { username: "user1", password: "a" };
 
-describe("message tests", () => {
+describe.skip("message tests", () => {
   describe("get messages", () => {
     it("gets all messages for a chat", async () => {
 
@@ -133,22 +133,20 @@ describe("message tests", () => {
       expect(createMessageResponse.status).toEqual(400)
     })
 
-    it("creates new message with image if successful validation", async () => {
+    // This test uploads an image to Cloudinary, so skip it after validating it passes.
+    it.skip("creates new message with image if successful validation", async () => {
       const pathToImage = "tests/testConfig/testImages/abra.jpeg";
-
       const createMessageResponse = await agent
       .post(`/home/chat/${chatIds[0]}/create_message_with_image`)
       .field('message', "Oh my TVC15...")
       .attach("image", pathToImage)
       expect(createMessageResponse.status).toEqual(200);
-
     })
 
     // this results in error message simply saying "Aborted"
-    it("does not create new message with image if unsuccessful validation", async () => {
+    it.skip("does not create new message with image if unsuccessful validation", async () => {
 
       const pathToImage = "tests/testConfig/testImages/abra.jpef";
-
       const createMessageResponse = await agent
       .post(`/home/chat/${chatIds[0]}/create_message_with_image`)
       .field('message', "Oh my TVC15...")

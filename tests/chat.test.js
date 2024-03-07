@@ -25,6 +25,8 @@ const userDataForFrontend = users.map((user) => {
 const messages = require("./testConfig/messages");
 const messageIDs = messages.map((message) => message._id.toString());
 
+let agent; 
+
 beforeAll(async () => {
   await initializeMongoServer();
 });
@@ -35,6 +37,12 @@ afterAll(async () => {
 
 beforeEach(async () => {
   await populateTestDB();
+
+  agent = request.agent(app);
+  const loginResponse = await agent
+  .post("/login")
+  .send(loginData)
+
 });
 
 afterEach(async () => {
@@ -43,7 +51,7 @@ afterEach(async () => {
 
 const loginData = { username: "user1", password: "a" };
 
-describe.skip("chat tests", () => {
+describe("chat tests", () => {
   describe("fetch chats", () => {
     it("ensures login is okay for test suite", async () => {
       const agent = request.agent(app);
@@ -60,18 +68,7 @@ describe.skip("chat tests", () => {
       }
     });
 
-    it("logs in then fetches chats", async () => {
-      console.log("checking database...");
-
-      const agent = request.agent(app);
-
-      const loginResponse = await agent
-        .post("/login")
-        .set("Accept", "application/json")
-        .set("Content-Type", "application/json")
-        .send(loginData);
-      expect(loginResponse.status).toEqual(200);
-
+    it("fetches chats", async () => {
       const getChatsResponse = await agent.get("/home/get_chats_for_user");
       expect(getChatsResponse.status).toEqual(200);
       expect(getChatsResponse.body).toEqual({
@@ -101,9 +98,6 @@ describe.skip("chat tests", () => {
         addToChatUserIds: [userIds[0], userIds[1]],
       };
 
-      const loginResponse = await agent.post("/login").send(loginData);
-      expect(loginResponse.status).toEqual(200);
-
       const fetchChatsResponse1 = await agent.get(`/home/get_chats_for_user`);
       expect(fetchChatsResponse1.status).toEqual(200);
       expect(fetchChatsResponse1.body.allChats.length).toEqual(1);
@@ -119,10 +113,6 @@ describe.skip("chat tests", () => {
     });
 
     test("Attempting to create a chat without any friends added results in a 404 error.", async () => {
-      const agent = request.agent(app);
-
-      const loginResponse = await agent.post("/login").send(loginData);
-      expect(loginResponse.status).toEqual(200);
 
       const createChatResponse = await agent.post("/home/create_new_chat");
       expect(createChatResponse.status).toEqual(404);
@@ -131,10 +121,6 @@ describe.skip("chat tests", () => {
     test("Get a chat's messages", async () => {
       // Test should include timeStamp and timeStampFormatted, however formatting issues makes this hard to test.
       // Thus test was simplified to check just text property of messages.
-      const agent = request.agent(app);
-
-      const loginResponse = await agent.post("/login").send(loginData);
-      expect(loginResponse.status).toEqual(200);
 
       const fetchChatResponse = await agent.get(`/home/chat/${chatIds[0]}`);
 
@@ -146,10 +132,6 @@ describe.skip("chat tests", () => {
     });
 
     test("Add a friend to a chat,", async () => {
-      const agent = request.agent(app);
-
-      const loginResponse = await agent.post("/login").send(loginData);
-      expect(loginResponse.status).toEqual(200);
 
       const checkChatFriendsResponse1 = await agent.get(
         `/home/chat/${chatIds[0]}/show_friends_in_chat`,
