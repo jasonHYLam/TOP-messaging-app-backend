@@ -41,7 +41,7 @@ exports.create_new_chat = [
 
             addToChatUserIds.map(async userid => await createUserInChatFromReq(newChat, userid));
             // res.json({});
-            res.json({newChat})
+            res.json({chatid: newChat._id})
         }
     })
 ]
