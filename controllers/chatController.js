@@ -40,7 +40,8 @@ exports.create_new_chat = [
 
 
             addToChatUserIds.map(async userid => await createUserInChatFromReq(newChat, userid));
-            res.json({});
+            // res.json({});
+            res.json({newChat})
         }
     })
 ]
@@ -95,7 +96,7 @@ exports.get_chats_for_user = asyncHandler( async( req, res, next ) => {
 
     const userInChatsQuery = await UserInChat.find({user: req.user.id})
     .populate('chat', {
-      sort: {'last_updated': -1}
+      // sort: {'last_updated': -1}
     })
     // is it possible to sort by lastUpdated...?
     .exec();
