@@ -1,7 +1,7 @@
 const opts = { 
     toJSON: { virtuals: true }, 
     toObject: { virtuals: true }, 
-    versionKey: false,
+    // versionKey: false,
 };
 const mongoose = require('mongoose');
 

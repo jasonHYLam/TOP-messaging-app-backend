@@ -37,7 +37,12 @@ exports.create_new_chat = [
             })
             await newChat.save()
 
-            const addToChatUserIds = req.body.addToChatUserIds;
+            // just added this
+            const addToChatUserIds = [
+              ...req.body.addToChatUserIds,
+              req.user.id,
+            ]
+            // req.body.addToChatUserIds;
 
             console.log('checking addToChatUserIds')
             console.log(addToChatUserIds)
@@ -52,9 +57,6 @@ exports.create_new_chat = [
 
 exports.show_friends_for_initial_chat_creation = asyncHandler( async( req, res, next ) => {
 
-  console.log('checking req.user')
-  console.log(req.user)
-
     const currentUser = await User
     .findById(req.user.id)
     .populate({
@@ -62,8 +64,6 @@ exports.show_friends_for_initial_chat_creation = asyncHandler( async( req, res, 
         populate: {path: 'friendUser'}
     })
     const friends = currentUser.friends
-    // console.log('checking friends')
-    // console.log(friends)
 
     res.json({friends});
 
@@ -93,15 +93,16 @@ exports.add_user_to_chat = asyncHandler( async( req, res, next ) => {
 
 exports.get_chats_for_user = asyncHandler( async( req, res, next ) => {
 
-    console.log('checking if req.user exists');
-    console.log(req.user);
+    // console.log('checking if req.user exists');
+    // console.log(req.user);
     // sort these by lastUpdated field.
     // Do I need to populate here... maybe? 
     // Maybe the names of the users
     // And the latest comment.
 
-    // const userWithChatsQuery = await User.findById(req.user.id)
-    const chatsQuery = await Chat.find().sort({lastUpdated: -1})
+    const userWithChatsQuery = await User.findById(req.user.id)
+    // const chatsQuery = await Chat.find().sort({lastUpdated: -1})
+    .populate('chats')
     // .populate('chat', {
     //   // sort: {'last_updated': -1}
     // })
@@ -110,10 +111,11 @@ exports.get_chats_for_user = asyncHandler( async( req, res, next ) => {
     // const filteredChatsQuery = chatsQuery.filter(chat => chat)
 
     console.log('checking userWithChatsQuery')
+    console.log(userWithChatsQuery)
     // console.log(userWithChatsQuery.toObject({ virtuals: true }))
 
-    // const allChats = userWithChatsQuery
-    const allChats = chatsQuery
+    const allChats = userWithChatsQuery
+    // const allChats = chatsQuery
     res.json({allChats})
 })
 
