@@ -1,3 +1,4 @@
+const ObjectId = require('mongoose').Types.ObjectId;
 const asyncHandler = require("express-async-handler");
 const { body } = require('express-validator');
 const he = require('he');
@@ -94,22 +95,26 @@ exports.get_chats_for_user = asyncHandler( async( req, res, next ) => {
     // Maybe the names of the users
     // And the latest comment.
 
-    const userInChatsQuery = await UserInChat.find({user: req.user.id})
-    .populate('chat', {
-      // sort: {'last_updated': -1}
-    })
+    // const userWithChatsQuery = await User.findById(req.user.id)
+    const chatsQuery = await Chat.find().sort({lastUpdated: -1})
+    // .populate('chat', {
+    //   // sort: {'last_updated': -1}
+    // })
     // is it possible to sort by lastUpdated...?
     .exec();
+    // const filteredChatsQuery = chatsQuery.filter(chat => chat)
 
-    const allChats = userInChatsQuery.map(userInChat => userInChat.chat)
+    console.log('checking userWithChatsQuery')
+    // console.log(userWithChatsQuery.toObject({ virtuals: true }))
 
-    // console.log('checking allChats')
-    // console.log(allChats)
-
+    // const allChats = userWithChatsQuery
+    const allChats = chatsQuery
     res.json({allChats})
 })
 
 exports.get_chat_messages = asyncHandler( async(req, res, next) => {
+
+  // need to prevent a user accessing chat Messages if he is not part of that chat!!! important!
     // finding all messages that are related to the chat.
     const chat = await Chat.findById(req.params.chatid)
     if (!chat) return res.status(400).send();
@@ -151,3 +156,15 @@ exports.change_chat_name = [
     res.json({});
   })
 ]
+
+exports.view_participants = asyncHandler( async ( req, res, next ) => {
+
+  const chatQuery = await Chat.findById(req.params.chatid)
+  // add something to check if chatid is valid, and if not, return 400 error
+
+  console.log('checking chatQuery')
+  console.log(chatQuery)
+
+  const participants = chatQuery
+  res.json(participants)
+})
