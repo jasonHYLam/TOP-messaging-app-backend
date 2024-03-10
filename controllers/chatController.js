@@ -39,6 +39,9 @@ exports.create_new_chat = [
 
             const addToChatUserIds = req.body.addToChatUserIds;
 
+            console.log('checking addToChatUserIds')
+            console.log(addToChatUserIds)
+
 
             addToChatUserIds.map(async userid => await createUserInChatFromReq(newChat, userid));
             // res.json({});
@@ -49,6 +52,8 @@ exports.create_new_chat = [
 
 exports.show_friends_for_initial_chat_creation = asyncHandler( async( req, res, next ) => {
 
+  console.log('checking req.user')
+  console.log(req.user)
 
     const currentUser = await User
     .findById(req.user.id)

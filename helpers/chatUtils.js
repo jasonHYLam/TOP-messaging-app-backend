@@ -2,12 +2,23 @@ const Chat = require("../models/chat");
 const User = require("../models/user");
 const UserInChat = require("../models/userInChat");
 
-exports.createUserInChatFromReq = async(chatid, userid) => {
+const ObjectId = require('mongoose').Types.ObjectId;
 
-  const chat = await Chat.findById(chatid).exec();
-  const matchingUser = await User.findById(userid).exec();
+exports.createUserInChatFromReq = async(chat, userid) => {
+
+  console.log('checking userid')
+  console.log(userid)
+  const matchingChat = await Chat.findById(chat).exec();
+  const matchingUser = await User.findById(userid.toString()).exec();
+
+  console.log('checking matchingUser')
+  console.log(matchingUser)
+
+  console.log('checking chat, does it work???')
+  console.log(matchingChat)
+
   const newUserInChat = new UserInChat({
-      chat: chat,
+      chat: matchingChat,
       user: matchingUser,
   })
   await newUserInChat.save();
