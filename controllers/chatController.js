@@ -100,9 +100,11 @@ exports.get_chats_for_user = asyncHandler( async( req, res, next ) => {
     // Maybe the names of the users
     // And the latest comment.
 
-    const userWithChatsQuery = await User.findById(req.user.id)
-    // const chatsQuery = await Chat.find().sort({lastUpdated: -1})
+    // const userWithChatsQuery = await User.findById(req.user.id)
+    const userWithChatsQuery = await User.findOne({_id: req.user.id})
     .populate('chats')
+    .populate('friends')
+    // const chatsQuery = await Chat.find().sort({lastUpdated: -1})
     // .populate('chat', {
     //   // sort: {'last_updated': -1}
     // })
@@ -114,7 +116,7 @@ exports.get_chats_for_user = asyncHandler( async( req, res, next ) => {
     console.log(userWithChatsQuery)
     // console.log(userWithChatsQuery.toObject({ virtuals: true }))
 
-    const allChats = userWithChatsQuery
+    const allChats = userWithChatsQuery.chats
     // const allChats = chatsQuery
     res.json({allChats})
 })

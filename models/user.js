@@ -28,7 +28,7 @@ UserSchema.virtual('friends', {
 UserSchema.virtual('chats', {
     ref: 'UserInChat',
     localField: '_id',
-    foreignField: 'chat',
+    foreignField: 'user',
 })
 
 module.exports = mongoose.model('User', UserSchema);
