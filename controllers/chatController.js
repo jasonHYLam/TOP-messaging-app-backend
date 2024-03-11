@@ -97,13 +97,17 @@ exports.get_chats_for_user = asyncHandler( async( req, res, next ) => {
     .populate({
       path:'chats',
       select: 'chat -_id -user',
-      populate: {path: 'chat',}
+      populate: {
+        path: 'chat',
+      }
     })
     .exec();
 
-    const allChats = userWithChatsQuery.chats.map(doc => doc.chat)
-    console.log('checking allChats')
-    console.log(allChats)
+    let allChats = userWithChatsQuery.chats.map(doc => doc.chat)
+    allChats = allChats.sort((a, b) => {
+      return b.lastUpdated - a.lastUpdated
+    })
+    
     res.json({allChats})
 })
 
