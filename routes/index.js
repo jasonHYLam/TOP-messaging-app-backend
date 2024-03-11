@@ -1,6 +1,8 @@
 const express = require('express');
 const router = express.Router();
 
+const chatUtils = require('../helpers/chatUtils');
+
 const authController = require('../controllers/authController');
 const chatController = require('../controllers/chatController');
 const loginController = require('../controllers/loginController');

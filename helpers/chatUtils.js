@@ -1,3 +1,4 @@
+const asyncHandler = require("express-async-handler");
 const Chat = require("../models/chat");
 const User = require("../models/user");
 const UserInChat = require("../models/userInChat");
@@ -15,3 +16,16 @@ exports.createUserInChatFromReq = async(chat, userid) => {
   })
   await newUserInChat.save();
 }
+
+exports.checkUserIsPartOfChat = asyncHandler( async( req, res, next ) => {
+
+  // check that user is part of chat
+  const matchingUserInChat = await UserInChat.findOne({
+    chat: req.params.chatid,
+    user: req.user.id,
+  })
+
+  console.log('checking matchingUserInChat')
+  console.log(matchingUserInChat)
+
+})
