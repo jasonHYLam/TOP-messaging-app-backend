@@ -93,31 +93,17 @@ exports.add_user_to_chat = asyncHandler( async( req, res, next ) => {
 
 exports.get_chats_for_user = asyncHandler( async( req, res, next ) => {
 
-    // console.log('checking if req.user exists');
-    // console.log(req.user);
-    // sort these by lastUpdated field.
-    // Do I need to populate here... maybe? 
-    // Maybe the names of the users
-    // And the latest comment.
-
-    // const userWithChatsQuery = await User.findById(req.user.id)
     const userWithChatsQuery = await User.findOne({_id: req.user.id})
-    .populate('chats')
-    .populate('friends')
-    // const chatsQuery = await Chat.find().sort({lastUpdated: -1})
-    // .populate('chat', {
-    //   // sort: {'last_updated': -1}
-    // })
-    // is it possible to sort by lastUpdated...?
+    .populate({
+      path:'chats',
+      select: 'chat -_id -user',
+      populate: {path: 'chat',}
+    })
     .exec();
-    // const filteredChatsQuery = chatsQuery.filter(chat => chat)
 
-    console.log('checking userWithChatsQuery')
-    console.log(userWithChatsQuery)
-    // console.log(userWithChatsQuery.toObject({ virtuals: true }))
-
-    const allChats = userWithChatsQuery.chats
-    // const allChats = chatsQuery
+    const allChats = userWithChatsQuery.chats.map(doc => doc.chat)
+    console.log('checking allChats')
+    console.log(allChats)
     res.json({allChats})
 })
 
