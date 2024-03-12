@@ -28,4 +28,12 @@ exports.checkUserIsPartOfChat = asyncHandler( async( req, res, next ) => {
   console.log('checking matchingUserInChat')
   console.log(matchingUserInChat)
 
+  if(!matchingUserInChat) {
+    console.log('seems to not exist, terrible earth')
+    return res.status(400).end();
+  } else {
+    console.log('it exists, phew')
+    next()
+  }
+
 })

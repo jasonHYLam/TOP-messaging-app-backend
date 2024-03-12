@@ -49,6 +49,7 @@ exports.login =
 ]
 
 exports.logout = asyncHandler(async(req, res, next) => {
+  console.log('check that logout is called')
     // do something with PassportJS and sessions.
     // I hope this works. Calling passport.authenticate apparently creates req.logout
     req.logout(function(err) {

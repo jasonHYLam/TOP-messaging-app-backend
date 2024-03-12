@@ -6,6 +6,7 @@ const he = require('he');
 const Chat = require('../models/chat');
 const User = require('../models/user');
 const UserInChat = require('../models/userInChat');
+const FriendToUser = require('../models/friendToUser');
 
 const { createUserInChatFromReq } = require("../helpers/chatUtils");
 
@@ -77,12 +78,37 @@ exports.show_friends_in_chat = asyncHandler(async (req, res, next) => {
     path: 'user',
     select: 'username profilePicURL',
   })
-  const allUsers = userInChatQuery.map(userInChat => userInChat.user)
 
-  console.log('checking allusers')
-  console.log(allUsers)
+  // This corresponds to the people in the chat
+  const allUsersInChat = userInChatQuery.map(userInChat => userInChat.user)
+  console.log('checking allUsersInChat')
+  console.log(allUsersInChat)
 
-  res.json({allUsers})
+  // Find the friends not part of the chat.
+  const friendToUserDocsQuery = await FriendToUser.find({user: req.user.id})
+  .populate({
+    path: 'friendUser',
+    select: 'username profilePicURL'
+  })
+  const friendsList = friendToUserDocsQuery.map(doc => doc.friendUser)
+
+  
+  const friendsNotAddedToChat = friendsList.filter(friend => {
+    // return the friends that are not part of userInChat
+    return(
+      !allUsersInChat.some(user => user.id === friend.id)
+    )
+  })
+
+
+  // console.log('checking friendToUserDocsQuery ')
+  // console.log(friendToUserDocsQuery)
+
+  console.log('checking friendsNotAddedToChat')
+  console.log(friendsNotAddedToChat)
+
+
+  res.json({allUsersInChat, friendsNotAddedToChat})
 })
 
 exports.add_user_to_chat = asyncHandler( async( req, res, next ) => {
@@ -107,6 +133,10 @@ exports.get_chats_for_user = asyncHandler( async( req, res, next ) => {
     allChats = allChats.sort((a, b) => {
       return b.lastUpdated - a.lastUpdated
     })
+
+
+    // const allChats = await Chat.find().exec();
+
     
     res.json({allChats})
 })

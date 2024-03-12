@@ -22,7 +22,8 @@ router.delete('/logout', authController.preventIfLoggedOut, loginController.logo
 // Chat related routes.
 // Get specific chat's messages.
 // router.get('/home/chat/:chatid', authController.isAuthenticated, chatController.get_chat_messages);
-router.get('/home/chat/:chatid',  chatController.get_chat_messages);
+router.get('/home/chat/:chatid', chatUtils.checkUserIsPartOfChat, chatController.get_chat_messages);
+// router.get('/home/chat/:chatid', chatController.get_chat_messages);
 // Get all chats to display in sidebar.
 // router.get('/home/get_all_chats', authController.isAuthenticated, chatController.get_all_chats);
 router.get('/home/get_chats_for_user', authController.isAuthenticated, chatController.get_chats_for_user);
