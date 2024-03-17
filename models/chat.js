@@ -1,3 +1,5 @@
+const { DateTime } = require('luxon');
+
 const opts = { 
     toJSON: { virtuals: true },
     toObject: { virtuals: true }, 
@@ -8,10 +10,13 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const ChatSchema = new Schema({
-    // lastUpdated field
     name: { type: String },
     lastUpdated: { type: Date, default: new Date()}
 }, opts)
+
+ChatSchema.virtual('lastUpdatedFormatted').get(function() {
+  return DateTime.fromJSDate(this.lastUpdated).toLocaleString(DateTime.DATETIME_SHORT) 
+})
 
 ChatSchema.virtual('users', {
     ref: 'UserInChat',

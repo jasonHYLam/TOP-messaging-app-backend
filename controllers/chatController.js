@@ -81,8 +81,6 @@ exports.show_friends_in_chat = asyncHandler(async (req, res, next) => {
 
   // This corresponds to the people in the chat
   const allUsersInChat = userInChatQuery.map(userInChat => userInChat.user)
-  console.log('checking allUsersInChat')
-  console.log(allUsersInChat)
 
   // Find the friends not part of the chat.
   const friendToUserDocsQuery = await FriendToUser.find({user: req.user.id})
@@ -92,21 +90,10 @@ exports.show_friends_in_chat = asyncHandler(async (req, res, next) => {
   })
   const friendsList = friendToUserDocsQuery.map(doc => doc.friendUser)
 
-  
   const friendsNotAddedToChat = friendsList.filter(friend => {
     // return the friends that are not part of userInChat
-    return(
-      !allUsersInChat.some(user => user.id === friend.id)
-    )
+    return !allUsersInChat.some(user => user.id === friend.id)
   })
-
-
-  // console.log('checking friendToUserDocsQuery ')
-  // console.log(friendToUserDocsQuery)
-
-  console.log('checking friendsNotAddedToChat')
-  console.log(friendsNotAddedToChat)
-
 
   res.json({allUsersInChat, friendsNotAddedToChat})
 })
@@ -165,6 +152,7 @@ exports.get_chat_messages = asyncHandler( async(req, res, next) => {
           },
           ]
       })
+
       res.json({chat})
     }
 

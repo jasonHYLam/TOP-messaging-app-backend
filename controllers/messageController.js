@@ -64,13 +64,13 @@ exports.create_message =
 exports.create_message_with_image = 
 
 [
-
     upload.single('image'),
-
     body('message').trim().escape(),
 
     asyncHandler(async (req, res, next) => {
 
+      console.log('checking req.file')
+      console.log(req.file)
         if(!req.file) return res.status(400).end();
 
         const currentUser = await User.findById(req.user._id);
