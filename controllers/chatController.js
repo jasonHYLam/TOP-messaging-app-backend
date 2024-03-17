@@ -33,24 +33,19 @@ exports.create_new_chat = [
         }
         else {
 
+          const chatName = req.body.chatName ? he.decode(req.body.chatName) : "New Chat";
             const newChat = new Chat({
-                name: he.decode(req.body.chatName)
+                name: chatName
             })
+
             await newChat.save()
 
-            // just added this
             const addToChatUserIds = [
               ...req.body.addToChatUserIds,
               req.user.id,
             ]
-            // req.body.addToChatUserIds;
-
-            console.log('checking addToChatUserIds')
-            console.log(addToChatUserIds)
-
 
             addToChatUserIds.map(async userid => await createUserInChatFromReq(newChat, userid));
-            // res.json({});
             res.json({chatid: newChat._id})
         }
     })
