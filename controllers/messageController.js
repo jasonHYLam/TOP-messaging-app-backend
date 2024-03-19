@@ -17,12 +17,6 @@ exports.validate_text = (req, res, next) => {
   next();
 }
 
-exports.validate_fields = asyncHandler(async ( req, res, next ) => {
-  console.log('checking req body and req file')
-  console.log(req.body)
-  console.log(req.file)
-})
-
 exports.create_message = 
 
     asyncHandler( async(req, res, next) => {
