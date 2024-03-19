@@ -6,7 +6,6 @@ const User = require('./models/user');
 
 function initializePassport(passport) {
 
-    // when is this called?
     passport.use(
         new LocalStrategy( async (username, password, done) => {
             try {
