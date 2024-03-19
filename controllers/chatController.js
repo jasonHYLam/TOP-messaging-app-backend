@@ -1,4 +1,3 @@
-const ObjectId = require('mongoose').Types.ObjectId;
 const asyncHandler = require("express-async-handler");
 const { body } = require('express-validator');
 const he = require('he');
@@ -35,7 +34,8 @@ exports.create_new_chat = [
 
           const chatName = req.body.chatName ? he.decode(req.body.chatName) : "New Chat";
             const newChat = new Chat({
-                name: chatName
+                name: chatName,
+                last_updated: new Date(),
             })
 
             await newChat.save()
@@ -115,10 +115,6 @@ exports.get_chats_for_user = asyncHandler( async( req, res, next ) => {
     allChats = allChats.sort((a, b) => {
       return b.lastUpdated - a.lastUpdated
     })
-
-
-    // const allChats = await Chat.find().exec();
-
     
     res.json({allChats})
 })
@@ -173,9 +169,6 @@ exports.view_participants = asyncHandler( async ( req, res, next ) => {
 
   const chatQuery = await Chat.findById(req.params.chatid)
   // add something to check if chatid is valid, and if not, return 400 error
-
-  console.log('checking chatQuery')
-  console.log(chatQuery)
 
   const participants = chatQuery
   res.json(participants)
