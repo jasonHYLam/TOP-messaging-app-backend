@@ -18,11 +18,8 @@ exports.create_new_chat = [
     asyncHandler( async(req, res, next) => {
 
         // From the frontend (and test), request sends an array variable called addToChatUserIds.
-        // This is an array of userIds
-        // This will be used to find matchingUser and add user to chat
-
-        // this requires an array of user ids to make a chat with.
-        // I think I need to create the userInChat models and attach User And Chat to them...
+        // This is an array of userIds.
+        // This will be used to find matching users and create corresponding userInChat models and attach User And Chat to them.
 
         if (!req.body.addToChatUserIds) {
             return res.status(404).end();
@@ -66,7 +63,6 @@ exports.show_friends_for_initial_chat_creation = asyncHandler( async( req, res, 
 })
 
 exports.show_friends_in_chat = asyncHandler(async (req, res, next) => {
-  // right. for a given chat, get users
   const userInChatQuery = await UserInChat.
   find({chat: req.params.chatid}).
   populate({
@@ -94,7 +90,6 @@ exports.show_friends_in_chat = asyncHandler(async (req, res, next) => {
 })
 
 exports.add_user_to_chat = asyncHandler( async( req, res, next ) => {
-  // for a given chat, add the user to the chat
   await createUserInChatFromReq(req.params.chatid, req.params.userid)
   res.json({})
 })
