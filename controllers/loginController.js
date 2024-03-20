@@ -7,9 +7,6 @@ const he = require('he');
 
 const User = require('../models/user');
 
-// LoginController?
-
-// validate by trimming and escaping
 exports.signup = [
 
     // username, password
@@ -17,7 +14,7 @@ exports.signup = [
     body('password').trim().escape(),
 
     asyncHandler(async(req, res, next) => {
-        // need bcryptjs
+        console.log('checking signup')
         const escapedUsername = he.decode(req.body.username);
         const escapedPassword = he.decode(req.body.password);
         
@@ -27,8 +24,6 @@ exports.signup = [
             password: hashedPass
         })
         await newUser.save();
-        // in the login test, may need to account for bcrypt
-        // next()
         res.json({newUser});
     })
 ]

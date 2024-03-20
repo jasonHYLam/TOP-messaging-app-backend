@@ -10,25 +10,14 @@ const messageController = require('../controllers/messageController');
 const personalProfileController = require('../controllers/personalProfileController');
 const userController = require('../controllers/userController');
 
-// hm is this right? multiple URLs... I guess so!
-// will i need to protect all routes (except login/signup/logout)...? damn
-// perhaps I could separate these routes into protectedRoutes and nonProtectedRoutes
-
 // Login related routes.
 router.post('/signup', authController.preventIfLoggedIn, loginController.signup);
 router.post('/login', authController.preventIfLoggedIn, loginController.login);
 router.delete('/logout', authController.preventIfLoggedOut, loginController.logout);
 
 // Chat related routes.
-// Get specific chat's messages.
-// router.get('/home/chat/:chatid', authController.isAuthenticated, chatController.get_chat_messages);
 router.get('/home/chat/:chatid', chatUtils.checkUserIsPartOfChat, chatController.get_chat_messages);
-// router.get('/home/chat/:chatid', chatController.get_chat_messages);
-// Get all chats to display in sidebar.
-// router.get('/home/get_all_chats', authController.isAuthenticated, chatController.get_all_chats);
 router.get('/home/get_chats_for_user', authController.isAuthenticated, chatController.get_chats_for_user);
-// router.get('/home/get_all_chats', chatController.get_all_chats);
-// Create new chat. Need to figure out what the route should be called.
 router.post('/home/create_new_chat', chatController.create_new_chat);
 router.get('/home/show_friends_for_initial_chat_creation', chatController.show_friends_for_initial_chat_creation);
 router.post('/home/chat/:chatid/add_user/:userid', chatController.add_user_to_chat);
@@ -42,8 +31,6 @@ router.delete('/home/chat/:chatid/:messageid', messageController.delete_message)
 router.put('/home/chat/:chatid/:messageid', messageController.edit_message)
 
 // User related routes (viewing profiles, searching and adding users)
-// Searching user. How is this gonna work? Post? Get? Possibly get the userID from button from user
-// this should probably be changed from post to get
 router.post('/home/user_profile/search', userController.search_user)
 router.get('/home/user_profile/:userid', userController.get_user_profile)
 router.post('/home/user_profile/:userid', userController.add_user)
