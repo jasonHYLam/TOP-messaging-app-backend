@@ -41,7 +41,7 @@ afterEach(async () => {
 });
 
 // get specific user
-describe.skip("user tests", () => {
+describe("user tests", () => {
   describe("get user", () => {
     test("access userProfile route without logging in results in internal error", () => {
       return request
@@ -109,7 +109,7 @@ describe.skip("user tests", () => {
       expect(loginResponse.status).toEqual(200);
 
       const userProfileResponse = await agent.get(
-        `/home/user_profile/badUserID`,
+        `/home/user_profile/badUserID`
       );
       expect(userProfileResponse.status).toEqual(404);
     });
@@ -129,7 +129,7 @@ describe.skip("user tests", () => {
       });
 
       const addFriendResponse = await agent.post(
-        `/home/user_profile/${userIds[3]}`,
+        `/home/user_profile/${userIds[3]}`
       );
       expect(addFriendResponse.status).toEqual(200);
 
@@ -151,7 +151,7 @@ describe.skip("user tests", () => {
       expect(loginResponse.status).toEqual(200);
 
       const addFriendResponse = await agent.post(
-        `/home/user_profile/${userIds[2]}`,
+        `/home/user_profile/${userIds[2]}`
       );
       expect(addFriendResponse.status).toEqual(400);
     });
@@ -163,7 +163,7 @@ describe.skip("user tests", () => {
       expect(loginResponse.status).toEqual(200);
 
       const addFriendResponse = await agent.post(
-        `/home/user_profile/${userIds[0]}`,
+        `/home/user_profile/${userIds[0]}`
       );
       expect(addFriendResponse.status).toEqual(400);
     });
@@ -181,7 +181,7 @@ describe.skip("user tests", () => {
       });
 
       const deleteFriendResponse = await agent.delete(
-        `/home/user_profile/${userIds[2]}`,
+        `/home/user_profile/${userIds[2]}`
       );
       expect(deleteFriendResponse.status).toEqual(200);
 
@@ -199,7 +199,7 @@ describe.skip("user tests", () => {
       expect(loginResponse.status).toEqual(200);
 
       const deleteFriendResponse = await agent.delete(
-        `/home/user_profile/${userIds[4]}`,
+        `/home/user_profile/${userIds[4]}`
       );
       expect(deleteFriendResponse.status).toEqual(400);
     });
@@ -211,7 +211,7 @@ describe.skip("user tests", () => {
       expect(loginResponse.status).toEqual(200);
 
       const deleteFriendResponse = await agent.delete(
-        `/home/user_profile/badURL`,
+        `/home/user_profile/badURL`
       );
       expect(deleteFriendResponse.status).toEqual(404);
     });
@@ -226,11 +226,11 @@ describe.skip("user tests", () => {
       expect(loginResponse.status).toEqual(200);
 
       const userProfileResponse1 = await agent.get(
-        `/home/user_profile/${userIds[0]}`,
+        `/home/user_profile/${userIds[0]}`
       );
       expect(userProfileResponse1.status).toEqual(200);
       expect(userProfileResponse1.body.matchingUser.description).toEqual(
-        users[0].description,
+        users[0].description
       );
 
       const changeDescriptionResponse = await agent
@@ -239,11 +239,11 @@ describe.skip("user tests", () => {
       expect(changeDescriptionResponse.status).toEqual(200);
 
       const userProfileResponse2 = await agent.get(
-        `/home/user_profile/${userIds[0]}`,
+        `/home/user_profile/${userIds[0]}`
       );
       expect(userProfileResponse2.status).toEqual(200);
       expect(userProfileResponse2.body.matchingUser.description).toEqual(
-        newDescription.changeToSubmit,
+        newDescription.changeToSubmit
       );
     });
 
@@ -261,7 +261,7 @@ describe.skip("user tests", () => {
       expect(changeDescriptionResponse.status).toEqual(200);
 
       const userProfileResponse2 = await agent.get(
-        `/home/user_profile/${userIds[0]}`,
+        `/home/user_profile/${userIds[0]}`
       );
       expect(userProfileResponse2.status).toEqual(200);
       expect(userProfileResponse2.body.matchingUser.profilePicURL).toEqual("");
