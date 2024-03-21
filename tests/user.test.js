@@ -42,7 +42,10 @@ afterEach(async () => {
 
 // get specific user
 describe("user tests", () => {
-  describe("get user", () => {
+  describe("search user", () => {
+    test("searching for own user does not return user");
+  });
+  describe("get user profile", () => {
     test("access userProfile route without logging in results in internal error", () => {
       return request
         .agent(app)

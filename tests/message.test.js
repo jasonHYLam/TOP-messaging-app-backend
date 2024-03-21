@@ -43,17 +43,12 @@ const loginData = { username: "user1", password: "a" };
 describe.skip("message tests", () => {
   describe("get messages", () => {
     it("gets all messages for a chat", async () => {
-      // const agent = request.agent(app);
-      // const loginResponse = await agent
-      // .post("/login")
-      // .send(loginData)
-
       const getMessagesResponse = await agent.get(`/home/chat/${chatIds[0]}`);
       expect(getMessagesResponse.status).toEqual(200);
 
       const returnedBody = getMessagesResponse.body;
       const chatMessages = returnedBody.chat.chatMessages.map(
-        (message) => message.text,
+        (message) => message.text
       );
       expect(chatMessages).toEqual([
         messages[0].text,
@@ -82,7 +77,7 @@ describe.skip("message tests", () => {
 
       const returnedBody = getMessagesResponse.body;
       const chatMessages = returnedBody.chat.chatMessages.map(
-        (message) => message.text,
+        (message) => message.text
       );
       expect(chatMessages).toContain(messages[1].text);
       expect(chatMessages).toContain(messages[2].text);
@@ -118,7 +113,7 @@ describe.skip("message tests", () => {
       const getMessageResponse = await agent.get(`/home/chat/${chatIds[0]}`);
       const responseBody = getMessageResponse.body;
       const chatMessages = responseBody.chat.chatMessages.map(
-        (message) => message.text,
+        (message) => message.text
       );
       expect(chatMessages).toContain("Oh my TVC15...");
     });
