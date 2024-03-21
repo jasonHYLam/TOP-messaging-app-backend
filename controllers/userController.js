@@ -1,26 +1,18 @@
-const { ObjectId } = require("mongoose").Types;
 const mongoose = require("mongoose");
 
 const asyncHandler = require("express-async-handler");
 
 const { body } = require("express-validator");
-const he = require("he");
 
 const User = require("../models/user");
 const FriendToUser = require("../models/friendToUser");
 
-// may need to change name
-// intended to handle adding friends and seeing who is online
-
 function checkIfParamsAreInvalid(userid) {
-  // console.log('checking checkIfParamsCorrespondsToUser call: ')
-  // console.log(`userid: ${userid}`)
-  // console.log(!mongoose.isValidObjectId(userid))
   const isValid = mongoose.isValidObjectId(userid);
   return !isValid;
 }
 
-// I think this is just used to bring up a list of users that match the user username
+// Returns up a list of users whose usernames match the search query; separated into friends and non-friends.
 exports.search_user = [
   body("searchQuery").trim().escape(),
 
@@ -30,27 +22,15 @@ exports.search_user = [
       _id: { $ne: req.user.id },
       username: req.body.searchQuery,
     }).exec();
-    const matchingUserIds = matchingUsers.map((user) => {
-      return user.id;
-    });
-    console.log("checking matchingUser ids");
-    console.log(matchingUserIds);
 
-    // const currentUser = await User.findById(req.user)
     const currentUser = await User.findById(req.user.id).populate("friends");
-    const friendIds = currentUser.friends.map((friend) => friend.id);
-    console.log();
 
-    // took me ages to figure this out :/
-    // Object.equals() is used for Object equality.
-    // Alternatively, compare the stringified Object ids.
     const friends = matchingUsers.filter((searchedUser) => {
       return currentUser.friends.some((friend) => {
         return searchedUser.equals(friend.friendUser);
       });
     });
 
-    // it must be here
     const nonFriends = matchingUsers.filter((searchedUser) => {
       if (!currentUser.friends.length) return true;
       else {
@@ -60,12 +40,6 @@ exports.search_user = [
       }
     });
 
-    // console.log('checking friends')
-    // console.log(friends)
-    // console.log('checking non friends')
-    // console.log(nonFriends)
-    // console.log(' ')
-
     res.json({
       friends,
       nonFriends,
@@ -73,7 +47,6 @@ exports.search_user = [
   }),
 ];
 
-// Post to add them
 exports.add_user = asyncHandler(async (req, res, next) => {
   // Get the current logged in user via id.
   // Get the user to add via their id and params. Add to each other's friendlist.
@@ -115,7 +88,6 @@ exports.add_user = asyncHandler(async (req, res, next) => {
     await friendAdding.save();
     await friendToAdd.save();
 
-    // To access friends, need to call populate on User.
     res.json();
   }
 });
@@ -135,11 +107,9 @@ exports.get_user_profile = asyncHandler(async (req, res, next) => {
   }
 });
 
-// Perhaps I can use this to see how many people are online. But I have no idea how to approach that.
-// What determines whether someone is online. How can the backend know?
-exports.count_online_number = asyncHandler(async (req, res, next) => {});
+// exports.count_online_number = asyncHandler(async (req, res, next) => {});
 
-exports.count_friends_number = asyncHandler(async (req, res, next) => {});
+// exports.count_friends_number = asyncHandler(async (req, res, next) => {});
 
 exports.get_friends_list = asyncHandler(async (req, res, next) => {
   const currentUserWithFriends = await User.findById(req.user.id)
@@ -155,12 +125,11 @@ exports.get_friends_list = asyncHandler(async (req, res, next) => {
   const friends = currentUserWithFriends.friends.map(
     (friendToUser) => friendToUser.friendUser
   );
-  // console.log('checking')
-  // console.log(friends)
 
   res.json({ friends });
 });
 
+// Not implemented yet.
 exports.remove_friend = asyncHandler(async (req, res, next) => {
   const currentUserWithFriends = await User.findById(req.user.id)
     .populate("friends")
@@ -172,15 +141,9 @@ exports.remove_friend = asyncHandler(async (req, res, next) => {
     );
   }
 
-  console.log("checking the call of checkIfParamsAreInvalid:");
-  console.log(`req.params.userid:${req.params.userid}`);
-  console.log(checkIfParamsAreInvalid(req.params.userid));
-
   if (checkIfParamsAreInvalid(req.params.userid)) {
-    console.log("a");
     return res.status(404).end();
   } else if (req.params.userid === req.user.id) {
-    console.log("b");
     return res.status(400).end();
   } else if (
     checkIfUserIsNotInFriendsList(
@@ -188,24 +151,8 @@ exports.remove_friend = asyncHandler(async (req, res, next) => {
       req.params.userid
     )
   ) {
-    console.log("or is this happening");
     return res.status(400).end();
   } else {
-    console.log("d");
-
-    const user1 = await FriendToUser.find({
-      user: req.user.id,
-      friendUser: req.params.userid,
-    });
-    const user2 = await FriendToUser.find({
-      user: req.user.id,
-      friendUser: req.params.userid,
-    });
-
-    console.log("checking users to delete:");
-    console.log(user1);
-    console.log(user2);
-
     await Promise.all([
       FriendToUser.deleteOne({
         user: req.user.id,
