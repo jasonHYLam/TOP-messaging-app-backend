@@ -1,21 +1,24 @@
-const mongoose = require('mongoose');
-const { DateTime } = require('luxon');
-
-const opts = { 
-    toJSON: { virtuals: true },
-    versionKey: false,
-}
-
+const mongoose = require("mongoose");
+const { DateTime } = require("luxon");
 const Schema = mongoose.Schema;
+const opts = {
+  toJSON: { virtuals: true },
+  versionKey: false,
+};
 
-const MessageSchema = new Schema({
-    text: { type: String, required: true},
-    author: { type: Schema.Types.ObjectId, ref: "User"},
-    chat: { type: Schema.Types.ObjectId, ref: "Chat"},
+const MessageSchema = new Schema(
+  {
+    text: { type: String, required: true },
+    author: { type: Schema.Types.ObjectId, ref: "User" },
+    chat: { type: Schema.Types.ObjectId, ref: "Chat" },
     // isReply
 
     // messageReplyingTo
-    messageReplyingTo: { type: Schema.Types.ObjectId, ref: "Message", default: null},
+    messageReplyingTo: {
+      type: Schema.Types.ObjectId,
+      ref: "Message",
+      default: null,
+    },
 
     // image
     imageURL: { type: String, default: null },
@@ -24,20 +27,22 @@ const MessageSchema = new Schema({
     isDeleted: { type: Boolean, default: false },
 
     // timeStamp
-    timeStamp: { type: Date, required: true, default: new Date()},
+    timeStamp: { type: Date, required: true, default: new Date() },
 
     // reaction
-    reactions: { reaction: {
-        reactionType: {type: String},
-        imageURL: {type: String},
-        number: {type: Number}
-    }}
+    reactions: {
+      reaction: {
+        reactionType: { type: String },
+        imageURL: { type: String },
+        number: { type: Number },
+      },
+    },
+  },
+  opts
+);
 
-}, opts)
+MessageSchema.virtual("timeStampFormatted").get(function () {
+  return DateTime.fromJSDate(this.timeStamp).toFormat("T dd/LL/yy");
+});
 
-MessageSchema.virtual('timeStampFormatted').get(function() {
-    return DateTime.fromJSDate(this.timeStamp).toFormat('T dd/LL/yy');
-})
-
-module.exports = mongoose.model('Message', MessageSchema);
-
+module.exports = mongoose.model("Message", MessageSchema);
