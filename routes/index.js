@@ -72,8 +72,6 @@ router.put("/home/chat/:chatid/:messageid", messageController.edit_message);
 router.post("/home/user_profile/search", userController.search_user);
 router.get("/home/user_profile/:userid", userController.get_user_profile);
 router.post("/home/user_profile/:userid", userController.add_user);
-router.get("/home/count_online_number", userController.count_online_number);
-router.get("/home/count_friends_number", userController.count_friends_number);
 router.get("/home/get_friends_list", userController.get_friends_list);
 router.delete("/home/user_profile/:userid", userController.remove_friend);
 
