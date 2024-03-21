@@ -37,7 +37,6 @@ exports.create_message = asyncHandler(async (req, res, next) => {
 
     messageReplyingTo: messageToReplyTo,
     imageURL: null,
-    // isDeleted: false,
     reactions: {},
   });
 
@@ -53,9 +52,6 @@ exports.create_message_with_image = [
   body("message").trim().escape(),
 
   asyncHandler(async (req, res, next) => {
-    console.log("checking call");
-    console.log(req.file);
-
     if (!req.file) return res.status(400).end();
 
     const currentUser = await User.findById(req.user._id);
@@ -88,10 +84,12 @@ exports.create_message_with_image = [
   }),
 ];
 
+// Not implemented yet.
 exports.delete_message = asyncHandler(async (req, res, next) => {
   // delete based on id
 });
 
+// Not implemented yet.
 exports.edit_message = asyncHandler(async (req, res, next) => {
   const currentChat = await Chat.findById(req.params.chatid);
   const messageToEdit = await Message.findById(req.params.messageid);
@@ -114,10 +112,7 @@ exports.reply_to_message = asyncHandler(async (req, res, next) => {
     author: currentUser,
     chat: currentChat,
     timeStamp: new Date(),
-
     messageReplyingTo: messageReplyingTo,
-    // imageURL: null,
-    // isDeleted: false,
     reactions: {},
   });
 
