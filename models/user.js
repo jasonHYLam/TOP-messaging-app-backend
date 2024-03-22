@@ -10,9 +10,10 @@ const UserSchema = new Schema(
     username: { type: String, required: true },
     password: { type: String, required: true },
     description: { type: String, default: "" },
-    // profile picture...
     profilePicURL: { type: String, default: "" },
     imageID: { type: String, default: "" },
+    // Added this recently; may affect some tests and may need to specify fields for controller functions.
+    isGuest: { type: Boolean, default: false },
     // deletedStatus
   },
   opts

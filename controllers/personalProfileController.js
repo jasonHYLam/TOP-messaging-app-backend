@@ -12,9 +12,8 @@ exports.get_logged_in_user = asyncHandler(async (req, res, next) => {
     req.user.id,
     "username profilePicURL isGuest"
   );
-  console.log("checking loggedInUser");
-  console.log(loggedInUser);
-  const isGuest = loggedInUser.isGuest ? true : false;
+  let isGuest = false;
+  if (loggedInUser.isGuest) isGuest = true;
   res.json({ loggedInUser, isGuest });
 });
 
