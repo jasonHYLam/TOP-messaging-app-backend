@@ -12,7 +12,8 @@ exports.get_logged_in_user = asyncHandler(async (req, res, next) => {
     req.user.id,
     "username profilePicURL"
   );
-  res.json({ loggedInUser });
+  const isGuest = loggedInUser.isGuest ? true : false;
+  res.json({ loggedInUser, isGuest });
 });
 
 exports.change_description = [
