@@ -5,13 +5,15 @@ const he = require("he");
 
 const User = require("../models/user");
 
-// Will not bother with changing username and password.
+// For now, just change description and image.
 
 exports.get_logged_in_user = asyncHandler(async (req, res, next) => {
   const loggedInUser = await User.findById(
     req.user.id,
-    "username profilePicURL"
+    "username profilePicURL isGuest"
   );
+  console.log("checking loggedInUser");
+  console.log(loggedInUser);
   const isGuest = loggedInUser.isGuest ? true : false;
   res.json({ loggedInUser, isGuest });
 });
