@@ -32,7 +32,7 @@ exports.login = [
 
   // IMPORTANT! passport.authenticate does not send a response to end the request-response cycle. The following middleware in the stack must thus send a response.
   asyncHandler(async (req, res, next) => {
-    res.send();
+    res.send({ user: req.user });
   }),
 ];
 
