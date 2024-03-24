@@ -50,12 +50,7 @@ exports.show_friends_for_initial_chat_creation = asyncHandler(
       path: "friends",
       populate: { path: "friendUser", select: "username profilePicURL" },
     });
-    let friends = currentUser.friends;
-    console.log("checking friends");
-    console.log(friends);
-    friends = friends.map((friend) => friend.friendUser);
-    console.log("checking friends again");
-    console.log(friends);
+    const friends = currentUser.friends.map((friend) => friend.friendUser);
 
     res.json({ friends });
   }
