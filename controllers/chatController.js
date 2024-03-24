@@ -48,9 +48,14 @@ exports.show_friends_for_initial_chat_creation = asyncHandler(
   async (req, res, next) => {
     const currentUser = await User.findById(req.user.id).populate({
       path: "friends",
-      populate: { path: "friendUser" },
+      populate: { path: "friendUser", select: "username profilePicURL" },
     });
-    const friends = currentUser.friends;
+    let friends = currentUser.friends;
+    console.log("checking friends");
+    console.log(friends);
+    friends = friends.map((friend) => friend.friendUser);
+    console.log("checking friends again");
+    console.log(friends);
 
     res.json({ friends });
   }
