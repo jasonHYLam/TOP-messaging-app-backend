@@ -88,7 +88,7 @@ exports.add_user = asyncHandler(async (req, res, next) => {
     await friendAdding.save();
     await friendToAdd.save();
 
-    res.json();
+    res.json({});
   }
 });
 
