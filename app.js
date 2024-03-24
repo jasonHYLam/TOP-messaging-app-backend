@@ -32,8 +32,10 @@ app.use(
     secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: false,
+    proxy: true,
     store: MongoStore.create({
       mongoUrl: process.env.MONGODB_URI,
+      // client:
     }),
     cookie: {
       httpOnly: process.env.MODE === "prod",
