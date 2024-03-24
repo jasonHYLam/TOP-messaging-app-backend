@@ -1,4 +1,5 @@
 const express = require("express");
+const MongoStore = require("connect-mongo");
 const path = require("path");
 const logger = require("morgan");
 const cors = require("cors");
@@ -31,6 +32,9 @@ app.use(
     secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: false,
+    store: MongoStore.create({
+      mongoUrl: process.env.MONGODB_URI,
+    }),
     cookie: {
       httpOnly: process.env.MODE === "prod",
       secure: process.env.MODE === "prod",
