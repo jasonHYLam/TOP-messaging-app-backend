@@ -78,6 +78,7 @@ router.delete("/home/user_profile/:userid", userController.remove_friend);
 // Personal profile related routes.
 router.get(
   "/home/get_logged_in_user",
+  authController.isAuthenticated,
   personalProfileController.get_logged_in_user
 );
 router.put(
