@@ -15,7 +15,6 @@ exports.createUserInChatFromReq = async (chat, userid) => {
 };
 
 exports.checkUserIsPartOfChat = asyncHandler(async (req, res, next) => {
-  // check that user is part of chat
   const matchingUserInChat = await UserInChat.findOne({
     chat: req.params.chatid,
     user: req.user.id,

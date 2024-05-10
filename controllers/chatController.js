@@ -21,26 +21,26 @@ exports.create_new_chat = [
 
     if (!req.body.addToChatUserIds) {
       return res.status(404).end();
-    } else if (req.body.addToChatUserIds.length === 0) {
-      return res.status(404).end();
-    } else {
-      const chatName = req.body.chatName
-        ? he.decode(req.body.chatName)
-        : "New Chat";
-      const newChat = new Chat({
-        name: chatName,
-        last_updated: new Date(),
-      });
-
-      await newChat.save();
-
-      const addToChatUserIds = [...req.body.addToChatUserIds, req.user.id];
-
-      addToChatUserIds.map(
-        async (userid) => await createUserInChatFromReq(newChat, userid)
-      );
-      res.json({ chatid: newChat._id });
     }
+    if (req.body.addToChatUserIds.length === 0) {
+      return res.status(404).end();
+    }
+    const chatName = req.body.chatName
+      ? he.decode(req.body.chatName)
+      : "New Chat";
+    const newChat = new Chat({
+      name: chatName,
+      last_updated: new Date(),
+    });
+
+    await newChat.save();
+
+    const addToChatUserIds = [...req.body.addToChatUserIds, req.user.id];
+
+    addToChatUserIds.map(
+      async (userid) => await createUserInChatFromReq(newChat, userid)
+    );
+    res.json({ chatid: newChat._id });
   }),
 ];
 
@@ -101,9 +101,7 @@ exports.get_chats_for_user = asyncHandler(async (req, res, next) => {
     .exec();
 
   let allChats = userWithChatsQuery.chats.map((doc) => doc.chat);
-  allChats = allChats.sort((a, b) => {
-    return b.lastUpdated - a.lastUpdated;
-  });
+  allChats = allChats.sort((a, b) => b.lastUpdated - a.lastUpdated);
 
   res.json({ allChats });
 });
@@ -150,7 +148,6 @@ exports.change_chat_name = [
 
 exports.view_participants = asyncHandler(async (req, res, next) => {
   const chatQuery = await Chat.findById(req.params.chatid);
-  // add something to check if chatid is valid, and if not, return 400 error
 
   const participants = chatQuery;
   res.json(participants);

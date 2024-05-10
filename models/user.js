@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+
 const Schema = mongoose.Schema;
 const opts = {
   toJSON: { virtuals: true },
@@ -12,9 +13,7 @@ const UserSchema = new Schema(
     description: { type: String, default: "" },
     profilePicURL: { type: String, default: "" },
     imageID: { type: String, default: "" },
-    // Added this recently; may affect some tests and may need to specify fields for controller functions.
     isGuest: { type: Boolean, default: false },
-    // deletedStatus
   },
   opts
 );

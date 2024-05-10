@@ -59,11 +59,8 @@ exports.create_message_with_image = [
 
     let messageToReplyTo = null;
     if (req.params.messageid) {
-      // add check if Message exists. create variable for found message.
-      // if it doesn't exist, then send 400 status
       messageToReplyTo = await Message.findById(req.params.messageid);
     }
-    // check that messageid for reply exists. if it doesn't then return 400 status
     if (!currentChat) return res.status(400).end();
     await update_chat_last_updated_property(currentChat);
 
@@ -84,12 +81,8 @@ exports.create_message_with_image = [
   }),
 ];
 
-// Not implemented yet.
-exports.delete_message = asyncHandler(async (req, res, next) => {
-  // delete based on id
-});
+exports.delete_message = asyncHandler(async (req, res, next) => {});
 
-// Not implemented yet.
 exports.edit_message = asyncHandler(async (req, res, next) => {
   const currentChat = await Chat.findById(req.params.chatid);
   const messageToEdit = await Message.findById(req.params.messageid);

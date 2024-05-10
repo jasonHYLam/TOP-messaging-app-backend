@@ -37,7 +37,7 @@ exports.login = [
 ];
 
 exports.logout = asyncHandler(async (req, res, next) => {
-  // Calling passport.authenticate apparently creates req.logout function.
+  // Calling passport.authenticate creates req.logout function.
   req.logout(function (err) {
     if (err) return next(err);
     res.end();

@@ -12,12 +12,11 @@ function checkIfParamsAreInvalid(userid) {
   return !isValid;
 }
 
-// Returns up a list of users whose usernames match the search query; separated into friends and non-friends.
+// Returns a list of users whose usernames match the search query; separated into friends and non-friends.
 exports.search_user = [
   body("searchQuery").trim().escape(),
 
   asyncHandler(async (req, res, next) => {
-    // I'll probably have to modify this find such that it doesn't include password.
     const matchingUsers = await User.find({
       _id: { $ne: req.user.id },
       username: req.body.searchQuery,
@@ -25,19 +24,18 @@ exports.search_user = [
 
     const currentUser = await User.findById(req.user.id).populate("friends");
 
-    const friends = matchingUsers.filter((searchedUser) => {
-      return currentUser.friends.some((friend) => {
-        return searchedUser.equals(friend.friendUser);
-      });
-    });
+    const friends = matchingUsers.filter((searchedUser) =>
+      currentUser.friends.some((friend) =>
+        searchedUser.equals(friend.friendUser)
+      )
+    );
 
     const nonFriends = matchingUsers.filter((searchedUser) => {
       if (!currentUser.friends.length) return true;
-      else {
-        return currentUser.friends.every((friend) => {
-          return !searchedUser.equals(friend.friendUser);
-        });
-      }
+
+      return currentUser.friends.every(
+        (friend) => !searchedUser.equals(friend.friendUser)
+      );
     });
 
     res.json({
@@ -72,9 +70,11 @@ exports.add_user = asyncHandler(async (req, res, next) => {
     checkUserIsAlreadyAdded(currentUserWithFriends.friends, req.params.userid)
   ) {
     return res.status(400).end();
-  } else if (req.user.id === req.params.userid) {
+  }
+  if (req.user.id === req.params.userid) {
     return res.status(400).end();
-  } else {
+  }
+  {
     const friendAdding = new FriendToUser({
       user: currentUser,
       friendUser: userToAdd,
@@ -96,7 +96,8 @@ exports.add_user = asyncHandler(async (req, res, next) => {
 exports.get_user_profile = asyncHandler(async (req, res, next) => {
   if (checkIfParamsAreInvalid(req.params.userid)) {
     return res.status(404).end();
-  } else {
+  }
+  {
     const matchingUser = await User.findById(
       req.params.userid,
       "username description profilePicURL "
@@ -106,10 +107,6 @@ exports.get_user_profile = asyncHandler(async (req, res, next) => {
     res.json({ matchingUser, isCurrentUserProfile });
   }
 });
-
-// exports.count_online_number = asyncHandler(async (req, res, next) => {});
-
-// exports.count_friends_number = asyncHandler(async (req, res, next) => {});
 
 exports.get_friends_list = asyncHandler(async (req, res, next) => {
   const currentUserWithFriends = await User.findById(req.user.id)
@@ -129,7 +126,6 @@ exports.get_friends_list = asyncHandler(async (req, res, next) => {
   res.json({ friends });
 });
 
-// Not implemented yet.
 exports.remove_friend = asyncHandler(async (req, res, next) => {
   const currentUserWithFriends = await User.findById(req.user.id)
     .populate("friends")
@@ -143,28 +139,29 @@ exports.remove_friend = asyncHandler(async (req, res, next) => {
 
   if (checkIfParamsAreInvalid(req.params.userid)) {
     return res.status(404).end();
-  } else if (req.params.userid === req.user.id) {
+  }
+  if (req.params.userid === req.user.id) {
     return res.status(400).end();
-  } else if (
+  }
+  if (
     checkIfUserIsNotInFriendsList(
       currentUserWithFriends.friends,
       req.params.userid
     )
   ) {
     return res.status(400).end();
-  } else {
-    await Promise.all([
-      FriendToUser.deleteOne({
-        user: req.user.id,
-        friendUser: req.params.userid,
-      }),
-
-      FriendToUser.deleteOne({
-        user: req.params.userid,
-        friendUser: req.user.id,
-      }),
-    ]);
-
-    res.json({});
   }
+  await Promise.all([
+    FriendToUser.deleteOne({
+      user: req.user.id,
+      friendUser: req.params.userid,
+    }),
+
+    FriendToUser.deleteOne({
+      user: req.params.userid,
+      friendUser: req.user.id,
+    }),
+  ]);
+
+  res.json({});
 });

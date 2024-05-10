@@ -7,26 +7,22 @@ const session = require("express-session");
 const passport = require("passport");
 require("./mongoConfig");
 require("dotenv").config();
-
+const indexRouter = require("./routes/index");
 const initializePassport = require("./passportConfig");
+
 initializePassport(passport);
 
-const indexRouter = require("./routes/index");
-
 const app = express();
-
 app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, "public")));
-
 app.use(
   cors({
     credentials: true,
     origin: process.env.FRONTEND_URL,
   })
 );
-
 app.set("trust proxy", 1);
 app.use(
   session({
@@ -44,10 +40,8 @@ app.use(
     },
   })
 );
-
 app.use(passport.initialize());
 app.use(passport.session());
-
 app.use("/", indexRouter);
 
 module.exports = app;

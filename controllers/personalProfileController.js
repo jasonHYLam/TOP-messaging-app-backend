@@ -5,8 +5,6 @@ const he = require("he");
 
 const User = require("../models/user");
 
-// For now, just change description and image.
-
 exports.get_logged_in_user = asyncHandler(async (req, res, next) => {
   const loggedInUser = await User.findById(
     req.user.id,
@@ -32,7 +30,6 @@ exports.change_image = [
   upload.single("profilePic"),
 
   asyncHandler(async (req, res, next) => {
-    // modify User document.
     await User.findByIdAndUpdate(req.user.id, {
       profilePicURL: req.file.path,
       imageID: req.file.fieldname,
