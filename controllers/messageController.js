@@ -78,7 +78,7 @@ exports.create_message_with_image = [
 
     await newMessage.save();
 
-    res.json({});
+    res.json({ newMessage });
   }),
 ];
 
