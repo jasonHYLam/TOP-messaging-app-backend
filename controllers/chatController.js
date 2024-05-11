@@ -109,26 +109,25 @@ exports.get_chats_for_user = asyncHandler(async (req, res, next) => {
 exports.get_chat_messages = asyncHandler(async (req, res, next) => {
   // Need to implement preventing a user access to a  chat if they are not part of that chat.
   // Finding all messages that are related to the chat.
-  const chat = await Chat.findById(req.params.chatid);
+  let chat = await Chat.findById(req.params.chatid);
   if (!chat) return res.status(400).send();
-  else {
-    const chat = await Chat.findById(req.params.chatid).populate({
-      path: "chatMessages",
 
-      populate: [
-        { path: "author", select: "username profilePicURL" },
-        {
-          path: "messageReplyingTo",
-          populate: {
-            path: "author",
-            select: "username",
-          },
+  chat = await Chat.findById(req.params.chatid).populate({
+    path: "chatMessages",
+
+    populate: [
+      { path: "author", select: "username profilePicURL" },
+      {
+        path: "messageReplyingTo",
+        populate: {
+          path: "author",
+          select: "username",
         },
-      ],
-    });
+      },
+    ],
+  });
 
-    res.json({ chat });
-  }
+  res.json({ chat });
 });
 
 exports.change_chat_name = [

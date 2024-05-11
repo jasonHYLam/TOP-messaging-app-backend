@@ -7,10 +7,11 @@ const Message = require("../models/message");
 const User = require("../models/user");
 const Chat = require("../models/chat");
 
-async function update_chat_last_updated_property(chat) {
+async function updateChatLastUpdatedProperty(chat) {
   chat.lastUpdated = new Date();
   await chat.save();
 }
+
 exports.validate_text = (req, res, next) => {
   body("text").trim().escape();
   next();
@@ -42,9 +43,9 @@ exports.create_message = asyncHandler(async (req, res, next) => {
 
   await newMessage.save();
 
-  await update_chat_last_updated_property(currentChat);
+  await updateChatLastUpdatedProperty(currentChat);
 
-  res.json({});
+  res.json({ newMessage });
 });
 
 exports.create_message_with_image = [
@@ -62,7 +63,7 @@ exports.create_message_with_image = [
       messageToReplyTo = await Message.findById(req.params.messageid);
     }
     if (!currentChat) return res.status(400).end();
-    await update_chat_last_updated_property(currentChat);
+    await updateChatLastUpdatedProperty(currentChat);
 
     const newMessage = new Message({
       text: he.decode(req.body.message),
