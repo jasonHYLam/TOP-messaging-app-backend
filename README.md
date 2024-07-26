@@ -1,6 +1,6 @@
-# Messaging App Server
+# Blue Messaging App Server
 
-Jamstack messaging app.
+The backend server for Blue Messaging App. It is developed using NodeJS, Express, MongoDB, and features additional technologies including Multer, Cloudinary, PassportJS and BcryptJS.
 
 [Frontend Repo](https://github.com/jasonHYLam/TOP-messaging-app-client)
 [App Live](https://blue-messaging-app.netlify.app/)
@@ -8,7 +8,7 @@ Jamstack messaging app.
 ## Features
 
 - MongoDB database
-- backend tests using Supertest/Superagent, Mongodb-memory-server and Jest
+- Backend tests using Supertest/Superagent, Mongodb-memory-server and Jest
 - User authentication using PassportJS
 - Image database using Cloudinary
 - Image uploading using Multer and Multer-storage-cloudinary
