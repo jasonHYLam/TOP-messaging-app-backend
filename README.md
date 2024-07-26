@@ -2,8 +2,8 @@
 
 The backend server for Blue Messaging App. It is developed using NodeJS, Express, MongoDB, and features additional technologies including Multer, Cloudinary, PassportJS and BcryptJS.
 
+[Live app](https://blue-messaging-app.netlify.app/)
 [Frontend Repo](https://github.com/jasonHYLam/TOP-messaging-app-client)
-[App Live](https://blue-messaging-app.netlify.app/)
 
 ## Features
 
